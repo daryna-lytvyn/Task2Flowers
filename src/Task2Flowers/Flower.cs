@@ -13,13 +13,13 @@ namespace Task2Flowers
     {
         private int id;
 
-        private string kind;
+        private KindOfFlower kind;
 
         private string variety;
 
         private Color color;
 
-        public Flower(int id, string kind, string variety, Color color)
+        public Flower(int id, KindOfFlower kind, string variety, Color color)
         {
             this.id = id;
             this.kind = kind;

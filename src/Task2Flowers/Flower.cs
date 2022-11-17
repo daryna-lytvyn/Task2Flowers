@@ -11,20 +11,20 @@ namespace Task2Flowers
 
     class Flower
     {
-        private int id;
+        private int Id;
 
-        private KindOfFlower kind;
+        private KindOfFlower Kind;
 
-        private string variety;
+        private string Variety;
 
-        private Color color;
+        private Color Color;
 
         public Flower(int id, KindOfFlower kind, string variety, Color color)
         {
-            this.id = id;
-            this.kind = kind;
-            this.variety = variety;
-            this.color = color;
+            this.Id = id;
+            this.Kind = kind;
+            this.Variety = variety;
+            this.Color = color;
         }
     }
 }

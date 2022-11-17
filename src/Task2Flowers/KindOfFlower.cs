@@ -8,14 +8,14 @@ namespace Task2Flowers
 {
     class KindOfFlower
     {
-        public int id { get; }
+        public int Id { get; }
 
-        public string title { get; }
+        public string Title { get; }
 
         public KindOfFlower(int id, string title)
         {
-            this.id = id;
-            this.title = title;
+            this.Id = id;
+            this.Title = title;
         }
 
     }

@@ -11,13 +11,13 @@ namespace Task2Flowers
 
     class Flower
     {
-        private int Id;
+        public int Id { get; }
 
-        private KindOfFlower Kind;
+        public KindOfFlower Kind { get; }
 
-        private string Variety;
+        public string Variety { get; }
 
-        private Color Color;
+        public Color Color { get; }
 
         public Flower(int id, KindOfFlower kind, string variety, Color color)
         {

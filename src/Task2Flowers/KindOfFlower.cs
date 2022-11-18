@@ -17,6 +17,5 @@ namespace Task2Flowers
             this.Id = id;
             this.Title = title;
         }
-
     }
 }

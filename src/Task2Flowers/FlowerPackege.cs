@@ -14,11 +14,14 @@ namespace Task2Flowers
 
         public int CountOfFlower { get; }
 
-        public FlowerPackege( int id, Flower flower, int countOfFlower)
+        public int FlowersHeight { get; }
+
+        public FlowerPackege( int id, Flower flower, int countOfFlower, int flowersHeight)
         {
             this.Id = id;
             this.Flower = flower;
             this.CountOfFlower = countOfFlower;
+            this.FlowersHeight = flowersHeight;
         }
     }
 }

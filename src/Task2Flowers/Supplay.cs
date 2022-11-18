@@ -21,6 +21,5 @@ namespace Task2Flowers
             this.Date = date;
 
         }
-
     }
 }

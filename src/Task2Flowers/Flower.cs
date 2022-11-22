@@ -9,7 +9,7 @@ namespace Task2Flowers
 {
 
 
-    class Flower
+    public class Flower
     {
         public int Id { get; }
 

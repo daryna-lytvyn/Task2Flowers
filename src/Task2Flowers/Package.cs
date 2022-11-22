@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Task2Flowers
 {
-    class FlowerPackege
+    public class Package
     {
         public int Id { get; }
 
@@ -16,7 +16,7 @@ namespace Task2Flowers
 
         public int FlowersHeight { get; }
 
-        public FlowerPackege( int id, Flower flower, int countOfFlower, int flowersHeight)
+        public Package( int id, Flower flower, int countOfFlower, int flowersHeight)
         {
             this.Id = id;
             this.Flower = flower;

@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace Task2Flowers
 {
-    class Supplay
+    public class Supplay
     {
         public int Id { get; }
         
-        public List<FlowerPackege> FlowerPackeges { get; }
+        public List<Package> FlowerPackeges { get; }
 
         public DateTime Date { get; }
 
-        public Supplay(int id, List<FlowerPackege> flowerPackeges, DateTime date)
+        public Supplay(int id, List<Package> flowerPackeges, DateTime date)
         {
             this.Id = id;
             this.FlowerPackeges = flowerPackeges;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Task2Flowers
 {
-    class KindOfFlower
+    public class KindOfFlower
     {
         public int Id { get; }
 

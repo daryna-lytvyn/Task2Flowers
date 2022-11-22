@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Task2Flowers
 {
-    class IdGenerator
+    public class IntIdGenerator
     {
         private int value = 1;
 

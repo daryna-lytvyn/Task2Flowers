@@ -7,112 +7,61 @@ using System.Threading.Tasks;
 
 namespace Task2Flowers
 {
-    class MenuItems
+    public class MenuItems
     {
-        public void AddKindOfFlower(List<KindOfFlower> kindsOfFlower, IdGenerator idKindsOfFlower)
+        public void AddKindOfFlower(MyStorage storage)
         {
-            Console.WriteLine("Введите название вида цветка :  ");
-            string title = Console.ReadLine();
+            MyInputOutput myInput = new MyInputOutput();
 
-            kindsOfFlower.Add(new KindOfFlower(idKindsOfFlower.GetNextValue(), title));
+            var kindOfFlower = myInput.InputKindOfFlower(storage.IdKindsOfFlower);
+
+            storage.AddKindOfFlower(kindOfFlower);
         }
 
-        public void AddFlower(List<Flower> flowers, List<KindOfFlower> kindsOfFlower, IdGenerator idFlowers)
+        public void AddFlower(MyStorage storage)
         {
-            this.ShowKindOfFlowers(kindsOfFlower);
+            MyInputOutput myInput = new MyInputOutput();
 
-            Console.WriteLine("Введите номер вида цветка :  ");
-            var numderKingOfFlower = Int32.Parse(Console.ReadLine());
+            var flower = myInput.InputFlower(storage.KindOfFlowers, storage.IdFlowers);
 
-            Console.WriteLine("Введите сорт цветка :  ");
-            var title = Console.ReadLine();
-
-            //Console.WriteLine("Введите цвет цветка :  ");
-            var сolor = Color.White;//Color.FromName(Console.ReadLine());
-
-            flowers.Add(new Flower(idFlowers.GetNextValue(), kindsOfFlower[numderKingOfFlower - 1], title, сolor));
+            storage.AddFlower(flower);
         }
 
-        public void AddSupplay(List<Supplay> supplays, List<Flower> flowers, IdGenerator idPackege, IdGenerator idSupplays)
+        public void AddSupplay(MyStorage storage)
         {
-            var marker = true;
-            var packeges = new List<FlowerPackege>();
+            MyInputOutput myInput = new MyInputOutput();
 
-            do
-            {
-                Console.WriteLine("Что вы хотите сделать?\n\t\t - Добавить сверток (нажмите 1).\n\t\t - Завершить поставку(любое другое число)");
-                var value = Int32.Parse(Console.ReadLine());
-                if (value != 1)
-                {
-                    marker = false;
-                }
+            var supplay = myInput.InputSupplay(storage.Flowers, storage.IdPackeges, storage.IdSupplays);
 
-                Console.WriteLine("Введите номер цветка :  ");
-                this.ShowFlowers(flowers);
-                var flowerId = Int32.Parse(Console.ReadLine())-1;
-
-                Console.WriteLine("Введите количество :  ");
-                var count = Int32.Parse(Console.ReadLine());
-
-                Console.WriteLine("Введите высоту :  ");
-                var height = Int32.Parse(Console.ReadLine());
-
-                var packege = new FlowerPackege(idPackege.GetNextValue(), flowers[flowerId], count, height);
-                packeges.Add(packege);
-                
-            } while (marker);
-
-            supplays.Add(new Supplay(idSupplays.GetNextValue(), packeges, DateTime.Now));
+            storage.AddSuplay(supplay);
         }
 
-        public void ShowKindOfFlowers(List<KindOfFlower> kindsOfFlower)
+        public void ShowKindOfFlowers(MyStorage storage)
         {
-            Console.WriteLine("Виды цветов: ");
+            MyInputOutput myOutput = new MyInputOutput();
 
-            foreach (var kind in kindsOfFlower)
-            {
-                Console.Write($"Id: {kind.Id}, {kind.Title}, ");
-            }
-
-            Console.WriteLine();
+            myOutput.PrintKindOfFlowers(storage.KindOfFlowers);
         }
 
-        public void ShowFlowers(List<Flower> flowers)
+        public void ShowFlowers(MyStorage storage)
         {
-            Console.WriteLine("Цветы: ");
+            MyInputOutput myOutput = new MyInputOutput();
 
-            foreach (var flower in flowers)
-            {
-                Console.WriteLine($"\t\tId: {flower.Id}, {flower.Kind.Title}, {flower.Variety}, {flower.Color.Name}");
-            }
+            myOutput.PrintFlowers(storage.Flowers);
         }
 
-        public void ShowFlowersSortByKind(List<Flower> flowers)
+        public void ShowFlowersSortByKind(MyStorage storage)
         {
-            var sortFlowersByKind = flowers.Select(f => f).OrderBy(f => f.Kind.Title);
-            Console.WriteLine("Цветы: ");
+            MyInputOutput myOutput = new MyInputOutput();
 
-            foreach (var flower in sortFlowersByKind)
-            {
-                Console.WriteLine($"\t\tId: {flower.Id}, {flower.Kind.Title}, {flower.Variety}, {flower.Color.Name}");
-            }
-
+            myOutput.PrintFlowersSortByKind(storage.Flowers);
         }
-        public void ShowSupplays(List<Supplay> supplays)
+
+        public void ShowSupplays(MyStorage storage)
         {
-            Console.WriteLine("Поставки: ");
+            MyInputOutput myOutput = new MyInputOutput();
 
-            foreach (var supplay in supplays)
-            {
-                Console.WriteLine($"\t\tId: {supplay.Id}, дата: {supplay.Date}, свертки: ");
-
-                foreach (var packege in supplay.FlowerPackeges)
-                {
-                    Console.WriteLine($"\t\t\t\tId{packege.Id}," +
-                        $" цветок:( id{packege.Flower.Id}, {packege.Flower.Kind.Title}, {packege.Flower.Variety}, {packege.Flower.Color.Name})," +
-                        $" количество: {packege.CountOfFlower}шт., высота: {packege.FlowersHeight}см.");
-                }
-            }
+            myOutput.PrintSupplays(storage.Supplays);
         }
     }
 }

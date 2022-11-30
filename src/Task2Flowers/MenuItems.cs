@@ -9,59 +9,82 @@ namespace Task2Flowers
 {
     public class MenuItems
     {
-        public void AddKindOfFlower(MyStorage storage)
+        public void Add(Storage<KindOfFlower> storageKindsOfFlower)
         {
-            MyInputOutput myInput = new MyInputOutput();
+            KindsOfFlowerPresenter kindsOfFlowerPresenter = new KindsOfFlowerPresenter();
 
-            var kindOfFlower = myInput.InputKindOfFlower(storage.IdKindsOfFlower);
+            var kindOfFlower = kindsOfFlowerPresenter.Input(storageKindsOfFlower.IdGenerator);
 
-            storage.AddKindOfFlower(kindOfFlower);
+            storageKindsOfFlower.Add(kindOfFlower);
         }
 
-        public void AddFlower(MyStorage storage)
+        public void Add(Storage<Flower> storageFlowers, Storage<KindOfFlower> storageKindsOfFlowers)
         {
-            MyInputOutput myInput = new MyInputOutput();
+            FlowerPresenter flowerPresenter = new FlowerPresenter();
 
-            var flower = myInput.InputFlower(storage.KindOfFlowers, storage.IdFlowers);
+            var flower = flowerPresenter.Input(storageFlowers.IdGenerator, storageKindsOfFlowers.Elements);
 
-            storage.AddFlower(flower);
+            storageFlowers.Add(flower);
         }
 
-        public void AddSupplay(MyStorage storage)
+
+        public void Add(Storage<Supplay> storageSupplays, Storage<Package> storagePackages, Storage<Flower> storageFlowers)
         {
-            MyInputOutput myInput = new MyInputOutput();
+            PackegePresenter packegePresenter = new PackegePresenter();
+            List<Package> packages = new List<Package>();
+            var marker = true;
+            var supplay = new Supplay(storageSupplays.IdGenerator.GetNextValue());
+            var idOfSupplay = supplay.Id;
 
-            var supplay = myInput.InputSupplay(storage.Flowers, storage.IdPackeges, storage.IdSupplays);
 
-            storage.AddSuplay(supplay);
+            do
+            {
+                var packegeInput2 = packegePresenter.InputForMany(storagePackages.IdGenerator, storageFlowers.Elements, idOfSupplay);
+                packages.Add(packegeInput2.Item1);
+                storagePackages.Add(packegeInput2.Item1);
+                marker = packegeInput2.Item2;
+
+            } while (marker);
+
+            supplay.AddPackeges(packages);
+            supplay.AddFinishDate(DateTime.Now);
+
+            storageSupplays.Add(supplay);
         }
 
-        public void ShowKindOfFlowers(MyStorage storage)
+        public void Show(Storage<KindOfFlower> storageKindsOfFlower)
         {
-            MyInputOutput myOutput = new MyInputOutput();
+            KindsOfFlowerPresenter kindsOfFlowerPresenter = new KindsOfFlowerPresenter();
 
-            myOutput.PrintKindOfFlowers(storage.KindOfFlowers);
+            kindsOfFlowerPresenter.Print(storageKindsOfFlower.Elements);
         }
 
-        public void ShowFlowers(MyStorage storage)
+        public void Show(Storage<Flower> storageFlowers)
         {
-            MyInputOutput myOutput = new MyInputOutput();
+            FlowerPresenter flowerPresenter = new FlowerPresenter();
 
-            myOutput.PrintFlowers(storage.Flowers);
+            flowerPresenter.Print(storageFlowers.Elements);
         }
 
-        public void ShowFlowersSortByKind(MyStorage storage)
+        public void ShowFlowersSortByKind(Storage<Flower> storageFlowers)
         {
-            MyInputOutput myOutput = new MyInputOutput();
+            FlowerPresenter flowerPresenter = new FlowerPresenter();
 
-            myOutput.PrintFlowersSortByKind(storage.Flowers);
+            flowerPresenter.PrintSortByKind(storageFlowers.Elements);
+        
+        }
+        public void Show(Storage<Package> storagePackage)
+        {
+            PackegePresenter packagePresenter = new PackegePresenter();
+
+            packagePresenter.Print(storagePackage.Elements);
         }
 
-        public void ShowSupplays(MyStorage storage)
+        public void Show(Storage<Supplay> storageSupplays)
         {
-            MyInputOutput myOutput = new MyInputOutput();
+            SupplayPresenter supplayPresenter = new SupplayPresenter();
 
-            myOutput.PrintSupplays(storage.Supplays);
+            supplayPresenter.Print(storageSupplays.Elements);
         }
     }
 }

@@ -26,5 +26,6 @@ namespace Task2Flowers
             this.Variety = variety;
             this.Color = color;
         }
+
     }
 }

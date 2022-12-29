@@ -47,7 +47,6 @@ namespace Task2Flowers
             {
                 Console.WriteLine($"\t\tId: {flower.Id}, {flower.Kind.Title}, {flower.Variety}, {flower.Color.Name}");
             }
-
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Task2Flowers
         public int FlowersHeight { get; }
 
 
-        public Package( int id, int idOfSupplay, Flower flower, int countOfFlower, int flowersHeight)
+        public Package(int id, int idOfSupplay, Flower flower, int countOfFlower, int flowersHeight)
         {
             this.Id = id;
             this.IdOfSupplay = idOfSupplay;

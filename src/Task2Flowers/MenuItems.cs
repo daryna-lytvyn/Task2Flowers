@@ -9,82 +9,109 @@ namespace Task2Flowers
 {
     public class MenuItems
     {
-        public void Add(Storage<KindOfFlower> storageKindsOfFlower)
+        private readonly Storage<KindOfFlower> storageKindsOfFlower;
+
+        private readonly KindsOfFlowerPresenter kindsOfFlowerPresenter;
+
+        private readonly Storage<Flower> storageFlowers;
+
+        private readonly FlowerPresenter flowerPresenter;
+
+        private readonly Storage<Package> storagePackages;
+
+        private readonly PackagePresenter packegePresenter;
+
+        private readonly Storage<Supplay> storageSupplays;
+
+        private readonly SupplayPresenter supplayPresenter;
+
+        public MenuItems(Storage<KindOfFlower> storageKindsOfFlower, Storage<Flower> storageFlowers, Storage<Package> storagePackages, Storage<Supplay> storageSupplays)
         {
-            KindsOfFlowerPresenter kindsOfFlowerPresenter = new KindsOfFlowerPresenter();
+            this.storageKindsOfFlower = storageKindsOfFlower;
+            this.kindsOfFlowerPresenter = new KindsOfFlowerPresenter();
 
-            var kindOfFlower = kindsOfFlowerPresenter.Input(storageKindsOfFlower.IdGenerator);
+            this.storageFlowers = storageFlowers;
+            this.flowerPresenter = new FlowerPresenter();
 
-            storageKindsOfFlower.Add(kindOfFlower);
+            this.storagePackages = storagePackages;
+            this.packegePresenter = new PackagePresenter();
+
+            this.storageSupplays = storageSupplays;
+            this.supplayPresenter = new SupplayPresenter();
+        }
+        public KindOfFlower AddKindOfFlower()
+        {
+            var kindOfFlower = this.kindsOfFlowerPresenter.Input(this.storageKindsOfFlower.IdGenerator);
+
+            this.storageKindsOfFlower.Add(kindOfFlower);
+
+            return kindOfFlower;
         }
 
-        public void Add(Storage<Flower> storageFlowers, Storage<KindOfFlower> storageKindsOfFlowers)
+        public Flower AddFlower()
         {
-            FlowerPresenter flowerPresenter = new FlowerPresenter();
+            var flower = flowerPresenter.Input(this.storageFlowers.IdGenerator, this.storageKindsOfFlower.Elements);
 
-            var flower = flowerPresenter.Input(storageFlowers.IdGenerator, storageKindsOfFlowers.Elements);
+            this.storageFlowers.Add(flower);
 
-            storageFlowers.Add(flower);
+            return flower;
         }
 
-
-        public void Add(Storage<Supplay> storageSupplays, Storage<Package> storagePackages, Storage<Flower> storageFlowers)
+        public Package AddPackage(int idOfSupplay)
         {
-            PackegePresenter packegePresenter = new PackegePresenter();
+            var package = packegePresenter.Input(this.storagePackages.IdGenerator, this.storageFlowers.Elements, idOfSupplay);
+
+            this.storagePackages.Add(package);
+
+            return package;
+        }
+
+        public Supplay AddSupplay()
+        {
             List<Package> packages = new List<Package>();
             var marker = true;
-            var supplay = new Supplay(storageSupplays.IdGenerator.GetNextValue());
+            var supplay = new Supplay(this.storageSupplays.IdGenerator.GetNextValue());
             var idOfSupplay = supplay.Id;
-
 
             do
             {
-                var packegeInput2 = packegePresenter.InputForMany(storagePackages.IdGenerator, storageFlowers.Elements, idOfSupplay);
-                packages.Add(packegeInput2.Item1);
-                storagePackages.Add(packegeInput2.Item1);
-                marker = packegeInput2.Item2;
+                var packageInput2 = packegePresenter.InputForMany(this.storagePackages.IdGenerator, this.storageFlowers.Elements, idOfSupplay);
+                packages.Add(packageInput2.Item1);
+                this.storagePackages.Add(packageInput2.Item1);
+                marker = packageInput2.Item2;
 
             } while (marker);
 
             supplay.AddPackeges(packages);
             supplay.AddFinishDate(DateTime.Now);
 
-            storageSupplays.Add(supplay);
+            this.storageSupplays.Add(supplay);
+
+            return supplay;
         }
 
-        public void Show(Storage<KindOfFlower> storageKindsOfFlower)
+        public void ShowKindsOfFlower()
         {
-            KindsOfFlowerPresenter kindsOfFlowerPresenter = new KindsOfFlowerPresenter();
-
-            kindsOfFlowerPresenter.Print(storageKindsOfFlower.Elements);
+            this.kindsOfFlowerPresenter.Print(this.storageKindsOfFlower.Elements);
         }
 
-        public void Show(Storage<Flower> storageFlowers)
+        public void ShowFlowers()
         {
-            FlowerPresenter flowerPresenter = new FlowerPresenter();
-
-            flowerPresenter.Print(storageFlowers.Elements);
+            this.flowerPresenter.Print(storageFlowers.Elements);
         }
 
-        public void ShowFlowersSortByKind(Storage<Flower> storageFlowers)
+        public void ShowFlowersSortByKind()
         {
-            FlowerPresenter flowerPresenter = new FlowerPresenter();
-
-            flowerPresenter.PrintSortByKind(storageFlowers.Elements);
-        
+            this.flowerPresenter.PrintSortByKind(storageFlowers.Elements);
         }
-        public void Show(Storage<Package> storagePackage)
+        public void ShowPackages()
         {
-            PackegePresenter packagePresenter = new PackegePresenter();
-
-            packagePresenter.Print(storagePackage.Elements);
+            this.packegePresenter.Print(this.storagePackages.Elements);
         }
 
-        public void Show(Storage<Supplay> storageSupplays)
+        public void ShowSupplays()
         {
-            SupplayPresenter supplayPresenter = new SupplayPresenter();
-
-            supplayPresenter.Print(storageSupplays.Elements);
+            this.supplayPresenter.Print(this.storageSupplays.Elements);
         }
     }
 }

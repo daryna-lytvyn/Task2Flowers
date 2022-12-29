@@ -9,7 +9,7 @@ namespace Task2Flowers
     public class Supplay
     {
         public int Id { get; }
-        
+
         public List<Package> FlowerPackeges { get; set; }
 
         public DateTime? FinishDate { get; set; }
@@ -29,7 +29,7 @@ namespace Task2Flowers
 
         public bool AddPackeges(List<Package> flowerPackeges)
         {
-            if(this.FlowerPackeges == null)
+            if (this.FlowerPackeges == null)
             {
                 this.FlowerPackeges = flowerPackeges;
                 return true;

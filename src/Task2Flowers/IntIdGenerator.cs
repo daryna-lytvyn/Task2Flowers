@@ -13,6 +13,6 @@ namespace Task2Flowers
         public int GetNextValue()
         {
             return value++;
-        } 
+        }
     }
 }

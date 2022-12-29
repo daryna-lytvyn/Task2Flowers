@@ -17,11 +17,11 @@ namespace Task2Flowers
             var idPackeges = new IntIdGenerator();
             var idSupplays = new IntIdGenerator();
 
-            var kindsOfFlower = new List<KindOfFlower>() 
-            { 
-                new KindOfFlower(idKindsOfFlower.GetNextValue(), "Роза"), 
-                new KindOfFlower(idKindsOfFlower.GetNextValue(), "Гортензия"), 
-                new KindOfFlower(idKindsOfFlower.GetNextValue(), "Ромашка") 
+            var kindsOfFlower = new List<KindOfFlower>()
+            {
+                new KindOfFlower(idKindsOfFlower.GetNextValue(), "Роза"),
+                new KindOfFlower(idKindsOfFlower.GetNextValue(), "Гортензия"),
+                new KindOfFlower(idKindsOfFlower.GetNextValue(), "Ромашка")
             };
             var flowers = new List<Flower>()
             {
@@ -42,7 +42,7 @@ namespace Task2Flowers
                     new Package(idPackeges.GetNextValue(), 2, flowers[3], 170, 40),
                     new Package(idPackeges.GetNextValue(), 2, flowers[4], 235, 65)
             };
-            var supplays = new List<Supplay>() { 
+            var supplays = new List<Supplay>() {
                 new Supplay(idSupplays.GetNextValue(), packeges.Select(p =>p).Where(p=>p.IdOfSupplay == 1).ToList() ,  DateTime.Parse("2022-11-15")),
                 new Supplay(idSupplays.GetNextValue(), packeges.Select(p =>p).Where(p=>p.IdOfSupplay == 2).ToList(),  DateTime.Parse("2022-11-16"))
 
@@ -55,7 +55,7 @@ namespace Task2Flowers
             var marker = true;
 
             do
-            {              
+            {
                 Console.WriteLine("Что вы хотите сделать?\n\t\t - Добавить вид цветка (нажмите 1)." +
                     "\n\t\t - Добавить цветок (нажмите 2).\n\t\t - Добавить поставку (нажмите 3)." +
                     "\n\t\t - Просмотреть виды цветов (нажмите 4).\n\t\t - Просмотреть цветы (нажмите 5)." +
@@ -64,33 +64,34 @@ namespace Task2Flowers
 
                 int value;
                 Int32.TryParse(Console.ReadLine(), out value);
-                var menu = new MenuItems();
+                var menu = new MenuItems(storageKindOfFlower, storageFlower, storagePackage, storageSupplay);
 
                 switch (value)
                 {
                     case 1:
-                        menu.Add(storageKindOfFlower);
+                        menu.AddKindOfFlower();
                         break;
                     case 2:
-                        menu.Add(storageFlower, storageKindOfFlower);
+                        menu.AddFlower();
                         break;
                     case 3:
-                        menu.Add(storageSupplay, storagePackage, storageFlower);
+                        menu.AddSupplay();
                         break;
                     case 4:
-                        menu.Show(storageKindOfFlower);
+                        menu.ShowKindsOfFlower();
                         break;
                     case 5:
-                        menu.Show(storageFlower);
+                        menu.ShowFlowers();
                         break;
                     case 6:
-                        menu.ShowFlowersSortByKind(storageFlower);
+                    case 6:
+                        menu.ShowFlowersSortByKind();
                         break;
                     case 7:
-                        menu.Show(storagePackage);
+                        menu.ShowPackages();
                         break;
                     case 8:
-                        menu.Show(storageSupplay);
+                        menu.ShowSupplays();
                         break;
 
                     default:
@@ -100,5 +101,5 @@ namespace Task2Flowers
 
             } while (marker);
         }
-    }   
+    }
 }

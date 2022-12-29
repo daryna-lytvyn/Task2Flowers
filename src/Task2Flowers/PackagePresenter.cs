@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Task2Flowers
 {
-    public class PackegePresenter
+    public class PackagePresenter
     {
-        public (Package, bool) InputForMany(IntIdGenerator idPackege, List<Flower> flowers, int idSupplay)
+        public (Package, bool) InputForMany(IntIdGenerator idPackage, List<Flower> flowers, int idSupplay)
         {
-            var packege = this.Input(idPackege, flowers, idSupplay);
-          
+            var package = this.Input(idPackage, flowers, idSupplay);
+
             Console.WriteLine("\t\t - Добавить еще сверток (нажмите 1).\n\t\t - Завершить поставку(любое другое число)");
             int value;
             Int32.TryParse(Console.ReadLine(), out value);
@@ -21,14 +21,14 @@ namespace Task2Flowers
             if (value != 1)
             {
                 marker = false;
-                
+
             }
 
-            return (packege, marker);
+            return (package, marker);
         }
 
 
-        public Package Input(IntIdGenerator idPackege, List<Flower> flowers, int idSupplay)
+        public Package Input(IntIdGenerator idPackage, List<Flower> flowers, int idSupplay)
         {
             var flowerPresenter = new FlowerPresenter();
 
@@ -45,16 +45,16 @@ namespace Task2Flowers
             int height;
             Int32.TryParse(Console.ReadLine(), out height);
 
-            return new Package(idPackege.GetNextValue(), idSupplay, flowers[flowerId - 1], count, height);
+            return new Package(idPackage.GetNextValue(), idSupplay, flowers[flowerId - 1], count, height);
         }
 
-        public void Print(List<Package> packeges)
+        public void Print(List<Package> packages)
         {
-            foreach (var packege in packeges)
+            foreach (var package in packages)
             {
-                Console.WriteLine($"\t\t\t\tId: {packege.Id}, Id поставки: {packege.Id}," +
-                    $" цветок:( id{packege.Flower.Id}, {packege.Flower.Kind.Title}, {packege.Flower.Variety}," +
-                    $" {packege.Flower.Color.Name})," + " количество: {packege.CountOfFlower}шт.," +
+                Console.WriteLine($"\t\t\t\tId: {package.Id}, Id поставки: {package.Id}," +
+                    $" цветок:( id{package.Flower.Id}, {package.Flower.Kind.Title}, {package.Flower.Variety}," +
+                    $" {package.Flower.Color.Name})," + " количество: {packege.CountOfFlower}шт.," +
                     " высота: {packege.FlowersHeight}см.");
             }
         }

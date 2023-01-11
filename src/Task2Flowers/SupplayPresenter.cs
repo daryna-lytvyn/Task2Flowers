@@ -9,16 +9,38 @@ namespace Task2Flowers
     public class SupplayPresenter
     {
 
-        public Supplay Input(List<Package> packeges, IntIdGenerator idSupplay)
+        public void Input(Storage<Supplay> storageSupplays, Storage<Package> storagePackages, Storage<Flower> storageFlowers)
         {
-            return (new Supplay(idSupplay.GetNextValue(), packeges, DateTime.Now));
+            var supplay = new Supplay(storageSupplays.IdGenerator.GetNextValue());
+            var idOfSupplay = supplay.Id;
+
+            List<Package> newPackages = new List<Package>();
+
+            var marker = true;
+
+            do
+            {
+                var packegePresenter = new PackagePresenter();
+
+                Console.WriteLine("Введите сверток:  ");
+                var newPackage = packegePresenter.Input(storagePackages, storageFlowers, idOfSupplay);
+                newPackages.Add(newPackage);
+
+                marker = this.MarkerQuestion();
+
+            } while (marker);
+
+            supplay.AddPackeges(newPackages);
+            supplay.AddFinishDate(DateTime.Now);
+
+            storageSupplays.Add(supplay);
         }
 
-        public void Print(List<Supplay> supplays)
+        public void Print(Storage<Supplay> storageSupplays)
         {
             Console.WriteLine("Поставки: ");
 
-            foreach (var supplay in supplays)
+            foreach (var supplay in storageSupplays.Elements)
             {
                 Console.WriteLine($"\t\tId: {supplay.Id}, дата: {supplay.FinishDate}, свертки: ");
 
@@ -29,6 +51,29 @@ namespace Task2Flowers
                         $" количество: {packege.CountOfFlower}шт., высота: {packege.FlowersHeight}см.");
                 }
             }
+        }
+        private bool MarkerQuestion()
+        {
+            Console.WriteLine("\t\t - Добавить еще сверток (нажмите 1).\n\t\t - Завершить поставку(любое другое число)");
+
+            bool parseResult;
+            int value;
+
+            do
+            {
+                var textValue = Console.ReadLine();
+                parseResult = Int32.TryParse(textValue, out value);
+            }
+            while (parseResult == false);
+
+            var marker = true;
+
+            if (value != 1)
+            {
+                marker = false;
+            }
+
+            return marker;
         }
     }
 }

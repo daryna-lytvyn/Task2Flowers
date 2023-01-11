@@ -8,51 +8,55 @@ namespace Task2Flowers
 {
     public class PackagePresenter
     {
-        public (Package, bool) InputForMany(IntIdGenerator idPackage, List<Flower> flowers, int idSupplay)
-        {
-            var package = this.Input(idPackage, flowers, idSupplay);
-
-            Console.WriteLine("\t\t - Добавить еще сверток (нажмите 1).\n\t\t - Завершить поставку(любое другое число)");
-            int value;
-            Int32.TryParse(Console.ReadLine(), out value);
-
-            var marker = true;
-
-            if (value != 1)
-            {
-                marker = false;
-
-            }
-
-            return (package, marker);
-        }
 
 
-        public Package Input(IntIdGenerator idPackage, List<Flower> flowers, int idSupplay)
+        public Package Input(Storage<Package> storagePackages, Storage<Flower> storageFlowers, int idSupplay)
         {
             var flowerPresenter = new FlowerPresenter();
 
-            Console.WriteLine("Введите номер цветка :  ");
-            flowerPresenter.Print(flowers);
+            Console.WriteLine("Введите id цветка :  ");
+            flowerPresenter.Print(storageFlowers);
             int flowerId;
-            Int32.TryParse(Console.ReadLine(), out flowerId);
+            bool flowerIdParseResult;
+            do
+            {
+                var textValue = Console.ReadLine();
+                flowerIdParseResult = Int32.TryParse(textValue, out flowerId);
+
+            } while (flowerIdParseResult == false || 0 > flowerId || flowerId > storageFlowers.Elements.Count);
 
             Console.WriteLine("Введите количество :  ");
             int count;
-            Int32.TryParse(Console.ReadLine(), out count);
+            bool countParseResult;
+            do
+            {
+                var textValue = Console.ReadLine();
+                countParseResult = Int32.TryParse(textValue, out count);
+
+            } while (countParseResult == false || 0 > count);
 
             Console.WriteLine("Введите высоту :  ");
             int height;
-            Int32.TryParse(Console.ReadLine(), out height);
+            bool heightParseResult;
+            do
+            {
+                var textValue = Console.ReadLine();
+                heightParseResult = Int32.TryParse(textValue, out height);
 
-            return new Package(idPackage.GetNextValue(), idSupplay, flowers[flowerId - 1], count, height);
+            } while (heightParseResult == false || 0 > height);
+
+            var newPackage = new Package(storagePackages.IdGenerator.GetNextValue(), idSupplay, storageFlowers.Elements[flowerId - 1], count, height);
+
+            storagePackages.Add(newPackage);
+
+            return newPackage;
         }
 
-        public void Print(List<Package> packages)
+        public void Print(Storage<Package> storagePackages)
         {
-            foreach (var package in packages)
+            foreach (var package in storagePackages.Elements)
             {
-                Console.WriteLine($"\t\t\t\tId: {package.Id}, Id поставки: {package.Id}," +
+                Console.WriteLine($"\t\t\t\tId: {package.Id}, Id поставки: {package.IdOfSupplay}," +
                     $" цветок:( id{package.Flower.Id}, {package.Flower.Kind.Title}, {package.Flower.Variety}," +
                     $" {package.Flower.Color.Name})," + " количество: {packege.CountOfFlower}шт.," +
                     " высота: {packege.FlowersHeight}см.");

@@ -39,79 +39,113 @@ namespace Task2Flowers
             this.storageSupplays = storageSupplays;
             this.supplayPresenter = new SupplayPresenter();
         }
-        public KindOfFlower AddKindOfFlower()
+
+        public void MainMenu()
         {
-            var kindOfFlower = this.kindsOfFlowerPresenter.Input(this.storageKindsOfFlower.IdGenerator);
-
-            this.storageKindsOfFlower.Add(kindOfFlower);
-
-            return kindOfFlower;
-        }
-
-        public Flower AddFlower()
-        {
-            var flower = flowerPresenter.Input(this.storageFlowers.IdGenerator, this.storageKindsOfFlower.Elements);
-
-            this.storageFlowers.Add(flower);
-
-            return flower;
-        }
-
-        public Package AddPackage(int idOfSupplay)
-        {
-            var package = packegePresenter.Input(this.storagePackages.IdGenerator, this.storageFlowers.Elements, idOfSupplay);
-
-            this.storagePackages.Add(package);
-
-            return package;
-        }
-
-        public Supplay AddSupplay()
-        {
-            List<Package> packages = new List<Package>();
             var marker = true;
-            var supplay = new Supplay(this.storageSupplays.IdGenerator.GetNextValue());
-            var idOfSupplay = supplay.Id;
-
             do
             {
-                var packageInput2 = packegePresenter.InputForMany(this.storagePackages.IdGenerator, this.storageFlowers.Elements, idOfSupplay);
-                packages.Add(packageInput2.Item1);
-                this.storagePackages.Add(packageInput2.Item1);
-                marker = packageInput2.Item2;
+                Console.WriteLine("Что вы хотите сделать?\n\t\t - Добавить вид цветка (нажмите 1)." +
+                    "\n\t\t - Добавить цветок (нажмите 2).\n\t\t - Добавить поставку (нажмите 3)." +
+                    "\n\t\t - Просмотреть виды цветов (нажмите 4).\n\t\t - Просмотреть цветы (нажмите 5)." +
+                    "\n\t\t- Просмотреть сгрупированные по виду цветы(нажмите 6)" +
+                    "\n\t\t - Просмотреть свертки (нажмите 7).\n\t\t - Просмотреть поставки (нажмите 8).\n\t\t - Завершить работу(любое другое число)");
+
+                int value;
+                bool parseResult;
+
+                do
+                {
+                    var textValue = Console.ReadLine();
+                    parseResult = Int32.TryParse(textValue, out value);
+
+                } while (parseResult == false);
+
+                switch (value)
+                {
+                    case 1:
+                        this.AddKindOfFlower();
+                        break;
+                    case 2:
+                        this.AddFlower();
+                        break;
+                    case 3:
+                        this.AddSupplay();
+                        break;
+                    case 4:
+                        this.ShowKindsOfFlower();
+                        break;
+                    case 5:
+                        this.ShowFlowers();
+                        break;
+                    case 6:
+                        this.ShowFlowersSortByKind();
+                        break;
+                    case 7:
+                        this.ShowPackages();
+                        break;
+                    case 8:
+                        this.ShowSupplays();
+                        break;
+
+                    default:
+                        marker = false;
+                        break;
+                }
 
             } while (marker);
-
-            supplay.AddPackeges(packages);
-            supplay.AddFinishDate(DateTime.Now);
-
-            this.storageSupplays.Add(supplay);
-
-            return supplay;
         }
 
-        public void ShowKindsOfFlower()
+        private void AddKindOfFlower()
         {
-            this.kindsOfFlowerPresenter.Print(this.storageKindsOfFlower.Elements);
+            this.kindsOfFlowerPresenter.Input(this.storageKindsOfFlower);
         }
 
-        public void ShowFlowers()
+        private void AddFlower()
         {
-            this.flowerPresenter.Print(storageFlowers.Elements);
+            this.flowerPresenter.Input(this.storageFlowers, this.storageKindsOfFlower);
         }
 
-        public void ShowFlowersSortByKind()
+        private void AddPackage(int idOfSupplay)
         {
-            this.flowerPresenter.PrintSortByKind(storageFlowers.Elements);
-        }
-        public void ShowPackages()
-        {
-            this.packegePresenter.Print(this.storagePackages.Elements);
+            if (0 > idOfSupplay || idOfSupplay > this.storageSupplays.Elements.Count)
+            {
+                throw new ArgumentException();
+            }
+
+            this.packegePresenter.Input(this.storagePackages, this.storageFlowers, idOfSupplay);
         }
 
-        public void ShowSupplays()
+        private void AddSupplay()
         {
-            this.supplayPresenter.Print(this.storageSupplays.Elements);
+            this.supplayPresenter.Input(this.storageSupplays, this.storagePackages, this.storageFlowers);
+
+        }
+
+        private void ShowKindsOfFlower()
+        {
+            this.kindsOfFlowerPresenter.Print(this.storageKindsOfFlower);
+        }
+
+        private void ShowFlowers()
+        {
+            this.flowerPresenter.Print(this.storageFlowers);
+        }
+
+        private void ShowFlowersSortByKind()
+        {
+            this.flowerPresenter.PrintSortByKind(this.storageFlowers);
+        }
+        private void ShowPackages()
+        {
+            this.packegePresenter.Print(this.storagePackages);
+        }
+
+        private void ShowSupplays()
+        {
+            this.supplayPresenter.Print(this.storageSupplays);
         }
     }
 }
+
+

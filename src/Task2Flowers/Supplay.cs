@@ -10,7 +10,7 @@ namespace Task2Flowers
     {
         public int Id { get; }
 
-        public List<Package> FlowerPackeges { get; set; }
+        public IList<Package> FlowerPackeges { get; set; }
 
         public DateTime? FinishDate { get; set; }
 
@@ -19,7 +19,7 @@ namespace Task2Flowers
             this.Id = id;
         }
 
-        public Supplay(int id, List<Package> flowerPackeges, DateTime date)
+        public Supplay(int id, IList<Package> flowerPackeges, DateTime date)
         {
             this.Id = id;
             this.FlowerPackeges = flowerPackeges;
@@ -27,7 +27,7 @@ namespace Task2Flowers
 
         }
 
-        public bool AddPackeges(List<Package> flowerPackeges)
+        public bool AddPackeges(IList<Package> flowerPackeges)
         {
             if (this.FlowerPackeges == null)
             {

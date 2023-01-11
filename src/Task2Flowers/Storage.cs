@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,30 +7,35 @@ using System.Threading.Tasks;
 
 namespace Task2Flowers
 {
+
     public class Storage<T>
     {
-        public List<T> Elements { get; }
+        private readonly List<T> _elements = new List<T>();
+        public IReadOnlyList<T> Elements => _elements.AsReadOnly(); 
+
 
         public IntIdGenerator IdGenerator { get; }
 
+
         public Storage()
         {
-            this.Elements = new List<T>();
+            this._elements = new List<T>();
 
         }
-
         public Storage(List<T> elements, IntIdGenerator idGenerator)
         {
-            this.Elements = elements;
+            this._elements = elements;
             this.IdGenerator = idGenerator;
-
         }
 
 
         public void Add(T element)
         {
-            this.Elements.Add(element);
+            this._elements.Add(element);
         }
+
+
+
 
         /* public void AddPackageToSupplayById (Package package, int id)
          {

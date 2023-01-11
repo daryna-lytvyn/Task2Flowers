@@ -52,54 +52,12 @@ namespace Task2Flowers
             var storageFlower = new Storage<Flower>(flowers, idFlowers);
             var storagePackage = new Storage<Package>(packeges, idPackeges);
             var storageSupplay = new Storage<Supplay>(supplays, idSupplays);
-            var marker = true;
 
-            do
-            {
-                Console.WriteLine("Что вы хотите сделать?\n\t\t - Добавить вид цветка (нажмите 1)." +
-                    "\n\t\t - Добавить цветок (нажмите 2).\n\t\t - Добавить поставку (нажмите 3)." +
-                    "\n\t\t - Просмотреть виды цветов (нажмите 4).\n\t\t - Просмотреть цветы (нажмите 5)." +
-                    "\n\t\t- Просмотреть сгрупированные по виду цветы(нажмите 6)" +
-                    "\n\t\t - Просмотреть свертки (нажмите 7).\n\t\t - Просмотреть поставки (нажмите 8).\n\t\t - Завершить работу(любое другое число)");
 
-                int value;
-                Int32.TryParse(Console.ReadLine(), out value);
-                var menu = new MenuItems(storageKindOfFlower, storageFlower, storagePackage, storageSupplay);
+            var menu = new MenuItems(storageKindOfFlower, storageFlower, storagePackage, storageSupplay);
 
-                switch (value)
-                {
-                    case 1:
-                        menu.AddKindOfFlower();
-                        break;
-                    case 2:
-                        menu.AddFlower();
-                        break;
-                    case 3:
-                        menu.AddSupplay();
-                        break;
-                    case 4:
-                        menu.ShowKindsOfFlower();
-                        break;
-                    case 5:
-                        menu.ShowFlowers();
-                        break;
-                    case 6:
-                    case 6:
-                        menu.ShowFlowersSortByKind();
-                        break;
-                    case 7:
-                        menu.ShowPackages();
-                        break;
-                    case 8:
-                        menu.ShowSupplays();
-                        break;
+            menu.MainMenu();
 
-                    default:
-                        marker = false;
-                        break;
-                }
-
-            } while (marker);
         }
     }
 }

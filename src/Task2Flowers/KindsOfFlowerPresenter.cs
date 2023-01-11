@@ -8,19 +8,21 @@ namespace Task2Flowers
 {
     public class KindsOfFlowerPresenter
     {
-        public KindOfFlower Input(IntIdGenerator idKindsOfFlower)
+        public void Input(Storage<KindOfFlower> storageKindsOfFlowers)
         {
             Console.WriteLine("Введите название вида цветка :  ");
-            string title = Console.ReadLine();
+            var title = Console.ReadLine();
 
-            return (new KindOfFlower(idKindsOfFlower.GetNextValue(), title));
+            var newId = storageKindsOfFlowers.IdGenerator.GetNextValue();
+
+            storageKindsOfFlowers.Add(new KindOfFlower(newId, title));
         }
 
-        public void Print(List<KindOfFlower> kindsOfFlower)
+        public void Print(Storage<KindOfFlower> storageKindsOfFlowers)
         {
             Console.WriteLine("Виды цветов: ");
 
-            foreach (var kind in kindsOfFlower)
+            foreach (var kind in storageKindsOfFlowers.Elements)
             {
                 Console.Write($"Id: {kind.Id}, {kind.Title}, ");
             }

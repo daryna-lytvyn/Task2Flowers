@@ -9,22 +9,23 @@ namespace Task2Flowers
 {
 
 
-    class Flower
+    public class Flower
     {
-        private int id;
+        public int Id { get; }
 
-        private string kind;
+        public KindOfFlower Kind { get; }
 
-        private string variety;
+        public string Variety { get; }
 
-        private Color color;
+        public Color Color { get; }
 
-        public Flower(int id, string kind, string variety, Color color)
+        public Flower(int id, KindOfFlower kind, string variety, Color color)
         {
-            this.id = id;
-            this.kind = kind;
-            this.variety = variety;
-            this.color = color;
+            this.Id = id;
+            this.Kind = kind;
+            this.Variety = variety;
+            this.Color = color;
         }
+
     }
 }

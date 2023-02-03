@@ -37,7 +37,7 @@ namespace Task2Flowers
 
 
 
-        /* public void AddPackageToSupplayById (Package package, int id)
+        /* public void AddPackageToSupplayById (FlowerBundle package, int id)
          {
              var neededId = this.Supplays.FindIndex(x => x.Id == id);
              this.Supplays[neededId].FlowerPackeges.Add(package);

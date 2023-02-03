@@ -9,12 +9,12 @@ namespace Task2Flowers
     public class SupplayPresenter
     {
 
-        public void Input(Storage<Supplay> storageSupplays, Storage<Package> storagePackages, Storage<Flower> storageFlowers)
+        public void Input(Storage<Supplay> storageSupplays, Storage<FlowerBundle> storagePackages, Storage<Flower> storageFlowers)
         {
             var supplay = new Supplay(storageSupplays.IdGenerator.GetNextValue());
             var idOfSupplay = supplay.Id;
 
-            List<Package> newPackages = new List<Package>();
+            List<FlowerBundle> newPackages = new List<FlowerBundle>();
 
             var marker = true;
 

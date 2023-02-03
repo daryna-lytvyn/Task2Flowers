@@ -10,7 +10,7 @@ namespace Task2Flowers
     {
 
 
-        public Package Input(Storage<Package> storagePackages, Storage<Flower> storageFlowers, int idSupplay)
+        public FlowerBundle Input(Storage<FlowerBundle> storagePackages, Storage<Flower> storageFlowers, int idSupplay)
         {
             var flowerPresenter = new FlowerPresenter();
 
@@ -45,14 +45,14 @@ namespace Task2Flowers
 
             } while (heightParseResult == false || 0 > height);
 
-            var newPackage = new Package(storagePackages.IdGenerator.GetNextValue(), idSupplay, storageFlowers.Elements[flowerId - 1], count, height);
+            var newPackage = new FlowerBundle(storagePackages.IdGenerator.GetNextValue(), idSupplay, storageFlowers.Elements[flowerId - 1], count, height);
 
             storagePackages.Add(newPackage);
 
             return newPackage;
         }
 
-        public void Print(Storage<Package> storagePackages)
+        public void Print(Storage<FlowerBundle> storagePackages)
         {
             foreach (var package in storagePackages.Elements)
             {

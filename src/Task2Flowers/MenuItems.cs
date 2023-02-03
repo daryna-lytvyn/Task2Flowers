@@ -17,7 +17,7 @@ namespace Task2Flowers
 
         private readonly FlowerPresenter flowerPresenter;
 
-        private readonly Storage<Package> storagePackages;
+        private readonly Storage<Bundle> storageBundles;
 
         private readonly PackagePresenter packegePresenter;
 
@@ -25,7 +25,7 @@ namespace Task2Flowers
 
         private readonly SupplayPresenter supplayPresenter;
 
-        public MenuItems(Storage<KindOfFlower> storageKindsOfFlower, Storage<Flower> storageFlowers, Storage<Package> storagePackages, Storage<Supplay> storageSupplays)
+        public MenuItems(Storage<KindOfFlower> storageKindsOfFlower, Storage<Flower> storageFlowers, Storage<Bundle> storageBundles, Storage<Supplay> storageSupplays)
         {
             this.storageKindsOfFlower = storageKindsOfFlower;
             this.kindsOfFlowerPresenter = new KindsOfFlowerPresenter();
@@ -33,7 +33,7 @@ namespace Task2Flowers
             this.storageFlowers = storageFlowers;
             this.flowerPresenter = new FlowerPresenter();
 
-            this.storagePackages = storagePackages;
+            this.storageBundles = storageBundles;
             this.packegePresenter = new PackagePresenter();
 
             this.storageSupplays = storageSupplays;
@@ -113,12 +113,12 @@ namespace Task2Flowers
                 throw new ArgumentException();
             }
 
-            this.packegePresenter.Input(this.storagePackages, this.storageFlowers, idOfSupplay);
+            this.packegePresenter.Input(this.storageBundles, this.storageFlowers, idOfSupplay);
         }
 
         private void AddSupplay()
         {
-            this.supplayPresenter.Input(this.storageSupplays, this.storagePackages, this.storageFlowers);
+            this.supplayPresenter.Input(this.storageSupplays, this.storageBundles, this.storageFlowers);
 
         }
 
@@ -138,7 +138,7 @@ namespace Task2Flowers
         }
         private void ShowPackages()
         {
-            this.packegePresenter.Print(this.storagePackages);
+            this.packegePresenter.Print(this.storageBundles);
         }
 
         private void ShowSupplays()

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Task2Flowers
 {
-    class FlowerPackage : Product
+    public class FlowerPackage : Product
     {
         public FlowerPackageType Type { get; }
 
@@ -15,11 +15,17 @@ namespace Task2Flowers
 
         public int Width { get; }
 
-        public FlowerPackage(int id, FlowerPackageType type, int height, int width, Color color, string description) : base(id, color, description)
+        public Color Color { get; }
+
+        public string Desctiption { get; }
+
+        public FlowerPackage(int id, FlowerPackageType type, int height, int width, Color color, string description) : base(id)
         {
             this.Type = type;
             this.Height = height;
             this.Width = width;
+            this.Color = color;
+            this.Desctiption = description;
         }
     }
 }

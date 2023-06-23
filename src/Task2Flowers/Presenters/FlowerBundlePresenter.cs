@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace Task2Flowers
 {
-    public class PackagePresenter
+    public class FlowerBundlePresenter
     {
-
-
-        public FlowerBundle Input(Storage<FlowerBundle> storagePackages, Storage<Flower> storageFlowers, int idSupplay)
+        public FlowerBundle Input(Storage<FlowerBundle> storageFlowerBundles, Storage<Flower> storageFlowers)
         {
             var flowerPresenter = new FlowerPresenter();
 
@@ -25,7 +23,7 @@ namespace Task2Flowers
 
             } while (flowerIdParseResult == false || 0 > flowerId || flowerId > storageFlowers.Elements.Count);
 
-            Console.WriteLine("Введите количество :  ");
+            Console.WriteLine("Введите количество в пачке :  ");
             int count;
             bool countParseResult;
             do
@@ -35,7 +33,7 @@ namespace Task2Flowers
 
             } while (countParseResult == false || 0 > count);
 
-            Console.WriteLine("Введите высоту :  ");
+            Console.WriteLine("Введите высоту в пачке :  ");
             int height;
             bool heightParseResult;
             do
@@ -45,22 +43,21 @@ namespace Task2Flowers
 
             } while (heightParseResult == false || 0 > height);
 
-            var newPackage = new FlowerBundle(storagePackages.IdGenerator.GetNextValue(), idSupplay, storageFlowers.Elements[flowerId - 1], count, height);
+            var newFlowerBundle = new FlowerBundle(storageFlowerBundles.IdGenerator.GetNextValue(), storageFlowers.Elements[flowerId - 1], count, height);
 
-            storagePackages.Add(newPackage);
+            storageFlowerBundles.Add(newFlowerBundle);
 
-            return newPackage;
+            return newFlowerBundle;
         }
 
-        public void Print(Storage<FlowerBundle> storagePackages)
+        public void Print(FlowerBundle flowerBundle)
         {
-            foreach (var package in storagePackages.Elements)
-            {
-                Console.WriteLine($"\t\t\t\tId: {package.Id}, Id поставки: {package.IdOfSupplay}," +
-                    $" цветок:( id{package.Flower.Id}, {package.Flower.Kind.Title}, {package.Flower.Variety}," +
-                    $" {package.Flower.Color.Name})," + " количество: {packege.CountOfFlower}шт.," +
-                    " высота: {packege.FlowersHeight}см.");
-            }
+            Console.Write($"Id: {flowerBundle.Id}, Цветок: ( ");
+
+            var flowerPresenter = new FlowerPresenter();
+            flowerPresenter.Print(flowerBundle.Flower);
+
+            Console.Write($" ), Количество в пачке: {flowerBundle.CountOfFlower}, Высота: {flowerBundle.Height}");
         }
     }
 }

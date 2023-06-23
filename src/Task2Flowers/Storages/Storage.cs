@@ -13,7 +13,6 @@ namespace Task2Flowers
         private readonly List<T> _elements = new List<T>();
         public IReadOnlyList<T> Elements => _elements.AsReadOnly(); 
 
-
         public IntIdGenerator IdGenerator { get; }
 
 
@@ -37,7 +36,7 @@ namespace Task2Flowers
 
 
 
-        /* public void AddPackageToSupplayById (FlowerBundle package, int id)
+        /* public void AddPackageToSupplayById (FlowerPakege package, int id)
          {
              var neededId = this.Supplays.FindIndex(x => x.Id == id);
              this.Supplays[neededId].FlowerPackeges.Add(package);

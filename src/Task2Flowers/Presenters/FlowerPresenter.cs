@@ -32,6 +32,9 @@ namespace Task2Flowers
             Console.WriteLine("Введите цвет цветка :  ");
             var colorTextValue = Console.ReadLine();
 
+            Console.WriteLine("Введите описание цветка :  ");
+            var description = Console.ReadLine();
+
             var newFlower = new Flower(storageFlowers.IdGenerator.GetNextValue(), storageKindsOfFlower.Elements[kingOfFlowerId - 1], title, Color.FromName(colorTextValue));
 
             storageFlowers.Add(newFlower);
@@ -54,6 +57,11 @@ namespace Task2Flowers
             {
                 Console.WriteLine($"\t\tId: {flower.Id}, {flower.Kind.Title}, {flower.Variety}, {flower.Color.Name}");
             }
+        }
+
+        public void Print(Flower flower)
+        {
+            Console.Write($"Id: {flower.Id}, {flower.Kind.Title}, {flower.Variety}, {flower.Color.Name}");
         }
     }
 }

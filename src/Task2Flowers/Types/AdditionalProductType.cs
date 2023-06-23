@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Task2Flowers
 {
-    class FlowerPackageType
+    public class AdditionalProductType
     {
         public int Id { get; }
 
         public string Title { get; }
 
-        public FlowerPackageType(int id, string title)
+        public AdditionalProductType(int id, string title)
         {
             this.Id = id;
             this.Title = title;

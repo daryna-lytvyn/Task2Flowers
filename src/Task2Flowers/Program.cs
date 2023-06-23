@@ -19,6 +19,7 @@ namespace Task2Flowers
             var idFlowers = new IntIdGenerator();
             var idFlowerPackages = new IntIdGenerator();
             var idAdditionalProducts = new IntIdGenerator();
+            var idFlowerBundles = new IntIdGenerator();
             var idBundles = new IntIdGenerator();
             var idSupplays = new IntIdGenerator();
 
@@ -38,18 +39,18 @@ namespace Task2Flowers
             var additionalProductsTypes = new List<AdditionalProductType>()
             {
                 new AdditionalProductType(idAdditionalProductsTypes.GetNextValue(), "Ваза"),
-                new AdditionalProductType(idAdditionalProductsTypes.GetNextValue(), "Сладкое"),
+                new AdditionalProductType(idAdditionalProductsTypes.GetNextValue(), "Сладость"),
                 new AdditionalProductType(idAdditionalProductsTypes.GetNextValue(), "Открытка"),
             };
 
             var flowers = new List<Flower>()
             {
-                new Flower(idFlowers.GetNextValue(), kindsOfFlower[1], "Magical Pearl", Color.White,"описание к Magical Pearl"),
-                new Flower(idFlowers.GetNextValue(), kindsOfFlower[0],"Black Magic",Color.DarkRed,"описание к Black Magic"),
-                new Flower(idFlowers.GetNextValue(), kindsOfFlower[1], "Anabell", Color.BlueViolet,"описание к Anabell"),
-                new Flower(idFlowers.GetNextValue(), kindsOfFlower[0],"Kerio",Color.LemonChiffon,"описание к Kerio"),
-                new Flower(idFlowers.GetNextValue(), kindsOfFlower[2],"Северная принцесса",Color.White,"описание к Северная принцесса"),
-                new Flower(idFlowers.GetNextValue(), kindsOfFlower[0],"LaPerla",Color.Honeydew,"описание к LaPerla")
+                new Flower(idFlowers.GetNextValue(), kindsOfFlower[1], "Magical Pearl", Color.White),
+                new Flower(idFlowers.GetNextValue(), kindsOfFlower[0],"Black Magic",Color.DarkRed),
+                new Flower(idFlowers.GetNextValue(), kindsOfFlower[1], "Anabell", Color.BlueViolet),
+                new Flower(idFlowers.GetNextValue(), kindsOfFlower[0],"Kerio",Color.LemonChiffon),
+                new Flower(idFlowers.GetNextValue(), kindsOfFlower[2],"Северная принцесса",Color.White),
+                new Flower(idFlowers.GetNextValue(), kindsOfFlower[0],"LaPerla",Color.Honeydew)
             };
 
             var flowerPackages = new List<FlowerPackage>()
@@ -63,35 +64,48 @@ namespace Task2Flowers
                 new AdditionalProduct(idAdditionalProducts.GetNextValue(), additionalProductsTypes[1], "Raffaello", Color.White, "Упаковка конфет весом 400 гр")
             };
 
-            var bundles = new List<Bundle>()
+            var flowerBundles = new List<FlowerBundle>()
             {
-                    new FlowerBundle(idBundles.GetNextValue(), 1, flowers[5], 120, 60),
-                    new FlowerBundle(idBundles.GetNextValue(), 1, flowers[1], 105, 90),
-                    new FlowerBundle(idBundles.GetNextValue(), 1, flowers[1], 225, 70),
-                    new FlowerBundle(idBundles.GetNextValue(), 1, flowers[0], 25, 60),
-                    new FlowerBundle(idBundles.GetNextValue(), 2, flowers[3], 170, 40),
-                    new FlowerBundle(idBundles.GetNextValue(), 2, flowers[4], 235, 65)
+                    new FlowerBundle(idFlowerBundles.GetNextValue(), flowers[5], 25, 60),
+                    new FlowerBundle(idFlowerBundles.GetNextValue(), flowers[1], 35, 90),
+                    new FlowerBundle(idFlowerBundles.GetNextValue(), flowers[1], 15, 70),
+                    new FlowerBundle(idFlowerBundles.GetNextValue(), flowers[0], 25, 60),
+                    new FlowerBundle(idFlowerBundles.GetNextValue(), flowers[3], 45, 40),
+                    new FlowerBundle(idFlowerBundles.GetNextValue(), flowers[4], 25, 65)
             };
 
-
+            var bundles = new List<Bundle>()
+            {
+                new Bundle(idBundles.GetNextValue(), 1,flowerBundles[0],7),
+                new Bundle(idBundles.GetNextValue(), 1,flowerBundles[1],4),
+                new Bundle(idBundles.GetNextValue(), 1,flowerBundles[2],12),
+                new Bundle(idBundles.GetNextValue(), 1,additionalProducts[0],50),
+                new Bundle(idBundles.GetNextValue(), 1,flowerPackages[0],5),
+                new Bundle(idBundles.GetNextValue(), 2,flowerPackages[1],10),
+                new Bundle(idBundles.GetNextValue(), 2,flowerBundles[3],9),
+                new Bundle(idBundles.GetNextValue(), 2,flowerBundles[4],5),
+                new Bundle(idBundles.GetNextValue(), 2,flowerBundles[5],10)
+            };
 
             var supplays = new List<Supplay>() {
-                new Supplay(idSupplays.GetNextValue(), bundles.Select(p =>p).Where(p=>p.IdOfSupplay == 1).ToList() ,  DateTime.Parse("2022-11-15")),
-                new Supplay(idSupplays.GetNextValue(), bundles.Select(p =>p).Where(p=>p.IdOfSupplay == 2).ToList(),  DateTime.Parse("2022-11-16"))
+                new Supplay(idSupplays.GetNextValue(), bundles.Where(p=>p.SupplayId == 1).ToList() ,  DateTime.Parse("2022-11-15")),
+                new Supplay(idSupplays.GetNextValue(), bundles.Where(p=>p.SupplayId == 2).ToList(),  DateTime.Parse("2022-11-16"))
 
             };
 
             var storageKindOfFlower = new Storage<KindOfFlower>(kindsOfFlower, idKindsOfFlower);
-            var storageFlowerPackegeType = new Storage<FlowerPackageType>(flowerPackegeTypes, idFlowerPackegeTypes);
-            var storageAdditionalProductsType = new Storage<AdditionalProductType>(additionalProductsTypes, idAdditionalProductsTypes);
+            var storageFlowerPackegeTypes = new Storage<FlowerPackageType>(flowerPackegeTypes, idFlowerPackegeTypes);
+            var storageAdditionalProductTypes = new Storage<AdditionalProductType>(additionalProductsTypes, idAdditionalProductsTypes);
             var storageFlower = new Storage<Flower>(flowers, idFlowers);
+            var storageFlowerBundles = new Storage<FlowerBundle>(flowerBundles, idFlowerBundles);
             var storageFlowerPackege = new Storage<FlowerPackage>(flowerPackages, idFlowerPackages);
             var storageAdditionalProduct = new Storage<AdditionalProduct>(additionalProducts, idAdditionalProducts);
             var storageBundle = new Storage<Bundle>(bundles, idBundles);
             var storageSupplay = new Storage<Supplay>(supplays, idSupplays);
 
 
-            var menu = new MenuItems(storageKindOfFlower, storageFlower, storageBundle, storageSupplay);
+            var menu = new MenuItems(storageKindOfFlower, storageFlowerPackegeTypes, storageFlower, 
+                storageAdditionalProductTypes, storageFlowerBundles, storageFlowerPackege, storageAdditionalProduct, storageBundle, storageSupplay);
 
             menu.MainMenu();
 

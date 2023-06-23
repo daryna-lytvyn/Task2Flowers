@@ -10,17 +10,17 @@ namespace Task2Flowers
     {
         public int Id { get; }
 
-        public int IdOfSupplay { get; }
+        public int SupplayId { get; }
 
         public Product Product { get; }
 
         public int Count { get; }
 
 
-        public Bundle(int id, int idOfSupplay, Product product, int count)
+        public Bundle(int id, int supplayId, Product product, int count)
         {
             this.Id = id;
-            this.IdOfSupplay = idOfSupplay;
+            this.SupplayId = supplayId;
             this.Product = product;
             this.Count = count;
 

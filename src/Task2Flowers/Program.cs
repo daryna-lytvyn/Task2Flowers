@@ -23,11 +23,11 @@ namespace Task2Flowers
             var idBundles = new IntIdGenerator();
             var idSupplays = new IntIdGenerator();
 
-            var kindsOfFlower = new List<KindOfFlower>()
+            var kindsOfFlower = new List<FlowerKind>()
             {
-                new KindOfFlower(idKindsOfFlower.GetNextValue(), "Роза"),
-                new KindOfFlower(idKindsOfFlower.GetNextValue(), "Гортензия"),
-                new KindOfFlower(idKindsOfFlower.GetNextValue(), "Ромашка")
+                new FlowerKind(idKindsOfFlower.GetNextValue(), "Роза"),
+                new FlowerKind(idKindsOfFlower.GetNextValue(), "Гортензия"),
+                new FlowerKind(idKindsOfFlower.GetNextValue(), "Ромашка")
             };
 
             var flowerPackegeTypes = new List<FlowerPackageType>()
@@ -93,7 +93,7 @@ namespace Task2Flowers
 
             };
 
-            var storageKindOfFlower = new Storage<KindOfFlower>(kindsOfFlower, idKindsOfFlower);
+            var storageKindOfFlower = new Storage<FlowerKind>(kindsOfFlower, idKindsOfFlower);
             var storageFlowerPackegeTypes = new Storage<FlowerPackageType>(flowerPackegeTypes, idFlowerPackegeTypes);
             var storageAdditionalProductTypes = new Storage<AdditionalProductType>(additionalProductsTypes, idAdditionalProductsTypes);
             var storageFlower = new Storage<Flower>(flowers, idFlowers);

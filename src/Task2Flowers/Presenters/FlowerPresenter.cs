@@ -4,15 +4,19 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Task2Flowers.Interfeses;
+using Task2Flowers.Services.DataTransferObdjects;
 
 namespace Task2Flowers
 {
-    public class FlowerPresenter
+    public class FlowerPresenter : IPresenter<Flower>
     {
-        public void Input(Storage<Flower> storageFlowers, Storage<KindOfFlower> storageKindsOfFlower)
+        IServiceFlower _flowerServise;
+        IServiceFlowerKind _flowerKindServise;
+
+        public Flower Input()
         {
-            var kindsOfFlowerPresenter = new KindsOfFlowerPresenter();
-            kindsOfFlowerPresenter.Print(storageKindsOfFlower);
+            this.PrintFlowerKinds();
 
             Console.WriteLine("Введите id вида цветка :  ");
 
@@ -23,45 +27,55 @@ namespace Task2Flowers
                 var textValue = Console.ReadLine();
                 kingOfFlowerIdParseResult = Int32.TryParse(textValue, out kingOfFlowerId);
 
-            } while (kingOfFlowerIdParseResult == false || 0 > kingOfFlowerId || kingOfFlowerId > storageKindsOfFlower.Elements.Count);
+            } while (kingOfFlowerIdParseResult == false 
+                        || 0 > kingOfFlowerId 
+                        || kingOfFlowerId > _flowerKindServise.GetAll().Count);
 
+            var choseFK = _flowerKindServise.Get(kingOfFlowerId);
 
             Console.WriteLine("Введите сорт цветка :  ");
-            var title = Console.ReadLine();
+            var variety = Console.ReadLine();
 
             Console.WriteLine("Введите цвет цветка :  ");
             var colorTextValue = Console.ReadLine();
 
-            Console.WriteLine("Введите описание цветка :  ");
-            var description = Console.ReadLine();
+            var aPDTO = new FlowerDTO
+            {
+                Kind = choseFK,
+                Variety = variety,
+                Color = Color.FromName(colorTextValue)
+            };
 
-            var newFlower = new Flower(storageFlowers.IdGenerator.GetNextValue(), storageKindsOfFlower.Elements[kingOfFlowerId - 1], title, Color.FromName(colorTextValue));
-
-            storageFlowers.Add(newFlower);
+            var newFlower = _flowerServise.Add(aPDTO);
+            return newFlower;
         }
 
-        public void Print(Storage<Flower> storageFlowers)
+        public void Print()
         {
             Console.WriteLine("Цветы: ");
 
-            foreach (var flower in storageFlowers.Elements)
+            foreach (var flower in _flowerServise.GetAll())
             {
                 Console.WriteLine($"\t\tId: {flower.Id}, {flower.Kind.Title}, {flower.Variety}, {flower.Color.Name}");
             }
         }
 
-        public void PrintSortByKind(Storage<Flower> storageFlowers)
+        public void PrintSortByKind()
         {
-            var sortFlowersByKind = storageFlowers.Elements.Select(f => f).OrderBy(f => f.Kind.Title);
-            foreach (var flower in sortFlowersByKind)
+            foreach (var flower in _flowerServise.GetSortByKind())
             {
                 Console.WriteLine($"\t\tId: {flower.Id}, {flower.Kind.Title}, {flower.Variety}, {flower.Color.Name}");
             }
         }
 
-        public void Print(Flower flower)
+        private void PrintFlowerKinds()
         {
-            Console.Write($"Id: {flower.Id}, {flower.Kind.Title}, {flower.Variety}, {flower.Color.Name}");
+            foreach (var kind in this._flowerKindServise.GetAll())
+            {
+                Console.WriteLine($"Id: {kind.Id}, {kind.Title}, ");
+            }
+
+            Console.WriteLine();
         }
     }
 }

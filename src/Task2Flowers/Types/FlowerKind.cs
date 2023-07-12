@@ -6,16 +6,17 @@ using System.Threading.Tasks;
 
 namespace Task2Flowers
 {
-    public class KindOfFlower
+    public class FlowerKind
     {
         public int Id { get; }
 
         public string Title { get; }
 
-        public KindOfFlower(int id, string title)
+        public FlowerKind(int id, string title)
         {
             this.Id = id;
             this.Title = title;
         }
     }
 }
+  

@@ -9,9 +9,9 @@ namespace Task2Flowers
 {
     public class MenuItems
     {
-        private readonly Storage<KindOfFlower> storageKindsOfFlower;
+        private readonly Storage<FlowerKind> storageKindsOfFlower;
 
-        private readonly KindsOfFlowerPresenter kindsOfFlowerPresenter;
+        private readonly FlowerKindPresenter kindsOfFlowerPresenter;
 
 
         private readonly Storage<FlowerPackageType> storageFlowerPackageTypes;
@@ -53,14 +53,14 @@ namespace Task2Flowers
 
         private readonly SupplayPresenter supplayPresenter;
 
-        public MenuItems(Storage<KindOfFlower> storageKindsOfFlower, Storage<FlowerPackageType> storageFlowerPackageTypes,
+        public MenuItems(Storage<FlowerKind> storageKindsOfFlower, Storage<FlowerPackageType> storageFlowerPackageTypes,
             Storage<Flower> storageFlowers, Storage<AdditionalProductType> storageAdditionalProductTypes, 
             Storage<FlowerBundle> storageFlowerBundles, Storage<FlowerPackage> storageFlowerPackage, 
             Storage<AdditionalProduct> storageAdditionalProduct, Storage<Bundle> storageBundles, 
             Storage<Supplay> storageSupplays)
         {
             this.storageKindsOfFlower = storageKindsOfFlower;
-            this.kindsOfFlowerPresenter = new KindsOfFlowerPresenter();
+            this.kindsOfFlowerPresenter = new FlowerKindPresenter();
 
             this.storageFlowerPackageTypes = storageFlowerPackageTypes;
             this.flowerPackageTypePresenter = new FlowerPackageTypePresenter();

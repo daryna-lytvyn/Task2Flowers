@@ -3,17 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Task2Flowers.Interfeses;
+using Task2Flowers.Services.DataTransferObdjects;
 
 namespace Task2Flowers
 {
-    public class FlowerBundlePresenter
+    public class FlowerBundlePresenter : IPresenter<FlowerBundle>
     {
-        public FlowerBundle Input(Storage<FlowerBundle> storageFlowerBundles, Storage<Flower> storageFlowers)
+        IServiceFlowerBundle _flowerBundleServise;
+        IServiceFlower _flowerServise;
+        public FlowerBundlePresenter(IServiceFlowerBundle flowerBundleServise, IServiceFlower flowerServise)
         {
-            var flowerPresenter = new FlowerPresenter();
-
+            _flowerBundleServise = flowerBundleServise ?? throw new ArgumentNullException(nameof(flowerBundleServise));
+            _flowerServise = flowerServise ?? throw new ArgumentNullException(nameof(flowerServise));
+        }
+        public FlowerBundle Input()
+        {
             Console.WriteLine("Введите id цветка :  ");
-            flowerPresenter.Print(storageFlowers);
+            this.PrintFlowers();
+
             int flowerId;
             bool flowerIdParseResult;
             do
@@ -21,7 +29,11 @@ namespace Task2Flowers
                 var textValue = Console.ReadLine();
                 flowerIdParseResult = Int32.TryParse(textValue, out flowerId);
 
-            } while (flowerIdParseResult == false || 0 > flowerId || flowerId > storageFlowers.Elements.Count);
+            } while (flowerIdParseResult == false
+                        || 0 > flowerId
+                        || flowerId > _flowerServise.GetAll().Count);
+
+            var chosenFlower = _flowerServise.Get(flowerId);
 
             Console.WriteLine("Введите количество в пачке :  ");
             int count;
@@ -43,21 +55,50 @@ namespace Task2Flowers
 
             } while (heightParseResult == false || 0 > height);
 
-            var newFlowerBundle = new FlowerBundle(storageFlowerBundles.IdGenerator.GetNextValue(), storageFlowers.Elements[flowerId - 1], count, height);
+            var fBDTO = new FlowerBundleDTO
+            {
+                Flower = chosenFlower,
+                CountOfFlower = count,
+                Height = height
+            };
 
-            storageFlowerBundles.Add(newFlowerBundle);
+
+            var newFlowerBundle = _flowerBundleServise.Add(fBDTO);
 
             return newFlowerBundle;
         }
 
+        public void Print()
+        {
+            foreach(FlowerBundle flowerBundle in _flowerBundleServise.GetAll())
+            {
+                Console.WriteLine($"Id: {flowerBundle.Id}, " +
+                    $"Цветок: ( Id: {flowerBundle.Flower.Id}, {flowerBundle.Flower.Kind.Title}, " +
+                    $"{flowerBundle.Flower.Variety}, {flowerBundle.Flower.Color.Name} ), " +
+                    $"Количество в пачке: {flowerBundle.CountOfFlower}, Высота: {flowerBundle.Height}");
+            }
+        }
+        
         public void Print(FlowerBundle flowerBundle)
         {
             Console.Write($"Id: {flowerBundle.Id}, Цветок: ( ");
-
-            var flowerPresenter = new FlowerPresenter();
-            flowerPresenter.Print(flowerBundle.Flower);
-
+            this.PrintFlower(flowerBundle.Flower);
             Console.Write($" ), Количество в пачке: {flowerBundle.CountOfFlower}, Высота: {flowerBundle.Height}");
+        }
+
+        private void PrintFlower(Flower flower)
+        {
+            Console.Write($"\t\tId: {flower.Id}, {flower.Kind.Title}, {flower.Variety}, {flower.Color.Name}");
+        }
+
+        private void PrintFlowers()
+        {
+            foreach (var flower in _flowerServise.GetSortByKind())
+            {
+                Console.WriteLine($"\t\tId: {flower.Id}, {flower.Kind.Title}, {flower.Variety}, {flower.Color.Name}");
+            }
+
+            Console.WriteLine();
         }
     }
 }

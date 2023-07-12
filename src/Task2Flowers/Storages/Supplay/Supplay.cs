@@ -10,28 +10,45 @@ namespace Task2Flowers
     {
         public int Id { get; }
 
-        public IList<Bundle> Bundles { get; set; }
+        Storage<Bundle> _bundles;
 
-        public DateTime? FinishDate { get; set; }
+        DateTime? _finishDate;
 
         public Supplay(int id)
         {
             this.Id = id;
         }
 
-        public Supplay(int id, IList<Bundle> bundles, DateTime date)
+        public Supplay(int id, Storage<Bundle> bundles, DateTime date)
         {
             this.Id = id;
-            this.Bundles = bundles;
-            this.FinishDate = date;
-
+            _bundles = bundles;
+            _finishDate = date;
         }
 
-        public bool AddBundles(IList<Bundle> bundles)
+        public bool Add(Storage<Bundle> bundles)
         {
-            if (this.Bundles == null)
+            if (_bundles == null)
             {
-                this.Bundles = bundles;
+                _bundles = bundles;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        
+        public Storage<Bundle> GetBundles()
+        {
+            return _bundles;
+        }
+
+        public bool Add(DateTime date)
+        {
+            if (_finishDate == null)
+            {
+                _finishDate = date;
                 return true;
             }
             else
@@ -40,17 +57,10 @@ namespace Task2Flowers
             }
         }
 
-        public bool AddFinishDate(DateTime date)
+        public DateTime? GetFinishDate()
         {
-            if (this.FinishDate == FinishDate)
-            {
-                this.FinishDate = date;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return _finishDate;
         }
+
     }
 }

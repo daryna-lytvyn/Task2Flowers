@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Task2Flowers
 {
 
-    public class Storage<T>
+    public class Storage<T>: IStorage<T>
     {
         private readonly List<T> _elements = new List<T>();
         public IReadOnlyList<T> Elements => _elements.AsReadOnly(); 
@@ -23,17 +23,20 @@ namespace Task2Flowers
         }
         public Storage(List<T> elements, IntIdGenerator idGenerator)
         {
-            this._elements = elements;
+            _elements = elements;
             this.IdGenerator = idGenerator;
         }
 
 
         public void Add(T element)
         {
-            this._elements.Add(element);
+            _elements.Add(element);
         }
 
-
+        public T Get(int id)
+        {
+            return  _elements.ElementAt(id);
+        }
 
 
         /* public void AddPackageToSupplayById (FlowerPakege package, int id)

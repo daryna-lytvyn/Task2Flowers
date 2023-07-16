@@ -8,7 +8,11 @@ namespace Task2Flowers
 {
     public interface IStorage <T>
     {
-        public void Add(T element);
-        public T Get(int id);
+
+        IReadOnlyCollection<T> Elements { get; }
+        void Add(T element);
+        IReadOnlyCollection<T> GetAll();
+        T Get(int id);
+        IntIdGenerator IdGenerator();
     }
 }

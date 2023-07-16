@@ -21,7 +21,11 @@ namespace Task2Flowers
         }
         public int GetNextValue()
         {
-            return value++;
+            return this.value++;
+        }
+        public int GetCurrentValue()
+        {
+            return this.value;
         }
     }
 }

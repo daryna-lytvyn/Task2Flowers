@@ -11,9 +11,9 @@ namespace Task2Flowers
 {
     public class FlowerKindPresenter
     {
-        IServiceFlowerKind _flowerKindServise; 
+        IFlowerKindService _flowerKindServise; 
 
-        public FlowerKindPresenter(IServiceFlowerKind flowerKindServise)
+        public FlowerKindPresenter(IFlowerKindService flowerKindServise)
         {
             this._flowerKindServise = flowerKindServise ?? throw new ArgumentNullException(nameof(flowerKindServise));
         }

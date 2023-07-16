@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Task2Flowers.DataTransferObdjects;
+using Task2Flowers.Entities;
 
 namespace Task2Flowers.Interfeses.Services
 {
-    public interface IService<T>
+    public interface IMyColorService: IService<MyColor>
     {
-        void Add(T element);
-        T Get(int id);
-        IReadOnlyCollection<T> GetAll();
-        int GetCurrentIdGeneratorValue();
+        void Add(MyColorDTO aPDTO);
     }
 }

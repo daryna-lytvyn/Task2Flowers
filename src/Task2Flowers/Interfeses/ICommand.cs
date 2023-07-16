@@ -8,6 +8,6 @@ namespace Task2Flowers.Menus.Command
 {
     interface ICommand
     {
-        public void Execute();
+        void Execute();
     }
 }

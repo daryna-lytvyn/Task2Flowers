@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Task2Flowers.Interfeses
 {
-    interface IPresenter<T>
+    public interface IPresenter<T>
     {
-        public T Input();
-        public void Print();
+        void Input();
+        void Print();
     }
 }

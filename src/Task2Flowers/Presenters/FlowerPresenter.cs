@@ -5,49 +5,48 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Task2Flowers.Interfeses;
+using Task2Flowers.Interfeses.Services;
+using Task2Flowers.Presenters;
 using Task2Flowers.Services.DataTransferObdjects;
 
 namespace Task2Flowers
 {
     public class FlowerPresenter : IPresenter<Flower>
     {
-        IServiceFlower _flowerServise;
-        IServiceFlowerKind _flowerKindServise;
+        IFlowerService _flowerServise;
+        IFlowerKindService _flowerKindServise;
+        IMyColorService _myColorService;
 
-        public Flower Input()
+        public FlowerPresenter(IFlowerService flowerServise, IFlowerKindService flowerKindServise, IMyColorService myColorService)
         {
-            this.PrintFlowerKinds();
+            _flowerServise = flowerServise ?? throw new ArgumentNullException(nameof(flowerServise));
+            _flowerKindServise = flowerKindServise ?? throw new ArgumentNullException(nameof(flowerKindServise));
+            _myColorService = myColorService ?? throw new ArgumentNullException(nameof(myColorService));
+        }
 
+        public void Input()
+        {
             Console.WriteLine("Введите id вида цветка :  ");
-
-            int kingOfFlowerId;
-            bool kingOfFlowerIdParseResult;
-            do
-            {
-                var textValue = Console.ReadLine();
-                kingOfFlowerIdParseResult = Int32.TryParse(textValue, out kingOfFlowerId);
-
-            } while (kingOfFlowerIdParseResult == false 
-                        || 0 > kingOfFlowerId 
-                        || kingOfFlowerId > _flowerKindServise.GetAll().Count);
-
-            var choseFK = _flowerKindServise.Get(kingOfFlowerId);
+            this.PrintFlowerKinds();
+            var kingOfFlowerId = IntPresenter.InputId(_flowerKindServise.GetCurrentIdGeneratorValue());
+            var choseFlowerKind = _flowerKindServise.Get(kingOfFlowerId);
 
             Console.WriteLine("Введите сорт цветка :  ");
             var variety = Console.ReadLine();
 
-            Console.WriteLine("Введите цвет цветка :  ");
-            var colorTextValue = Console.ReadLine();
+            Console.WriteLine("Введите id цвета :  ");
+            this.PrintColors();
+            var colorId = IntPresenter.InputId(_myColorService.GetCurrentIdGeneratorValue());
+            var choseColor = _myColorService.Get(colorId);
 
             var aPDTO = new FlowerDTO
             {
-                Kind = choseFK,
+                Kind = choseFlowerKind,
                 Variety = variety,
-                Color = Color.FromName(colorTextValue)
+                Color = choseColor
             };
 
-            var newFlower = _flowerServise.Add(aPDTO);
-            return newFlower;
+            _flowerServise.Add(aPDTO);
         }
 
         public void Print()
@@ -56,7 +55,8 @@ namespace Task2Flowers
 
             foreach (var flower in _flowerServise.GetAll())
             {
-                Console.WriteLine($"\t\tId: {flower.Id}, {flower.Kind.Title}, {flower.Variety}, {flower.Color.Name}");
+                Console.WriteLine($"\t\tId: {flower.Id}, {flower.Kind.Title}, " +
+                    $"{flower.Variety}, {flower.Color.Title}");
             }
         }
 
@@ -64,7 +64,8 @@ namespace Task2Flowers
         {
             foreach (var flower in _flowerServise.GetSortByKind())
             {
-                Console.WriteLine($"\t\tId: {flower.Id}, {flower.Kind.Title}, {flower.Variety}, {flower.Color.Name}");
+                Console.WriteLine($"\t\tId: {flower.Id}, {flower.Kind.Title}, " +
+                    $"{flower.Variety}, {flower.Color.Title}");
             }
         }
 
@@ -73,6 +74,17 @@ namespace Task2Flowers
             foreach (var kind in this._flowerKindServise.GetAll())
             {
                 Console.WriteLine($"Id: {kind.Id}, {kind.Title}, ");
+            }
+
+            Console.WriteLine();
+        }
+
+        private void PrintColors()
+        {
+            foreach (var color in this._myColorService.GetAll())
+            {
+                Console.WriteLine($"Id: {color.Id}, {color.Title}, " +
+                    $"({color.R},{color.G},{color.B}), ");
             }
 
             Console.WriteLine();

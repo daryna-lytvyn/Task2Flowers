@@ -10,21 +10,20 @@ namespace Task2Flowers
 {
     public class FlowerPackageTypePresenter : IPresenter<FlowerPackageType>
     {
-        IServiceFlowerPackageType _flowerPackageTypeServise;
-        public FlowerPackageTypePresenter(IServiceFlowerPackageType flowerPackageTypeServise)
+        IFlowerPackageTypeService _flowerPackageTypeServise;
+        public FlowerPackageTypePresenter(IFlowerPackageTypeService flowerPackageTypeServise)
         {
             _flowerPackageTypeServise = flowerPackageTypeServise ?? throw new ArgumentNullException(nameof(flowerPackageTypeServise));
         }
 
-        public FlowerPackageType Input()
+        public void Input()
         {
             Console.WriteLine("Введите название вида упаковки :  ");
             var title = Console.ReadLine();
 
             var fPTDTO = new FlowerPackageTypeDTO { Title = title };
 
-            var newFPT = _flowerPackageTypeServise.Add(fPTDTO);
-            return newFPT;
+            _flowerPackageTypeServise.Add(fPTDTO);
         }
 
         public void Print()

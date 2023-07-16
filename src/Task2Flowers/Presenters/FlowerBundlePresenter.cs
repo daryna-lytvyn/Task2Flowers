@@ -4,56 +4,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Task2Flowers.Interfeses;
+using Task2Flowers.Presenters;
 using Task2Flowers.Services.DataTransferObdjects;
 
 namespace Task2Flowers
 {
     public class FlowerBundlePresenter : IPresenter<FlowerBundle>
     {
-        IServiceFlowerBundle _flowerBundleServise;
-        IServiceFlower _flowerServise;
-        public FlowerBundlePresenter(IServiceFlowerBundle flowerBundleServise, IServiceFlower flowerServise)
+        IFlowerBundleService _flowerBundleServise;
+        IFlowerService _flowerServise;
+        public FlowerBundlePresenter(IFlowerBundleService flowerBundleServise, IFlowerService flowerServise)
         {
             _flowerBundleServise = flowerBundleServise ?? throw new ArgumentNullException(nameof(flowerBundleServise));
             _flowerServise = flowerServise ?? throw new ArgumentNullException(nameof(flowerServise));
         }
-        public FlowerBundle Input()
+        public void Input()
         {
             Console.WriteLine("Введите id цветка :  ");
             this.PrintFlowers();
-
-            int flowerId;
-            bool flowerIdParseResult;
-            do
-            {
-                var textValue = Console.ReadLine();
-                flowerIdParseResult = Int32.TryParse(textValue, out flowerId);
-
-            } while (flowerIdParseResult == false
-                        || 0 > flowerId
-                        || flowerId > _flowerServise.GetAll().Count);
-
+            var flowerId = IntPresenter.InputId(_flowerServise.GetCurrentIdGeneratorValue());
             var chosenFlower = _flowerServise.Get(flowerId);
 
             Console.WriteLine("Введите количество в пачке :  ");
-            int count;
-            bool countParseResult;
-            do
-            {
-                var textValue = Console.ReadLine();
-                countParseResult = Int32.TryParse(textValue, out count);
+            var count = IntPresenter.Input(0,100);
 
-            } while (countParseResult == false || 0 > count);
-
-            Console.WriteLine("Введите высоту в пачке :  ");
-            int height;
-            bool heightParseResult;
-            do
-            {
-                var textValue = Console.ReadLine();
-                heightParseResult = Int32.TryParse(textValue, out height);
-
-            } while (heightParseResult == false || 0 > height);
+            Console.WriteLine("Введите высоту в пачке (см) :  ");
+            var height = IntPresenter.Input(0, 200);
 
             var fBDTO = new FlowerBundleDTO
             {
@@ -62,10 +38,7 @@ namespace Task2Flowers
                 Height = height
             };
 
-
-            var newFlowerBundle = _flowerBundleServise.Add(fBDTO);
-
-            return newFlowerBundle;
+            _flowerBundleServise.Add(fBDTO);
         }
 
         public void Print()
@@ -74,7 +47,7 @@ namespace Task2Flowers
             {
                 Console.WriteLine($"Id: {flowerBundle.Id}, " +
                     $"Цветок: ( Id: {flowerBundle.Flower.Id}, {flowerBundle.Flower.Kind.Title}, " +
-                    $"{flowerBundle.Flower.Variety}, {flowerBundle.Flower.Color.Name} ), " +
+                    $"{flowerBundle.Flower.Variety}, {flowerBundle.Flower.Color.Title} ), " +
                     $"Количество в пачке: {flowerBundle.CountOfFlower}, Высота: {flowerBundle.Height}");
             }
         }
@@ -88,14 +61,14 @@ namespace Task2Flowers
 
         private void PrintFlower(Flower flower)
         {
-            Console.Write($"\t\tId: {flower.Id}, {flower.Kind.Title}, {flower.Variety}, {flower.Color.Name}");
+            Console.Write($"\t\tId: {flower.Id}, {flower.Kind.Title}, {flower.Variety}, {flower.Color.Title}");
         }
 
         private void PrintFlowers()
         {
             foreach (var flower in _flowerServise.GetSortByKind())
             {
-                Console.WriteLine($"\t\tId: {flower.Id}, {flower.Kind.Title}, {flower.Variety}, {flower.Color.Name}");
+                Console.WriteLine($"\t\tId: {flower.Id}, {flower.Kind.Title}, {flower.Variety}, {flower.Color.Title}");
             }
 
             Console.WriteLine();

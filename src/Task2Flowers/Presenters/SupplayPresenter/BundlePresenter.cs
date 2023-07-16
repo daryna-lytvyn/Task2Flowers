@@ -11,24 +11,22 @@ namespace Task2Flowers
 {
     public class BundlePresenter : IPresenter<Bundle>
     {
-        IServiceBundle _bundleService;
+        IBundleService _bundleService;
 
-        IServiceFlowerBundle _flowerBundleServise;
-        IServiceAdditionalProduct _additionalProductServise;
-        IServiceFlowerPackage _flowerPackageServise;
-        int _supplayID;
+        IFlowerBundleService _flowerBundleServise;
+        IAdditionalProductService _additionalProductServise;
+        IFlowerPackageService _flowerPackageServise;
 
-        public BundlePresenter(IServiceBundle bundleService, IServiceFlowerBundle flowerBundleServise,
-            IServiceAdditionalProduct additionalProductServise, IServiceFlowerPackage flowerPackageServise, int supplayID)
+        public BundlePresenter(IBundleService bundleService, IFlowerBundleService flowerBundleServise,
+            IAdditionalProductService additionalProductServise, IFlowerPackageService flowerPackageServise)
         {
             _bundleService = bundleService ?? throw new ArgumentNullException(nameof(bundleService));
             _flowerBundleServise = flowerBundleServise ?? throw new ArgumentNullException(nameof(flowerBundleServise));
             _additionalProductServise = additionalProductServise ?? throw new ArgumentNullException(nameof(additionalProductServise));
             _flowerPackageServise = flowerPackageServise ?? throw new ArgumentNullException(nameof(flowerPackageServise));
-            _supplayID = supplayID;
         }
 
-        public Bundle Input()
+        public void Input()
         {
             Console.WriteLine("Что вы хотите добавить ?\n\t\t - Цветы(нажмите 1)." +
                     "\n\t\t - Упаковку (нажмите 2).\n\t\t - Дополнительний товар (нажмите 3).");
@@ -63,12 +61,9 @@ namespace Task2Flowers
             var bDTO = new BundleDTO {
                 Product = chosenProduct,
                 Count = count,
-                SupplayId = _supplayID
             };
 
-            var newB = _bundleService.Add(bDTO);
-
-            return newB;
+            _bundleService.Add(bDTO);
         }
 
         public void Print()
@@ -92,15 +87,6 @@ namespace Task2Flowers
                         throw new NotSupportedException("Unsupported product type");
                 }
 
-                /*productType switch
-                {
-                    FlowerBundle fB =>  this.PrintFlowerBundle(fB),
-
-                    FlowerPackage fP=> this.PrintFlowerPackege(fP),
-
-                    AdditionalProduct aP => this.PrintAdditionalProduct(aP)
-                };*/
-
                 Console.Write($", Общее количество: {bundle.Count}\n");
             }
             Console.WriteLine();
@@ -110,7 +96,7 @@ namespace Task2Flowers
         {
             Console.WriteLine($"Id: {flowerBundle.Id}, " +
                    $"Цветок: ( Id: {flowerBundle.Flower.Id}, {flowerBundle.Flower.Kind.Title}, " +
-                   $"{flowerBundle.Flower.Variety}, {flowerBundle.Flower.Color.Name} ), " +
+                   $"{flowerBundle.Flower.Variety}, {flowerBundle.Flower.Color.Title} ), " +
                    $"Количество в пачке: {flowerBundle.CountOfFlower}, Высота: {flowerBundle.Height}");
         }
 
@@ -118,13 +104,13 @@ namespace Task2Flowers
         {
             Console.WriteLine($"\t\tId: {flowerPackage.Id}, {flowerPackage.Type}, " +
                    $"{flowerPackage.Height} на {flowerPackage.Width}, " +
-                   $"{flowerPackage.Color.Name}, {flowerPackage.Desctiption}");
+                   $"{flowerPackage.Color.Title}, {flowerPackage.Desctiption}");
         }
 
         private void PrintAdditionalProduct(AdditionalProduct additionalProduct)
         {
             Console.WriteLine($"\t\tId: {additionalProduct.Id}, {additionalProduct.Type}, " +
-                    $"{additionalProduct.Title}, {additionalProduct.Color.Name}," +
+                    $"{additionalProduct.Title}, {additionalProduct.Color.Title}," +
                     $"{additionalProduct.Desctiption}");
         }
 
@@ -134,7 +120,7 @@ namespace Task2Flowers
             {
                 Console.WriteLine($"Id: {flowerBundle.Id}, " +
                     $"Цветок: ( Id: {flowerBundle.Flower.Id}, {flowerBundle.Flower.Kind.Title}, " +
-                    $"{flowerBundle.Flower.Variety}, {flowerBundle.Flower.Color.Name} ), " +
+                    $"{flowerBundle.Flower.Variety}, {flowerBundle.Flower.Color.Title} ), " +
                     $"Количество в пачке: {flowerBundle.CountOfFlower}, Высота: {flowerBundle.Height}");
             }
         }
@@ -163,7 +149,7 @@ namespace Task2Flowers
             {
                 Console.WriteLine($"\t\tId: {flowerPackage.Id}, {flowerPackage.Type}, " +
                     $"{flowerPackage.Height} на {flowerPackage.Width}, " +
-                    $"{flowerPackage.Color.Name}, {flowerPackage.Desctiption}");
+                    $"{flowerPackage.Color.Title}, {flowerPackage.Desctiption}");
             }
         }
 
@@ -191,7 +177,7 @@ namespace Task2Flowers
             foreach (var additionalProduct in this._additionalProductServise.GetAll())
             {
                 Console.WriteLine($"\t\tId: {additionalProduct.Id}, {additionalProduct.Type}, " +
-                    $"{additionalProduct.Title}, {additionalProduct.Color.Name}," +
+                    $"{additionalProduct.Title}, {additionalProduct.Color.Title}," +
                     $"{additionalProduct.Desctiption}");
             }
         }

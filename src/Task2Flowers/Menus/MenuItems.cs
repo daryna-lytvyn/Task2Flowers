@@ -92,6 +92,15 @@ namespace Task2Flowers
 
         public void MainMenu()
         {
+            var options = new Dictionary<string, Command>();
+
+            int i = 1;
+            foreach(var keyValue in options)
+            {
+                Console.WriteLine($"{i++}. {keyValue.CommandName}");
+            }
+
+
             var marker = true;
             do
             {
@@ -114,6 +123,15 @@ namespace Task2Flowers
                     parseResult = Int32.TryParse(textValue, out value);
 
                 } while (parseResult == false);
+
+                if (options.TryGetValue(value, out var command))
+                {
+                    command.Execute();
+                }
+                else
+                {
+                         
+                }
 
                 switch (value)
                 {

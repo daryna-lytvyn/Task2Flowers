@@ -5,66 +5,48 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Task2Flowers.Interfeses;
+using Task2Flowers.Interfeses.Services;
+using Task2Flowers.Presenters;
 using Task2Flowers.Services.DataTransferObdjects;
 
 namespace Task2Flowers
 {
     public class FlowerPackagePresenter : IPresenter<FlowerPackage>
     {
-        IServiceFlowerPackage _flowerPackageServise;
-        IServiceFlowerPackageType _flowerPackageTypeServise;
+        IFlowerPackageService _flowerPackageServise;
+        IFlowerPackageTypeService _flowerPackageTypeServise;
+        IMyColorService _myColorService;
 
-
-        public FlowerPackagePresenter(IServiceFlowerPackage flowerPackageServise, IServiceFlowerPackageType flowerPackageTypeServise)
+        public FlowerPackagePresenter(IFlowerPackageService flowerPackageServise, IFlowerPackageTypeService flowerPackageTypeServise, 
+                                        IMyColorService myColorService)
         {
             _flowerPackageServise = flowerPackageServise ?? throw new ArgumentNullException(nameof(flowerPackageServise));
             _flowerPackageTypeServise = flowerPackageTypeServise ?? throw new ArgumentNullException(nameof(flowerPackageTypeServise));
+            _myColorService = myColorService ?? throw new ArgumentNullException(nameof(myColorService));
         }
 
-        public FlowerPackage Input()
+        public void Input()
         {
             Console.WriteLine("Введите id вида упаковки :  ");
             
-            this.PrintFPT();
+            this.PrintFlowerPackageTypes();
 
-            int flowerPackageTypeId;
-            bool flowerPackageTypeIdParseResult;
-            do
-            {
-                var textValue = Console.ReadLine();
-                flowerPackageTypeIdParseResult = Int32.TryParse(textValue, out flowerPackageTypeId);
-
-            } while (flowerPackageTypeIdParseResult == false 
-                        || 0 > flowerPackageTypeId 
-                        || flowerPackageTypeId > _flowerPackageTypeServise.GetAll().Count);
-
+            var flowerPackageTypeId = IntPresenter.InputId(_flowerPackageTypeServise.GetCurrentIdGeneratorValue());
             var chosenFPT = _flowerPackageTypeServise.Get(flowerPackageTypeId);
             
             Console.WriteLine("Введите название упаковки :  ");
             var title = Console.ReadLine();
 
             Console.WriteLine("Введите высоту :  ");
-            int height;
-            bool heightParseResult;
-            do
-            {
-                var textValue = Console.ReadLine();
-                heightParseResult = Int32.TryParse(textValue, out height);
-
-            } while (heightParseResult == false || 0 > height);
+            var height = IntPresenter.Input(0, 500);
 
             Console.WriteLine("Введите длинну/диаметр/ширину :  ");
-            int width;
-            bool widthParseResult;
-            do
-            {
-                var textValue = Console.ReadLine();
-                widthParseResult = Int32.TryParse(textValue, out width);
+            var width = IntPresenter.Input(0, 500);
 
-            } while (widthParseResult == false || 0 > width);
-
-            Console.WriteLine("Введите цвет упаковки :  ");
-            var colorTextValue = Console.ReadLine();
+            Console.WriteLine("Введите id цвета :  ");
+            this.PrintColors();
+            var colorId = IntPresenter.InputId(_myColorService.GetCurrentIdGeneratorValue());
+            var choseColor = _myColorService.Get(colorId);
 
             Console.WriteLine("Введите описание упаковки :  ");
             var description = Console.ReadLine();
@@ -74,13 +56,11 @@ namespace Task2Flowers
                 Type = chosenFPT,
                 Height = height,
                 Width = width,
-                Color = Color.FromName(colorTextValue),
+                Color = choseColor,
                 Desctiption = description
             };
 
-            var newFP = _flowerPackageServise.Add(fPDTO);
-
-            return newFP;
+            _flowerPackageServise.Add(fPDTO);
         }
 
         public void Print()
@@ -89,7 +69,9 @@ namespace Task2Flowers
 
             foreach (var flowerPackage in _flowerPackageServise.GetAll())
             {
-                Console.WriteLine($"\t\tId: {flowerPackage.Id}, {flowerPackage.Type}, {flowerPackage.Height} на {flowerPackage.Width}, {flowerPackage.Color.Name}, {flowerPackage.Desctiption}");
+                Console.WriteLine($"\t\tId: {flowerPackage.Id}, {flowerPackage.Type}, " +
+                    $"{flowerPackage.Height} на {flowerPackage.Width}, " +
+                    $"{flowerPackage.Color.Title}, {flowerPackage.Desctiption}");
             }
         }
 
@@ -98,15 +80,27 @@ namespace Task2Flowers
             
             foreach (var flowerPackage in _flowerPackageServise.GetSortByType())
             {
-                Console.WriteLine($"\t\tId: {flowerPackage.Id}, {flowerPackage.Type.Title},  {flowerPackage.Height} на {flowerPackage.Width}, {flowerPackage.Color.Name}, {flowerPackage.Desctiption}");
+                Console.WriteLine($"\t\tId: {flowerPackage.Id}, {flowerPackage.Type.Title},  " +
+                    $"{flowerPackage.Height} на {flowerPackage.Width}, " +
+                    $"{flowerPackage.Color.Title}, {flowerPackage.Desctiption}");
             }
         }
 
-        private void PrintFPT()
+        private void PrintFlowerPackageTypes()
         {
             foreach (var flowerPackageType in _flowerPackageTypeServise.GetAll())
             {
                 Console.WriteLine($"Id: {flowerPackageType.Id}, {flowerPackageType.Title}, ");
+            }
+
+            Console.WriteLine();
+        }
+
+        private void PrintColors()
+        {
+            foreach (var color in this._myColorService.GetAll())
+            {
+                Console.WriteLine($"Id: {color.Id}, {color.Title},({color.R},{color.G},{color.B}), ");
             }
 
             Console.WriteLine();

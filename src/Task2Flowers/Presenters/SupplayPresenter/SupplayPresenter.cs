@@ -12,43 +12,41 @@ namespace Task2Flowers
 {
     public class SupplayPresenter : IPresenter<Supplay>
     {
-        IServiceSupplay _supplayService;
+        ISupplayService _supplayService;
 
-        IServiceFlowerBundle _flowerBundleServise;
-        IServiceAdditionalProduct _additionalProductServise;
-        IServiceFlowerPackage _flowerPackageServise;
+        Storage<Bundle> _bundleStorage;
+        IPresenter<Bundle> _bundlePresenter;
 
-        public Supplay Input()
+        public SupplayPresenter(ISupplayService supplayService, IFlowerBundleService flowerBundleServise,
+                                    IAdditionalProductService additionalProductServise, IFlowerPackageService flowerPackageServise)
         {
-            var newSupplay = _supplayService.AddEmpty();
-            
-            var newSupplayId = newSupplay.Id;
+            _supplayService = supplayService ?? throw new ArgumentNullException(nameof(flowerBundleServise));
 
-            var bundleStorage = new Storage<Bundle>();
-            var bundleService = new ServiceBundle(bundleStorage);
-            var bundlePresenter = new BundlePresenter(bundleService, _flowerBundleServise, _additionalProductServise, _flowerPackageServise, newSupplayId);
+            _bundleStorage = new Storage<Bundle>();
+            var bundleService = new BundleService(_bundleStorage);
+            _bundlePresenter = new BundlePresenter(bundleService, flowerBundleServise, additionalProductServise, flowerPackageServise);
 
+        }
+        public void Input()
+        {
             var marker = true;
 
             do
             {
-                bundlePresenter.Input();
+                _bundlePresenter.Input();
                 marker = this.MarkerQuestion();
 
             } while (marker);
 
             var newSDTO = new SupplayDTO
             {
-                Bundles = bundleStorage,
+                Bundles = _bundleStorage,
                 FinishDate = DateTime.Now
 
             };
-            var newS = _supplayService.AddWithoutId(newSupplayId, newSDTO);
 
-            return newS;
+            _supplayService.Add(newSDTO);
         }
-
-        
 
         public void Print()
         {
@@ -56,7 +54,7 @@ namespace Task2Flowers
 
             foreach (var supplay in _supplayService.GetAll())
             {
-                Console.WriteLine($"\t\tId: {supplay.Id}, дата: {supplay.GetFinishDate()}, свертки:");
+                Console.WriteLine($"\t\tId: {supplay.Id}, дата: {supplay.FinishDate}, свертки:");
 
                 foreach (var bundle in supplay.GetBundles().Elements)
                 {
@@ -76,15 +74,6 @@ namespace Task2Flowers
                         default:
                             throw new NotSupportedException("Unsupported product type");
                     }
-
-                    /*productType switch
-                    {
-                        FlowerBundle fB =>  this.PrintFlowerBundle(fB),
-
-                        FlowerPackage fP=> this.PrintFlowerPackege(fP),
-
-                        AdditionalProduct aP => this.PrintAdditionalProduct(aP)
-                    };*/
 
                     Console.Write($", Общее количество: {bundle.Count}\n");
                 }
@@ -119,7 +108,7 @@ namespace Task2Flowers
         {
             Console.WriteLine($"Id: {flowerBundle.Id}, " +
                    $"Цветок: ( Id: {flowerBundle.Flower.Id}, {flowerBundle.Flower.Kind.Title}, " +
-                   $"{flowerBundle.Flower.Variety}, {flowerBundle.Flower.Color.Name} ), " +
+                   $"{flowerBundle.Flower.Variety}, {flowerBundle.Flower.Color.Title} ), " +
                    $"Количество в пачке: {flowerBundle.CountOfFlower}, Высота: {flowerBundle.Height}");
         }
 
@@ -127,25 +116,14 @@ namespace Task2Flowers
         {
             Console.WriteLine($"\t\tId: {flowerPackage.Id}, {flowerPackage.Type}, " +
                    $"{flowerPackage.Height} на {flowerPackage.Width}, " +
-                   $"{flowerPackage.Color.Name}, {flowerPackage.Desctiption}");
+                   $"{flowerPackage.Color.Title}, {flowerPackage.Desctiption}");
         }
 
         private void PrintAdditionalProduct(AdditionalProduct additionalProduct)
         {
             Console.WriteLine($"\t\tId: {additionalProduct.Id}, {additionalProduct.Type}, " +
-                    $"{additionalProduct.Title}, {additionalProduct.Color.Name}," +
+                    $"{additionalProduct.Title}, {additionalProduct.Color.Title}," +
                     $"{additionalProduct.Desctiption}");
-        }
-
-        private void PrintFlowerBundles()
-        {
-            foreach (FlowerBundle flowerBundle in _flowerBundleServise.GetAll())
-            {
-                Console.WriteLine($"Id: {flowerBundle.Id}, " +
-                    $"Цветок: ( Id: {flowerBundle.Flower.Id}, {flowerBundle.Flower.Kind.Title}, " +
-                    $"{flowerBundle.Flower.Variety}, {flowerBundle.Flower.Color.Name} ), " +
-                    $"Количество в пачке: {flowerBundle.CountOfFlower}, Высота: {flowerBundle.Height}");
-            }
         }
     }
 }

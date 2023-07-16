@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,14 +10,14 @@ namespace Task2Flowers.Services
 {
     public abstract class Service<T>: IService<T>
     {
-        protected readonly Storage<T> _storage;
+        protected readonly IStorage<T> _storage;
 
-        public Service(Storage<T> storage)
+        public Service(IStorage<T> storage)
         {
             _storage = storage ?? throw new ArgumentNullException(nameof(storage));
         }
 
-        public  void Add(T element)
+        public virtual void Add(T element)
         {
             if (element is null)
             {
@@ -25,18 +26,33 @@ namespace Task2Flowers.Services
             _storage.Add(element);
         }
 
-        public T Get(int id)
+        public virtual T Get(int id)
         {
-            if (id <= _storage.Elements.Count || id < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(id));
-            }
-            return _storage.Elements[id];
+            return _storage.Get(id);
         }
 
-        public IReadOnlyList<T> GetAll()
+        public virtual IReadOnlyCollection<T> GetAll()
         {
-            return _storage.Elements;
+            return _storage.GetAll();
+        }
+        public virtual int GetCurrentIdGeneratorValue()
+        {
+            return _storage.IdGenerator().GetCurrentValue();
+        }
+
+        protected virtual void Validation<DTO>(DTO obj)
+        {
+            if (obj is null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
+
+            var validationResults = new List<ValidationResult>();
+            if (!Validator.TryValidateObject(obj, new ValidationContext(obj), validationResults))
+            {
+                var errorMessages = String.Join(", ", validationResults.Select(vr => vr.ErrorMessage));
+                throw new ValidationException(errorMessages);
+            }
         }
     }
 }

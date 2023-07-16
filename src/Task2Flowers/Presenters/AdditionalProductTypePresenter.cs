@@ -11,21 +11,20 @@ namespace Task2Flowers
 {
     public class AdditionalProductTypePresenter: IPresenter<AdditionalProductType>
     {
-        IServiceAdditionalProductType _additionalProductTypeServise;
+        IAdditionalProductTypeService _additionalProductTypeServise;
 
-        public AdditionalProductTypePresenter(IServiceAdditionalProductType additionalProductTypeServise)
+        public AdditionalProductTypePresenter(IAdditionalProductTypeService additionalProductTypeServise)
         {
             _additionalProductTypeServise = additionalProductTypeServise ?? throw new ArgumentNullException(nameof(additionalProductTypeServise));
         }
 
-        public AdditionalProductType Input()
+        public void Input()
         {
             Console.WriteLine("Введите название вида дополнительного товара :  ");
             var title = Console.ReadLine();
             var aPTDTO = new AdditionalProductTypeDTO { Title = title };
 
-            var newAPT =_additionalProductTypeServise.Add(aPTDTO);
-            return newAPT;
+            _additionalProductTypeServise.Add(aPTDTO);
         }
 
         public void Print()

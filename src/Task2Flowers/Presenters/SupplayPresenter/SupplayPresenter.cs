@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Task2Flowers.Generators;
 using Task2Flowers.Interfeses;
+using Task2Flowers.Presenters;
 using Task2Flowers.Services;
 using Task2Flowers.Services.DataTransferObdjects;
 
@@ -27,6 +28,7 @@ namespace Task2Flowers
             _bundlePresenter = new BundlePresenter(bundleService, flowerBundleServise, additionalProductServise, flowerPackageServise);
 
         }
+
         public void Input()
         {
             var marker = true;
@@ -42,7 +44,6 @@ namespace Task2Flowers
             {
                 Bundles = _bundleStorage,
                 FinishDate = DateTime.Now
-
             };
 
             _supplayService.Add(newSDTO);
@@ -84,15 +85,7 @@ namespace Task2Flowers
         {
             Console.WriteLine("\t\t - Добавить еще сверток (нажмите 1).\n\t\t - Завершить поставку(любое другое число)");
 
-            bool parseResult;
-            int value;
-
-            do
-            {
-                var textValue = Console.ReadLine();
-                parseResult = Int32.TryParse(textValue, out value);
-            }
-            while (parseResult == false);
+            var value = IntPresenter.Input();
 
             var marker = true;
 

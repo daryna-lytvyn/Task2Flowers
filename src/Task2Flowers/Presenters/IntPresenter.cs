@@ -40,5 +40,19 @@ namespace Task2Flowers.Presenters
 
             return number;
         }
+
+        public static int Input()
+        {
+            int number;
+            bool parseResult;
+            do
+            {
+                var textValue = Console.ReadLine();
+                parseResult = Int32.TryParse(textValue, out number);
+
+            } while (parseResult == false);
+
+            return number;
+        }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Task2Flowers.Generators;
 using Task2Flowers.Interfeses;
+using Task2Flowers.Presenters;
 using Task2Flowers.Services.DataTransferObdjects;
 
 namespace Task2Flowers
@@ -31,14 +32,7 @@ namespace Task2Flowers
             Console.WriteLine("Что вы хотите добавить ?\n\t\t - Цветы(нажмите 1)." +
                     "\n\t\t - Упаковку (нажмите 2).\n\t\t - Дополнительний товар (нажмите 3).");
 
-            int value;
-            bool parseResult;
-            do
-            {
-                var textValue = Console.ReadLine();
-                parseResult = Int32.TryParse(textValue, out value);
-
-            } while (parseResult == false);
+            var value = IntPresenter.Input(1,3);
 
             Product chosenProduct = value switch
             {
@@ -124,21 +118,13 @@ namespace Task2Flowers
                     $"Количество в пачке: {flowerBundle.CountOfFlower}, Высота: {flowerBundle.Height}");
             }
         }
+
         private FlowerBundle ChoseFlowerBundle()
         {
             Console.WriteLine("Введите id цветочного свертка :  ");
             this.PrintFlowerBundles();
 
-            int flowerBundleId;
-            bool flowerBundleIdParseResult;
-            do
-            {
-                var textValue = Console.ReadLine();
-                flowerBundleIdParseResult = Int32.TryParse(textValue, out flowerBundleId);
-
-            } while (flowerBundleIdParseResult == false
-                        || 0 > flowerBundleId
-                        || flowerBundleId > _flowerBundleServise.GetAll().Count);
+            var flowerBundleId = IntPresenter.InputId(_flowerBundleServise.GetCurrentIdGeneratorValue());
 
             return _flowerBundleServise.Get(flowerBundleId);
         }
@@ -158,16 +144,7 @@ namespace Task2Flowers
             Console.WriteLine("Введите id упаковки :  ");
             this.PrintFlowerPackages();
 
-            int flowerPackageId;
-            bool flowerPackageIdParseResult;
-            do
-            {
-                var textValue = Console.ReadLine();
-                flowerPackageIdParseResult = Int32.TryParse(textValue, out flowerPackageId);
-
-            } while (flowerPackageIdParseResult == false
-                        || 0 > flowerPackageId
-                        || flowerPackageId > _flowerPackageServise.GetAll().Count);
+            var flowerPackageId = IntPresenter.InputId(_flowerPackageServise.GetCurrentIdGeneratorValue());
 
             return _flowerPackageServise.Get(flowerPackageId);
         }
@@ -187,16 +164,7 @@ namespace Task2Flowers
             Console.WriteLine("Введите id дополнительного товара :  ");
             this.PrintAdditionalProducts();
 
-            int additionalProductId;
-            bool additionalProductIdParseResult;
-            do
-            {
-                var textValue = Console.ReadLine();
-                additionalProductIdParseResult = Int32.TryParse(textValue, out additionalProductId);
-
-            } while (additionalProductIdParseResult == false
-                        || 0 > additionalProductId
-                        || additionalProductId > _additionalProductServise.GetAll().Count);
+            var additionalProductId = IntPresenter.InputId(_additionalProductServise.GetCurrentIdGeneratorValue());
 
             return _additionalProductServise.Get(additionalProductId);
         }

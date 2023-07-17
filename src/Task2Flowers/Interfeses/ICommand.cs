@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Task2Flowers.Menus.Command
 {
-    interface ICommand
+    public interface ICommand
     {
         void Execute();
     }

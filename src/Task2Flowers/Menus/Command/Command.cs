@@ -1,14 +1,25 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Task2Flowers.Interfeses;
 
-namespace Task2Flowers.Commands
+namespace Task2Flowers.Menus.Command
 {
-    public class abstract Command : ICommand
+    public abstract class Command : ICommand
     {
-        public string CommandName { get; } = "Добавить вид цветка.";
+        public String CommandName { get; }
 
-        public void Execute()
+        public Command(String commandName)
         {
-            
+            CommandName = commandName;
         }
+
+        virtual public void Execute()
+        {
+
+        }
+
     }
 }

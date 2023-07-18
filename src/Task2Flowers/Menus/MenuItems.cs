@@ -12,25 +12,28 @@ namespace Task2Flowers
     public class MenuItems
     {
         readonly Dictionary<int, Command> _options;
+        IntIdGenerator _intIdGenerator;
 
         public MenuItems()
         {
             _options = new Dictionary<int, Command>();
+            _intIdGenerator = new IntIdGenerator();
         }
 
-        public MenuItems(Dictionary<int, Command> options)
+        public MenuItems(Dictionary<int, Command> options, IntIdGenerator intIdGenerator)
         {
             _options = options ?? throw new ArgumentNullException(nameof(options));
+            _intIdGenerator = intIdGenerator ?? throw new ArgumentNullException(nameof(intIdGenerator));
         }
 
-        public void AddOption(int commandNumber, Command command)
+        public void AddOption( Command command)
         {
             if (command is null)
             {
                 throw new ArgumentNullException(nameof(command));
             }
 
-            _options.Add(commandNumber, command);
+            _options.Add(_intIdGenerator.GetNextValue(), command);
         }
 
         public void RemoveOption(int commandNumber)

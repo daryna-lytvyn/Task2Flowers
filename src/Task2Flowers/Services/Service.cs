@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Task2Flowers.Exceptions;
+using Task2Flowers.Interfeses;
 using Task2Flowers.Interfeses.Services;
 
 namespace Task2Flowers.Services
 {
-    public abstract class Service<T>: IService<T>
+    public abstract class Service<T> : IService<T>
     {
         protected readonly IStorage<T> _storage;
 
@@ -50,8 +49,8 @@ namespace Task2Flowers.Services
             var validationResults = new List<ValidationResult>();
             if (!Validator.TryValidateObject(obj, new ValidationContext(obj), validationResults))
             {
-                var errorMessages = String.Join(", ", validationResults.Select(vr => vr.ErrorMessage));
-                throw new ValidationException(errorMessages);
+                throw new ValidationResultsException(validationResults);
+
             }
         }
     }

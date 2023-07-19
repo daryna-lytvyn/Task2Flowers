@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Task2Flowers.Interfeses;
-using Task2Flowers.Services.DataTransferObdjects;
+﻿using Task2Flowers.DataTransferObdjects.Supplay;
+using Task2Flowers.Entities.Supplay;
+using Task2Flowers.Interfeses.Services.ISupplayService;
+using Task2Flowers.Storages;
 
-namespace Task2Flowers.Services
+namespace Task2Flowers.Services.SupplayServise
 {
     public class SupplayService : Service<Supplay>, ISupplayService
     {

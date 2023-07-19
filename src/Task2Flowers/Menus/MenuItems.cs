@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Task2Flowers.Menus.Command;
+using Task2Flowers.Generators;
+using Task2Flowers.Menus.Commands;
 using Task2Flowers.Presenters;
 
-namespace Task2Flowers
+namespace Task2Flowers.Menus
 {
     public class MenuItems
     {
@@ -26,7 +23,7 @@ namespace Task2Flowers
             _intIdGenerator = intIdGenerator ?? throw new ArgumentNullException(nameof(intIdGenerator));
         }
 
-        public void AddOption( Command command)
+        public void AddOption(Command command)
         {
             if (command is null)
             {
@@ -38,7 +35,7 @@ namespace Task2Flowers
 
         public void RemoveOption(int commandNumber)
         {
-            
+
             _options.Remove(commandNumber);
         }
         public void PrintOption()
@@ -51,15 +48,15 @@ namespace Task2Flowers
 
         public void MainMenu()
         {
-            Console.WriteLine("Что вы хотите сделать?");
+            Console.WriteLine("Что вы хотите сделать? (Что бы вийти из меню нажмите 0)");
 
             this.PrintOption();
 
             var marker = true;
             do
             {
-                int value = IntPresenter.Input();
-                
+                int value = IntPresenter.Input(0, _intIdGenerator.GetCurrentValue());
+
                 if (_options.TryGetValue(value, out var command))
                 {
                     command.Execute();

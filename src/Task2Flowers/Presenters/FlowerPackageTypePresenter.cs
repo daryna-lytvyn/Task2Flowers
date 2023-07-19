@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Task2Flowers.Entities.Types;
 using Task2Flowers.Interfeses;
-using Task2Flowers.Services.DataTransferObdjects;
+using Task2Flowers.Interfeses.Services;
 
-namespace Task2Flowers
+namespace Task2Flowers.Presenters
 {
     public class FlowerPackageTypePresenter : IPresenter<FlowerPackageType>
     {
-        IFlowerPackageTypeService _flowerPackageTypeServise;
+        private readonly IFlowerPackageTypeService _flowerPackageTypeServise;
         public FlowerPackageTypePresenter(IFlowerPackageTypeService flowerPackageTypeServise)
         {
             _flowerPackageTypeServise = flowerPackageTypeServise ?? throw new ArgumentNullException(nameof(flowerPackageTypeServise));
@@ -21,7 +22,7 @@ namespace Task2Flowers
             Console.WriteLine("Введите название вида упаковки :  ");
             var title = Console.ReadLine();
 
-            var fPTDTO = new FlowerPackageTypeDTO { Title = title };
+            var fPTDTO = new DataTransferObdjects.FlowerPackageTypeDTO { Title = title };
 
             _flowerPackageTypeServise.Add(fPTDTO);
         }

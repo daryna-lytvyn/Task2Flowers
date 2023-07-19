@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Task2Flowers.Interfeses;
-using Task2Flowers.Services.DataTransferObdjects;
+using Task2Flowers.DataTransferObdjects;
+using Task2Flowers.Entities.Products;
+using Task2Flowers.Interfeses.Services;
+using Task2Flowers.Storages;
 
 namespace Task2Flowers.Services
 {
-    public class FlowerBundleService: Service<FlowerBundle>, IFlowerBundleService
+    public class FlowerBundleService : Service<FlowerBundle>, IFlowerBundleService
     {
-        public FlowerBundleService(Storage<FlowerBundle> storage): base(storage) { }
+        public FlowerBundleService(Storage<FlowerBundle> storage) : base(storage) { }
 
         public void Add(FlowerBundleDTO flowerBundleDTO)
         {

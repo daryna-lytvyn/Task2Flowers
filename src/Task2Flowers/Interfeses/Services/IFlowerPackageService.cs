@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Task2Flowers.Interfeses.Services;
-using Task2Flowers.Services.DataTransferObdjects;
+﻿using System.Collections.Generic;
+using Task2Flowers.DataTransferObdjects;
+using Task2Flowers.Entities.Products;
 
-namespace Task2Flowers.Interfeses
+namespace Task2Flowers.Interfeses.Services
 {
     public interface IFlowerPackageService : IService<FlowerPackage>
     {

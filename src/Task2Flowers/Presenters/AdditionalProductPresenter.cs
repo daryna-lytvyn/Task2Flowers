@@ -1,23 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Task2Flowers.Generators;
+using Task2Flowers.DataTransferObdjects;
+using Task2Flowers.Entities.Products;
 using Task2Flowers.Interfeses;
 using Task2Flowers.Interfeses.Services;
-using Task2Flowers.Presenters;
-using Task2Flowers.Services.DataTransferObdjects;
 
-namespace Task2Flowers
+namespace Task2Flowers.Presenters
 {
-    public class AdditionalProductPresenter: IPresenter<AdditionalProduct>
+    public class AdditionalProductPresenter : IPresenter<AdditionalProduct>
     {
-        IAdditionalProductService _additionalProductServise;
-        IAdditionalProductTypeService _additionalProductTypeServise;
-        IMyColorService _myColorService;
+        private readonly IAdditionalProductService _additionalProductServise;
+        private readonly IAdditionalProductTypeService _additionalProductTypeServise;
+        private readonly IMyColorService _myColorService;
 
         public AdditionalProductPresenter(IAdditionalProductService additionalProductServise, IAdditionalProductTypeService additionalProductTypeServise, IMyColorService myColorService)
         {
@@ -44,7 +37,8 @@ namespace Task2Flowers
             var colorId = IntPresenter.InputId(_myColorService.GetCurrentIdGeneratorValue());
             var choseColor = _myColorService.Get(colorId);
 
-            var additionalProductDTO = new AdditionalProductDTO {
+            var additionalProductDTO = new AdditionalProductDTO
+            {
                 Type = choseAdditionalProductType,
                 Title = title,
                 Color = choseColor,
@@ -60,8 +54,7 @@ namespace Task2Flowers
 
             foreach (var additionalProduct in this._additionalProductServise.GetAll())
             {
-                Console.WriteLine($"\t\tId: {additionalProduct.Id}, {additionalProduct.Type}, " +
-                    $"{additionalProduct.Title}, {additionalProduct.Color.Title}, {additionalProduct.Desctiption}");
+                Console.WriteLine($"\t\tId: {additionalProduct.Id}, {additionalProduct.Type}, {additionalProduct.Title}, {additionalProduct.Color.Title}, {additionalProduct.Desctiption}");
             }
         }
 
@@ -69,15 +62,13 @@ namespace Task2Flowers
         {
             foreach (var additionalProduct in this._additionalProductServise.GetSortByType())
             {
-                Console.WriteLine($"\t\tId: {additionalProduct.Id}, {additionalProduct.Type.Title}, " +
-                    $"{additionalProduct.Title}, {additionalProduct.Color.Title}, {additionalProduct.Desctiption}");
+                Console.WriteLine($"\t\tId: {additionalProduct.Id}, {additionalProduct.Type.Title}, {additionalProduct.Title}, {additionalProduct.Color.Title}, {additionalProduct.Desctiption}");
             }
         }
 
         public void Print(AdditionalProduct additionalProduct)
         {
-            Console.Write($"Id: {additionalProduct.Id}, {additionalProduct.Type.Title}, " +
-                $"{additionalProduct.Title}, {additionalProduct.Color.Title}, {additionalProduct.Desctiption}");
+            Console.Write($"Id: {additionalProduct.Id}, {additionalProduct.Type.Title}, {additionalProduct.Title}, {additionalProduct.Color.Title}, {additionalProduct.Desctiption}");
         }
 
         private void PrintAdditionalProductTypes()
@@ -94,7 +85,7 @@ namespace Task2Flowers
         {
             foreach (var color in this._myColorService.GetAll())
             {
-                Console.WriteLine($"Id: {color.Id}, {color.Title},({color.R},{color.G},{color.B}), ");
+                Console.WriteLine($"Id: {color.Title},({color.R},{color.G},{color.B}), ");
             }
 
             Console.WriteLine();

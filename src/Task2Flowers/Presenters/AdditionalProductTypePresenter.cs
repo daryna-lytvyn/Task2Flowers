@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Task2Flowers.DataTransferObdjects;
+using Task2Flowers.Entities.Types;
 using Task2Flowers.Interfeses;
-using Task2Flowers.Services.DataTransferObdjects;
+using Task2Flowers.Interfeses.Services;
 
-namespace Task2Flowers
+namespace Task2Flowers.Presenters
 {
-    public class AdditionalProductTypePresenter: IPresenter<AdditionalProductType>
+    public class AdditionalProductTypePresenter : IPresenter<AdditionalProductType>
     {
-        IAdditionalProductTypeService _additionalProductTypeServise;
+        private readonly IAdditionalProductTypeService _additionalProductTypeServise;
 
         public AdditionalProductTypePresenter(IAdditionalProductTypeService additionalProductTypeServise)
         {

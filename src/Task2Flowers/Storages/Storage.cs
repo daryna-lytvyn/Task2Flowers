@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Task2Flowers.Generators;
+using Task2Flowers.Interfeses;
 
-namespace Task2Flowers
+namespace Task2Flowers.Storages
 {
 
     public class Storage<T> : IStorage<T>
@@ -40,7 +38,7 @@ namespace Task2Flowers
 
         public T Get(int id)
         {
-            return  _elements.ElementAt(id);
+            return _elements.ElementAt(id);
         }
 
         public IntIdGenerator IdGenerator()

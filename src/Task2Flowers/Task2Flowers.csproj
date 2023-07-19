@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Menus\Command\NewFile1.txt" />
+    <None Remove="Menus\Commands\NewFile1.txt" />
   </ItemGroup>
 
   <ItemGroup>

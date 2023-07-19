@@ -1,24 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Task2Flowers.Interfeses;
-using Task2Flowers.Services.DataTransferObdjects;
+using Task2Flowers.DataTransferObdjects;
+using Task2Flowers.Entities.Types;
+using Task2Flowers.Interfeses.Services;
+using Task2Flowers.Storages;
 
 namespace Task2Flowers.Services
 {
-    public class FlowerService: Service<Flower>, IFlowerService
+    public class FlowerService : Service<Flower>, IFlowerService
     {
-        public FlowerService(Storage<Flower> storage): base(storage) { }
+        public FlowerService(Storage<Flower> storage) : base(storage) { }
 
-        public void Add (FlowerDTO flowerDTO)
+        public void Add(FlowerDTO flowerDTO)
         {
             base.Validation(flowerDTO);
 
             var id = _storage.IdGenerator().GetNextValue();
-            var newFlower = new Flower(id , flowerDTO.Kind, flowerDTO.Variety, flowerDTO.Color);
+            var newFlower = new Flower(id, flowerDTO.Kind, flowerDTO.Variety, flowerDTO.Color);
             this.Add(newFlower);
         }
 

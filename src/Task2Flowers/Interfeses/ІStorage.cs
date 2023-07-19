@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Task2Flowers.Generators;
 
-namespace Task2Flowers
+namespace Task2Flowers.Interfeses
 {
-    public interface IStorage <T>
+    public interface IStorage<T>
     {
 
         IReadOnlyCollection<T> Elements { get; }

@@ -1,21 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Task2Flowers.DataTransferObdjects;
+using Task2Flowers.Entities.Types;
 using Task2Flowers.Interfeses;
 using Task2Flowers.Interfeses.Services;
-using Task2Flowers.Presenters;
-using Task2Flowers.Services.DataTransferObdjects;
 
-namespace Task2Flowers
+namespace Task2Flowers.Presenters
 {
     public class FlowerPresenter : IPresenter<Flower>
     {
-        IFlowerService _flowerServise;
-        IFlowerKindService _flowerKindServise;
-        IMyColorService _myColorService;
+        private readonly IFlowerService _flowerServise;
+        private readonly IFlowerKindService _flowerKindServise;
+        private readonly IMyColorService _myColorService;
 
         public FlowerPresenter(IFlowerService flowerServise, IFlowerKindService flowerKindServise, IMyColorService myColorService)
         {
@@ -55,8 +50,7 @@ namespace Task2Flowers
 
             foreach (var flower in _flowerServise.GetAll())
             {
-                Console.WriteLine($"\t\tId: {flower.Id}, {flower.Kind.Title}, " +
-                    $"{flower.Variety}, {flower.Color.Title}");
+                Console.WriteLine($"\t\tId: {flower.Id}, {flower.Kind.Title}, {flower.Variety}, {flower.Color.Title}");
             }
         }
 
@@ -64,8 +58,7 @@ namespace Task2Flowers
         {
             foreach (var flower in _flowerServise.GetSortByKind())
             {
-                Console.WriteLine($"\t\tId: {flower.Id}, {flower.Kind.Title}, " +
-                    $"{flower.Variety}, {flower.Color.Title}");
+                Console.WriteLine($"\t\tId: {flower.Id}, {flower.Kind.Title}, {flower.Variety}, {flower.Color.Title}");
             }
         }
 
@@ -83,8 +76,7 @@ namespace Task2Flowers
         {
             foreach (var color in this._myColorService.GetAll())
             {
-                Console.WriteLine($"Id: {color.Id}, {color.Title}, " +
-                    $"({color.R},{color.G},{color.B}), ");
+                Console.WriteLine($"Id: {color.Title}, ({color.R},{color.G},{color.B}), ");
             }
 
             Console.WriteLine();

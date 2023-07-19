@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
 
 namespace Task2Flowers
 {
-    using System.Drawing;
     using Task2Flowers.Entities;
+    using Task2Flowers.Entities.Products;
+    using Task2Flowers.Entities.Supplay;
+    using Task2Flowers.Entities.Types;
+    using Task2Flowers.Generators;
+    using Task2Flowers.Menus;
+    using Task2Flowers.Storages;
 
     class Program
     {
@@ -31,7 +31,7 @@ namespace Task2Flowers
                 new FlowerPackageType(idFlowerPackegeTypes.GetNextValue(), "Круглая шляпная коробка"),
                 new FlowerPackageType(idFlowerPackegeTypes.GetNextValue(), "Корейская пленка")
             };
-            
+
             var storageFlowerPackegeTypes = new Storage<FlowerPackageType>(flowerPackegeTypes, idFlowerPackegeTypes);
 
             var idAdditionalProductsTypes = new IntIdGenerator();
@@ -48,14 +48,13 @@ namespace Task2Flowers
             var idColors = new IntIdGenerator();
             var colors = new List<MyColor>()
             {
-                new MyColor(idColors.GetNextValue(),"Жемчужный", 235, 245, 240),
-                new MyColor(idColors.GetNextValue(),"Темно-бордовый", 107, 3, 21),
-                new MyColor(idColors.GetNextValue(),"Голубо-фиалковый", 152, 147, 219),
-                new MyColor(idColors.GetNextValue(),"Нежно-лимонный", 224, 252, 182),
-                new MyColor(idColors.GetNextValue(),"Белый", 255, 255, 255),
-                new MyColor(idColors.GetNextValue(),"Бело-зеленый", 235, 255, 230),
-                new MyColor(idColors.GetNextValue(),"Пудровый", 232, 216, 223),
-                new MyColor(idColors.GetNextValue(),"Оливковый", 145, 171, 125),
+                new MyColor("Жемчужный", 235, 245, 240),
+                new MyColor("Темно-бордовый", 107, 3, 21),
+                new MyColor("Голубо-фиалковый", 152, 147, 219),
+                new MyColor("Нежно-лимонный", 224, 252, 182),
+                new MyColor("Бело-зеленый", 235, 255, 230),
+                new MyColor("Пудровый", 232, 216, 223),
+                new MyColor("Оливковый", 145, 171, 125),
             };
 
             var storage = new Storage<MyColor>(colors, idColors);
@@ -67,8 +66,8 @@ namespace Task2Flowers
                 new Flower(idFlowers.GetNextValue(), kindsOfFlower[0],"Black Magic", colors[1]),
                 new Flower(idFlowers.GetNextValue(), kindsOfFlower[1], "Anabell", colors[2]),
                 new Flower(idFlowers.GetNextValue(), kindsOfFlower[0],"Kerio", colors[3]),
-                new Flower(idFlowers.GetNextValue(), kindsOfFlower[2],"Северная принцесса", colors[4]),
-                new Flower(idFlowers.GetNextValue(), kindsOfFlower[0],"LaPerla",colors[5])
+                new Flower(idFlowers.GetNextValue(), kindsOfFlower[2],"Северная принцесса", MyColor.White),
+                new Flower(idFlowers.GetNextValue(), kindsOfFlower[0],"LaPerla",colors[4])
             };
 
             var storageFlower = new Storage<Flower>(flowers, idFlowers);
@@ -77,8 +76,8 @@ namespace Task2Flowers
             var idFlowerPackages = new IntIdGenerator();
             var flowerPackages = new List<FlowerPackage>()
             {
-                new FlowerPackage (idFlowerPackages.GetNextValue(), flowerPackegeTypes[1], 60, 1000, colors[6], "бла бла бла"),
-                new FlowerPackage (idFlowerPackages.GetNextValue(), flowerPackegeTypes[0], 40, 50, colors[7], "бла бла бла")
+                new FlowerPackage (idFlowerPackages.GetNextValue(), flowerPackegeTypes[1], 60, 1000, colors[5], "бла бла бла"),
+                new FlowerPackage (idFlowerPackages.GetNextValue(), flowerPackegeTypes[0], 40, 50, colors[6], "бла бла бла")
             };
 
             var storageFlowerPackege = new Storage<FlowerPackage>(flowerPackages, idFlowerPackages);
@@ -87,9 +86,9 @@ namespace Task2Flowers
             var idAdditionalProducts = new IntIdGenerator();
             var additionalProducts = new List<AdditionalProduct>()
             {
-                new AdditionalProduct(idAdditionalProducts.GetNextValue(), additionalProductsTypes[1], "Raffaello", colors[4], "Упаковка конфет весом 400 гр")
+                new AdditionalProduct(idAdditionalProducts.GetNextValue(), additionalProductsTypes[1], "Raffaello", MyColor.White, "Упаковка конфет весом 400 гр")
             };
-         
+
             var storageAdditionalProduct = new Storage<AdditionalProduct>(additionalProducts, idAdditionalProducts);
 
 
@@ -103,49 +102,40 @@ namespace Task2Flowers
                     new FlowerBundle(idFlowerBundles.GetNextValue(), flowers[3], 45, 40),
                     new FlowerBundle(idFlowerBundles.GetNextValue(), flowers[4], 25, 65)
             };
-            
+
             var storageFlowerBundles = new Storage<FlowerBundle>(flowerBundles, idFlowerBundles);
 
-
-            var idBundles1 = new IntIdGenerator();
             var bundles1 = new List<Bundle>()
             {
-                new Bundle(idBundles1.GetNextValue(), flowerBundles[0],7),
-                new Bundle(idBundles1.GetNextValue(), flowerBundles[1],4),
-                new Bundle(idBundles1.GetNextValue(), flowerBundles[2],12),
-                new Bundle(idBundles1.GetNextValue(), additionalProducts[0],50),
-                new Bundle(idBundles1.GetNextValue(), flowerPackages[0],5)
-               
+                new Bundle(flowerBundles[0],7),
+                new Bundle(flowerBundles[1],4),
+                new Bundle(flowerBundles[2],12),
+                new Bundle(additionalProducts[0],50),
+                new Bundle(flowerPackages[0],5)
+
             };
 
-
-            var idBundles2 = new IntIdGenerator();
             var bundles2 = new List<Bundle>()
             {
-                new Bundle(idBundles2.GetNextValue(), flowerPackages[1],10),
-                new Bundle(idBundles2.GetNextValue(), flowerBundles[3],9),
-                new Bundle(idBundles2.GetNextValue(), flowerBundles[4],5),
-                new Bundle(idBundles2.GetNextValue(), flowerBundles[5],10)
+                new Bundle(flowerPackages[1],10),
+                new Bundle(flowerBundles[3],9),
+                new Bundle(flowerBundles[4],5),
+                new Bundle(flowerBundles[5],10)
             };
 
-            var bundle1Storage = new Storage<Bundle>(bundles1, idBundles1);
-            var bundle2Storage = new Storage<Bundle>(bundles2, idBundles2);
 
 
             var idSupplays = new IntIdGenerator();
             var supplays = new List<Supplay>() {
-                new Supplay(idSupplays.GetNextValue(),bundle1Storage,  DateTime.Parse("2022-11-15")),
-                new Supplay(idSupplays.GetNextValue(), bundle2Storage,  DateTime.Parse("2022-11-16"))
+                new Supplay(idSupplays.GetNextValue(), bundles1.AsReadOnly(),  DateTime.Parse("2022-11-15")),
+                new Supplay(idSupplays.GetNextValue(), bundles2.AsReadOnly(),  DateTime.Parse("2022-11-16"))
 
             };
 
             var storageSupplay = new Storage<Supplay>(supplays, idSupplays);
 
-            
-
 
             var menu = new MenuItems();
-            menu.AddOption()
 
             menu.MainMenu();
 

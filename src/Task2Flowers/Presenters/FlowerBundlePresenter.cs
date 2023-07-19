@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Task2Flowers.DataTransferObdjects;
+using Task2Flowers.Entities.Products;
+using Task2Flowers.Entities.Types;
 using Task2Flowers.Interfeses;
+using Task2Flowers.Interfeses.Services;
 using Task2Flowers.Presenters;
-using Task2Flowers.Services.DataTransferObdjects;
-
-namespace Task2Flowers
+namespace Task2Flowers.Presenters
 {
     public class FlowerBundlePresenter : IPresenter<FlowerBundle>
     {
-        IFlowerBundleService _flowerBundleServise;
-        IFlowerService _flowerServise;
+        private readonly IFlowerBundleService _flowerBundleServise;
+        private readonly IFlowerService _flowerServise;
         public FlowerBundlePresenter(IFlowerBundleService flowerBundleServise, IFlowerService flowerServise)
         {
             _flowerBundleServise = flowerBundleServise ?? throw new ArgumentNullException(nameof(flowerBundleServise));
@@ -38,6 +40,7 @@ namespace Task2Flowers
                 Height = height
             };
 
+
             _flowerBundleServise.Add(fBDTO);
         }
 
@@ -45,10 +48,7 @@ namespace Task2Flowers
         {
             foreach(FlowerBundle flowerBundle in _flowerBundleServise.GetAll())
             {
-                Console.WriteLine($"Id: {flowerBundle.Id}, " +
-                    $"Цветок: ( Id: {flowerBundle.Flower.Id}, {flowerBundle.Flower.Kind.Title}, " +
-                    $"{flowerBundle.Flower.Variety}, {flowerBundle.Flower.Color.Title} ), " +
-                    $"Количество в пачке: {flowerBundle.CountOfFlower}, Высота: {flowerBundle.Height}");
+                Console.WriteLine($"Id: {flowerBundle.Id}, Цветок: ( Id: {flowerBundle.Flower.Id}, {flowerBundle.Flower.Kind.Title}, {flowerBundle.Flower.Variety}, {flowerBundle.Flower.Color.Title} ), Количество в пачке: {flowerBundle.CountOfFlower}, Высота: {flowerBundle.Height}");
             }
         }
         

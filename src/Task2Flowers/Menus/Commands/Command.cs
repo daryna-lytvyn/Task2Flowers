@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Task2Flowers.Interfeses;
 
-namespace Task2Flowers.Menus.Command
+namespace Task2Flowers.Menus.Commands
 {
     public abstract class Command : ICommand
     {
@@ -16,7 +12,7 @@ namespace Task2Flowers.Menus.Command
             CommandName = commandName;
         }
 
-        virtual public void Execute()
+        public virtual void Execute()
         {
 
         }

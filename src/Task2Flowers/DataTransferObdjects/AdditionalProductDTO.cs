@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Task2Flowers.Entities;
+using Task2Flowers.Entities.Types;
 
-namespace Task2Flowers.Services.DataTransferObdjects
+namespace Task2Flowers.DataTransferObdjects
 {
     public class AdditionalProductDTO
     {

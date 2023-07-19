@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Task2Flowers.Entities;
+﻿using Task2Flowers.Entities.Types;
 
-namespace Task2Flowers
+namespace Task2Flowers.Entities.Products
 {
     public class AdditionalProduct : Product
     {
@@ -14,7 +9,7 @@ namespace Task2Flowers
         public MyColor Color { get; }
         public string Desctiption { get; }
 
-        public AdditionalProduct(int id, AdditionalProductType type, string title, MyColor color, string description ): base(id)
+        public AdditionalProduct(int id, AdditionalProductType type, string title, MyColor color, string description) : base(id)
         {
             this.Title = title;
             this.Type = type;

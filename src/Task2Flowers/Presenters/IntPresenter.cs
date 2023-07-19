@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Task2Flowers.Interfeses.Services;
 
 namespace Task2Flowers.Presenters
 {
@@ -34,8 +29,8 @@ namespace Task2Flowers.Presenters
                 var textValue = Console.ReadLine();
                 parseResult = Int32.TryParse(textValue, out number);
 
-            } while (parseResult == false 
-                        || min > number 
+            } while (parseResult == false
+                        || min > number
                         || number > max);
 
             return number;

@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Task2Flowers.Interfeses.Services;
-using Task2Flowers.Services.DataTransferObdjects;
+﻿using System.Collections.Generic;
+using Task2Flowers.DataTransferObdjects;
+using Task2Flowers.Entities.Products;
 
-namespace Task2Flowers.Generators
+namespace Task2Flowers.Interfeses.Services
 {
-    public interface IAdditionalProductService: IService<AdditionalProduct>
+    public interface IAdditionalProductService : IService<AdditionalProduct>
     {
         void Add(AdditionalProductDTO aPDTO);
         IReadOnlyList<AdditionalProduct> GetSortByType();

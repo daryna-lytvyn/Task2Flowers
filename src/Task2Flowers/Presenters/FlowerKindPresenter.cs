@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Task2Flowers.Interfeses;
-using Task2Flowers.Services.DataTransferObdjects;
+using Task2Flowers.DataTransferObdjects;
+using Task2Flowers.Interfeses.Services;
 
-namespace Task2Flowers
+namespace Task2Flowers.Presenters
 {
     public class FlowerKindPresenter
     {
-        IFlowerKindService _flowerKindServise; 
+        private readonly IFlowerKindService _flowerKindServise;
 
         public FlowerKindPresenter(IFlowerKindService flowerKindServise)
         {

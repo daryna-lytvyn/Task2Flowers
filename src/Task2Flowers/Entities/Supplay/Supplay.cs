@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
+using Task2Flowers.Interfeses;
 
-namespace Task2Flowers
+namespace Task2Flowers.Entities.Supplay
 {
     public class Supplay
     {
         public int Id { get; }
 
-        private readonly IStorage<Bundle> _bundles;
+        private readonly ReadOnlyCollection<Bundle> _bundles;
 
         public DateTime? FinishDate { get; }
 
@@ -19,14 +17,14 @@ namespace Task2Flowers
             this.Id = id;
         }
 
-        public Supplay(int id, IStorage<Bundle> bundles, DateTime date)
+        public Supplay(int id, ReadOnlyCollection<Bundle> bundles, DateTime date)
         {
             this.Id = id;
             _bundles = bundles;
             FinishDate = date;
         }
 
-        public IStorage<Bundle> GetBundles()
+        public ReadOnlyCollection<Bundle> GetBundles()
         {
             return _bundles;
         }

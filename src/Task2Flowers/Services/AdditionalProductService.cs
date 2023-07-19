@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Drawing;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Task2Flowers.Generators;
-using Task2Flowers.Services.DataTransferObdjects;
+using Task2Flowers.DataTransferObdjects;
+using Task2Flowers.Entities.Products;
+using Task2Flowers.Interfeses.Services;
+using Task2Flowers.Storages;
 
 namespace Task2Flowers.Services
 {

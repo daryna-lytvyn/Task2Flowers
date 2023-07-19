@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Task2Flowers.Interfeses;
-using Task2Flowers.Services.DataTransferObdjects;
+﻿using Task2Flowers.DataTransferObdjects;
+using Task2Flowers.Entities.Types;
+using Task2Flowers.Interfeses.Services;
+using Task2Flowers.Storages;
 
 namespace Task2Flowers.Services
 {
-    public class AdditionalProductTypeService: Service<AdditionalProductType>, IAdditionalProductTypeService
+    public class AdditionalProductTypeService : Service<AdditionalProductType>, IAdditionalProductTypeService
     {
         public AdditionalProductTypeService(Storage<AdditionalProductType> storage) : base(storage) { }
 

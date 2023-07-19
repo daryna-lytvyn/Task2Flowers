@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Task2Flowers.Entities;
+﻿using Task2Flowers.Entities.Types;
 
-namespace Task2Flowers
+namespace Task2Flowers.Entities.Products
 {
     public class FlowerPackage : Product
     {

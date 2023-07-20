@@ -59,7 +59,7 @@ namespace Task2Flowers.Presenters.SupplayPresenter
             {
                 Console.WriteLine($"\t\tId: {supplay.Id}, дата: {supplay.FinishDate}, свертки:");
 
-                foreach (var bundle in supplay.GetBundles())
+                foreach (var bundle in supplay.Bundles)
                 {
                     var productType = bundle.Product;
 

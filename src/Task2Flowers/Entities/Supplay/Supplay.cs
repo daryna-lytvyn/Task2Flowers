@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using Task2Flowers.Interfeses;
 
 namespace Task2Flowers.Entities.Supplay
@@ -8,7 +8,7 @@ namespace Task2Flowers.Entities.Supplay
     {
         public int Id { get; }
 
-        private readonly ReadOnlyCollection<Bundle> _bundles;
+        public IReadOnlyCollection<Bundle> Bundles { get; }
 
         public DateTime? FinishDate { get; }
 
@@ -17,16 +17,12 @@ namespace Task2Flowers.Entities.Supplay
             this.Id = id;
         }
 
-        public Supplay(int id, ReadOnlyCollection<Bundle> bundles, DateTime date)
+        public Supplay(int id, IReadOnlyCollection<Bundle> bundles, DateTime date)
         {
             this.Id = id;
-            _bundles = bundles;
+            Bundles = bundles;
             FinishDate = date;
         }
 
-        public ReadOnlyCollection<Bundle> GetBundles()
-        {
-            return _bundles;
-        }
     }
 }

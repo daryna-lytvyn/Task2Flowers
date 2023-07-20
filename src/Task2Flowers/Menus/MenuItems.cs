@@ -8,8 +8,8 @@ namespace Task2Flowers.Menus
 {
     public class MenuItems
     {
-        readonly Dictionary<int, Command> _options;
-        IntIdGenerator _intIdGenerator;
+        private readonly Dictionary<int, Command> _options;
+        private readonly IntIdGenerator _intIdGenerator;
 
         public MenuItems()
         {

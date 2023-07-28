@@ -54,7 +54,7 @@ namespace Task2Flowers.Presenters
 
             foreach (var additionalProduct in this._additionalProductServise.GetAll())
             {
-                Console.WriteLine($"\t\tId: {additionalProduct.Id}, {additionalProduct.Type}, {additionalProduct.Title}, {additionalProduct.Color.Title}, {additionalProduct.Desctiption}");
+                Console.WriteLine($"\t\tId: {additionalProduct.Id}, {additionalProduct.Type.Title}, {additionalProduct.Title}, {additionalProduct.Color.Title}, {additionalProduct.Desctiption}");
             }
         }
 
@@ -85,7 +85,7 @@ namespace Task2Flowers.Presenters
         {
             foreach (var color in this._myColorService.GetAll())
             {
-                Console.WriteLine($"Id: {color.Title},({color.R},{color.G},{color.B}), ");
+                Console.WriteLine($"Id: {color.Id}, {color.Title},({color.R},{color.G},{color.B}), ");
             }
 
             Console.WriteLine();

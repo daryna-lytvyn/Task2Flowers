@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Task2Flowers.Entities;
 using Task2Flowers.Generators;
 using Task2Flowers.Interfeses;
 
@@ -7,22 +8,17 @@ namespace Task2Flowers.Storages
 {
 
     public class Storage<T> : IStorage<T>
+        where T : Entity
     {
         private readonly List<T> _elements = new List<T>();
         public IReadOnlyCollection<T> Elements => _elements.AsReadOnly();
 
         private readonly IntIdGenerator _idGenerator;
 
-
-        public Storage()
+        public Storage(IntIdGenerator idGenerator)
         {
-            this._elements = new List<T>();
-
-        }
-        public Storage(List<T> elements, IntIdGenerator idGenerator)
-        {
-            _elements = elements;
-            this._idGenerator = idGenerator;
+            _elements = new List<T>();
+            _idGenerator = idGenerator;
         }
 
         public IReadOnlyCollection<T> GetAll()
@@ -38,7 +34,7 @@ namespace Task2Flowers.Storages
 
         public T Get(int id)
         {
-            return _elements.ElementAt(id);
+            return _elements.Find(element => element.Id == id);
         }
 
         public IntIdGenerator IdGenerator()

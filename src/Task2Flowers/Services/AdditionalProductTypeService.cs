@@ -1,13 +1,13 @@
 ﻿using Task2Flowers.DataTransferObdjects;
 using Task2Flowers.Entities.Types;
+using Task2Flowers.Interfeses;
 using Task2Flowers.Interfeses.Services;
-using Task2Flowers.Storages;
 
 namespace Task2Flowers.Services
 {
     public class AdditionalProductTypeService : Service<AdditionalProductType>, IAdditionalProductTypeService
     {
-        public AdditionalProductTypeService(Storage<AdditionalProductType> storage) : base(storage) { }
+        public AdditionalProductTypeService(IStorage<AdditionalProductType> storage) : base(storage) { }
 
         public void Add(AdditionalProductTypeDTO additionalProductTypeDTO)
         {

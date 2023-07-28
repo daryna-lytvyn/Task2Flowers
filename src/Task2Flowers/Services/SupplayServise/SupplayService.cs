@@ -1,13 +1,13 @@
 ﻿using Task2Flowers.DataTransferObdjects.Supplay;
 using Task2Flowers.Entities.Supplay;
+using Task2Flowers.Interfeses;
 using Task2Flowers.Interfeses.Services.ISupplayService;
-using Task2Flowers.Storages;
 
 namespace Task2Flowers.Services.SupplayServise
 {
     public class SupplayService : Service<Supplay>, ISupplayService
     {
-        public SupplayService(Storage<Supplay> storage) : base(storage) { }
+        public SupplayService(IStorage<Supplay> storage) : base(storage) { }
 
         public void Add(SupplayDTO supplayDTO)
         {

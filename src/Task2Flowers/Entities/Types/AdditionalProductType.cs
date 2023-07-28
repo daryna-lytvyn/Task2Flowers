@@ -1,8 +1,7 @@
 ﻿namespace Task2Flowers.Entities.Types
 {
-    public class AdditionalProductType
+    public class AdditionalProductType: Entity
     {
-        public int Id { get; }
 
         public string Title { get; }
 

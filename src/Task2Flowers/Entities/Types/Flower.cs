@@ -1,9 +1,8 @@
 ﻿namespace Task2Flowers.Entities.Types
 {
 
-    public class Flower
+    public class Flower: Entity
     {
-        public int Id { get; }
         public FlowerKind Kind { get; }
         public string Variety { get; }
         public MyColor Color { get; }

@@ -4,9 +4,8 @@ using Task2Flowers.Interfeses;
 
 namespace Task2Flowers.Entities.Supplay
 {
-    public class Supplay
+    public class Supplay : Entity
     {
-        public int Id { get; }
 
         public IReadOnlyCollection<Bundle> Bundles { get; }
 
@@ -20,8 +19,8 @@ namespace Task2Flowers.Entities.Supplay
         public Supplay(int id, IReadOnlyCollection<Bundle> bundles, DateTime date)
         {
             this.Id = id;
-            Bundles = bundles;
-            FinishDate = date;
+            this.Bundles = bundles;
+            this.FinishDate = date;
         }
 
     }

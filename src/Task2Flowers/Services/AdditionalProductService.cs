@@ -2,14 +2,14 @@
 using System.Linq;
 using Task2Flowers.DataTransferObdjects;
 using Task2Flowers.Entities.Products;
+using Task2Flowers.Interfeses;
 using Task2Flowers.Interfeses.Services;
-using Task2Flowers.Storages;
 
 namespace Task2Flowers.Services
 {
     public class AdditionalProductService : Service<AdditionalProduct>, IAdditionalProductService
     {
-        public AdditionalProductService(Storage<AdditionalProduct> storage) : base(storage) { }
+        public AdditionalProductService(IStorage<AdditionalProduct> storage) : base(storage) { }
 
         public void Add(AdditionalProductDTO additionalProductDTO)
         {
@@ -23,7 +23,7 @@ namespace Task2Flowers.Services
 
         public IReadOnlyList<AdditionalProduct> GetSortByType()
         {
-            var sortAdditionalProductsByType = _storage.Elements.OrderBy(aP => aP.Type.Title).ToList();
+            var sortAdditionalProductsByType = _storage.Elements.OrderBy(aP => aP.Type.Id).ToList();
 
             return sortAdditionalProductsByType.AsReadOnly();
         }

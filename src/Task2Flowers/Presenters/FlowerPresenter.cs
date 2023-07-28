@@ -76,7 +76,7 @@ namespace Task2Flowers.Presenters
         {
             foreach (var color in this._myColorService.GetAll())
             {
-                Console.WriteLine($"Id: {color.Title}, ({color.R},{color.G},{color.B}), ");
+                Console.WriteLine($"Id: {color.Id}, {color.Title}, ({color.R},{color.G},{color.B}), ");
             }
 
             Console.WriteLine();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Task2Flowers.Generators;
+using Task2Flowers.Interfeses;
 using Task2Flowers.Menus.Commands;
 using Task2Flowers.Presenters;
 
@@ -8,22 +9,22 @@ namespace Task2Flowers.Menus
 {
     public class MenuItems
     {
-        private readonly Dictionary<int, Command> _options;
+        private readonly Dictionary<int, ICommand> _options;
         private readonly IntIdGenerator _intIdGenerator;
 
-        public MenuItems()
+        public MenuItems(IntIdGenerator intIdGenerator)
         {
-            _options = new Dictionary<int, Command>();
-            _intIdGenerator = new IntIdGenerator();
+            _options = new Dictionary<int, ICommand>();
+            _intIdGenerator = intIdGenerator;
         }
 
-        public MenuItems(Dictionary<int, Command> options, IntIdGenerator intIdGenerator)
+        public MenuItems(Dictionary<int, ICommand> options, IntIdGenerator intIdGenerator)
         {
             _options = options ?? throw new ArgumentNullException(nameof(options));
             _intIdGenerator = intIdGenerator ?? throw new ArgumentNullException(nameof(intIdGenerator));
         }
 
-        public void AddOption(Command command)
+        public void AddOption(ICommand command)
         {
             if (command is null)
             {
@@ -50,20 +51,21 @@ namespace Task2Flowers.Menus
         {
             Console.WriteLine("Что вы хотите сделать? (Что бы вийти из меню нажмите 0)");
 
-            this.PrintOption();
+            
 
             var marker = true;
             do
             {
+                this.PrintOption();
                 int value = IntPresenter.Input(0, _intIdGenerator.GetCurrentValue());
 
-                if (_options.TryGetValue(value, out var command))
+                if (!_options.TryGetValue(value, out var command))
                 {
-                    command.Execute();
+                    marker = false;
                 }
                 else
                 {
-                    marker = false;
+                    command.Execute();
                 }
 
             } while (marker);

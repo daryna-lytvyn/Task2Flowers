@@ -1,14 +1,16 @@
 ﻿using System;
+using Task2Flowers.DataTransferObdjects;
 using Task2Flowers.Entities;
 using Task2Flowers.Interfeses;
+using Task2Flowers.Interfeses.Services;
 using Task2Flowers.Services;
 
 namespace Task2Flowers.Presenters
 {
     public class MyColorPresenter : IPresenter<MyColor>
     {
-        private readonly MyColorService _myColorService;
-        public MyColorPresenter(MyColorService myColorService)
+        private readonly IMyColorService _myColorService;
+        public MyColorPresenter(IMyColorService myColorService)
         {
             this._myColorService = myColorService ?? throw new ArgumentNullException(nameof(myColorService));
         }
@@ -26,7 +28,13 @@ namespace Task2Flowers.Presenters
             Console.WriteLine("Введите значение Blue :  ");
             var blue = this.InputByte();
 
-            var mycolor = new MyColor(title, red, green, blue);
+            var mycolor = new MyColorDTO
+            {
+                Title = title,
+                R = red,
+                G = green,
+                B = blue
+            };
 
             _myColorService.Add(mycolor);
         }
@@ -37,7 +45,7 @@ namespace Task2Flowers.Presenters
 
             foreach (var color in this._myColorService.GetAll())
             {
-                Console.WriteLine($"Id: {color.Title},({color.R},{color.G},{color.B}), ");
+                Console.WriteLine($"Id:{color.Id}, {color.Title},({color.R},{color.G},{color.B}), ");
             }
 
             Console.WriteLine();

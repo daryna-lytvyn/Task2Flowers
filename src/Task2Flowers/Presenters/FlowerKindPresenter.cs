@@ -1,10 +1,12 @@
 ﻿using System;
 using Task2Flowers.DataTransferObdjects;
+using Task2Flowers.Entities.Types;
+using Task2Flowers.Interfeses;
 using Task2Flowers.Interfeses.Services;
 
 namespace Task2Flowers.Presenters
 {
-    public class FlowerKindPresenter
+    public class FlowerKindPresenter : IPresenter<FlowerKind>
     {
         private readonly IFlowerKindService _flowerKindServise;
 

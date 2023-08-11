@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Task2Flowers.Interfeses;
 
 namespace Task2Flowers.Menus.Commands
@@ -12,9 +13,9 @@ namespace Task2Flowers.Menus.Commands
             _presenter = presenter;
         }
 
-        public override void Execute()
+        public override async Task Execute()
         {
-            _presenter.Print();
+            await _presenter.PrintAsync();
         }
     }
 

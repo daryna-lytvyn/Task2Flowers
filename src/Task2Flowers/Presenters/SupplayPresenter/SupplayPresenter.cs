@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Task2Flowers.DataTransferObdjects.Supplay;
 using Task2Flowers.Entities.Products;
 using Task2Flowers.Entities.Supplay;
@@ -30,14 +31,14 @@ namespace Task2Flowers.Presenters.SupplayPresenter
 
         }
 
-        public void Input()
+        public async Task InputAsync()
         {
             var marker = true;
             var bundles = new List<Bundle>();
 
             do
             {
-                this.InputBundle(bundles);
+                await this.InputBundle(bundles);
                 marker = this.MarkerQuestion();
 
             } while (marker);
@@ -48,14 +49,16 @@ namespace Task2Flowers.Presenters.SupplayPresenter
                 FinishDate = DateTime.Now
             };
 
-            _supplayService.Add(newSDTO);
+            await _supplayService.AddAsync(newSDTO);
         }
 
-        public void Print()
+        public async Task PrintAsync()
         {
             Console.WriteLine("Поставки: ");
 
-            foreach (var supplay in _supplayService.GetAll())
+            var supplays = await _supplayService.GetAllAsynс();
+
+            foreach (var supplay in supplays)
             {
                 Console.WriteLine($"\t\tId: {supplay.Id}, дата: {supplay.FinishDate}, свертки:");
 
@@ -100,7 +103,7 @@ namespace Task2Flowers.Presenters.SupplayPresenter
             return marker;
         }
 
-        private void InputBundle(ICollection<Bundle> bundles)
+        private async Task InputBundle(ICollection<Bundle> bundles)
         {
             Console.WriteLine("Что вы хотите добавить ?\n\t\t - Цветы(нажмите 1)." +
                    "\n\t\t - Упаковку (нажмите 2).\n\t\t - Дополнительний товар (нажмите 3).");
@@ -109,9 +112,9 @@ namespace Task2Flowers.Presenters.SupplayPresenter
 
             Product chosenProduct = value switch
             {
-                1 => this.ChoseFlowerBundle(),
-                2 => this.ChoseAdditionalProduct(),
-                3 => this.ChoseFlowerPackage(),
+                1 => await this.ChoseFlowerBundle(),
+                2 => await this.ChoseAdditionalProduct(),
+                3 => await this.ChoseFlowerPackage(),
                 _ => null
             };
 
@@ -124,34 +127,37 @@ namespace Task2Flowers.Presenters.SupplayPresenter
             bundles.Add(bundle);
         }
 
-        private FlowerBundle ChoseFlowerBundle()
+        private async Task<FlowerBundle> ChoseFlowerBundle()
         {
             Console.WriteLine("Введите id цветочного свертка :  ");
-            this.PrintFlowerBundles();
+            await this.PrintFlowerBundles();
 
-            var flowerBundleId = IntPresenter.InputId(_flowerBundleServise.GetCurrentIdGeneratorValue());
+            var currentIdGeneratorValueFlowerBundle = await _flowerBundleServise.GetCurrentIdGeneratorValueAsync();
+            var flowerBundleId = IntPresenter.InputId(currentIdGeneratorValueFlowerBundle);
 
-            return _flowerBundleServise.Get(flowerBundleId);
+            return await _flowerBundleServise.GetAsynс(flowerBundleId);
         }
 
-        private FlowerPackage ChoseFlowerPackage()
+        private async Task<FlowerPackage> ChoseFlowerPackage()
         {
             Console.WriteLine("Введите id упаковки :  ");
-            this.PrintFlowerPackages();
+            await this.PrintFlowerPackages();
 
-            var flowerPackageId = IntPresenter.InputId(_flowerPackageServise.GetCurrentIdGeneratorValue());
+            var currentIdGeneratorValueFlowerPackage = await _flowerPackageServise.GetCurrentIdGeneratorValueAsync();
+            var flowerPackageId = IntPresenter.InputId(currentIdGeneratorValueFlowerPackage);
 
-            return _flowerPackageServise.Get(flowerPackageId);
+            return await _flowerPackageServise.GetAsynс(flowerPackageId);
         }
 
-        private AdditionalProduct ChoseAdditionalProduct()
+        private async Task<AdditionalProduct> ChoseAdditionalProduct()
         {
             Console.WriteLine("Введите id дополнительного товара :  ");
-            this.PrintAdditionalProducts();
+            await this.PrintAdditionalProducts();
 
-            var additionalProductId = IntPresenter.InputId(_additionalProductServise.GetCurrentIdGeneratorValue());
+            var currentIdGeneratorValueFlowerPackage = await _additionalProductServise.GetCurrentIdGeneratorValueAsync();
+            var additionalProductId = IntPresenter.InputId(currentIdGeneratorValueFlowerPackage);
 
-            return _additionalProductServise.Get(additionalProductId);
+            return await _additionalProductServise.GetAsynс(additionalProductId);
         }
 
         private void PrintFlowerBundle(FlowerBundle flowerBundle)
@@ -169,30 +175,32 @@ namespace Task2Flowers.Presenters.SupplayPresenter
             Console.WriteLine($"\t\tId: {additionalProduct.Id}, {additionalProduct.Type}, {additionalProduct.Title}, {additionalProduct.Color.Title}, {additionalProduct.Desctiption}");
         }
 
-        private void PrintFlowerBundles()
+        private async Task PrintFlowerBundles()
         {
-            foreach (FlowerBundle flowerBundle in _flowerBundleServise.GetAll())
+            var flowerBundles = await _flowerBundleServise.GetAllAsynс();
+            foreach (var flowerBundle in flowerBundles)
             {
                 this.PrintFlowerBundle(flowerBundle);
             }
         }
 
-        private void PrintFlowerPackages()
+        private async Task PrintFlowerPackages()
         {
-            foreach (var flowerPackage in _flowerPackageServise.GetAll())
+            var flowerBundles = await _flowerPackageServise.GetAllAsynс();
+
+            foreach (var flowerPackage in flowerBundles)
             {
                 this.PrintFlowerPackege(flowerPackage);
             }
         }
 
-        private void PrintAdditionalProducts()
+        private async Task PrintAdditionalProducts()
         {
-            foreach (var additionalProduct in this._additionalProductServise.GetAll())
+            var additionalProducts = await _additionalProductServise.GetAllAsynс();
+            foreach (var additionalProduct in additionalProducts)
             {
                 this.PrintAdditionalProduct(additionalProduct);
             }
         }
-
-        
     }
 }

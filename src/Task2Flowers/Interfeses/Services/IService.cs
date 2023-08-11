@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Task2Flowers.Interfeses.Services
 {
     public interface IService<T>
     {
-        void Add(T element);
-        T Get(int id);
-        IReadOnlyCollection<T> GetAll();
-        int GetCurrentIdGeneratorValue();
+        Task AddAsync(T element);
+        Task<T> GetAsynс(int id);
+        Task<IReadOnlyCollection<T>> GetAllAsynс();
+        Task<int> GetCurrentIdGeneratorValueAsync();
     }
 }

@@ -7,7 +7,7 @@ using Task2Flowers.Interfeses;
 namespace Task2Flowers.Storages
 {
 
-    public class Storage<T> : IStorage<T>
+    public class Storage<T> 
         where T : Entity
     {
         private readonly List<T> _elements = new List<T>();

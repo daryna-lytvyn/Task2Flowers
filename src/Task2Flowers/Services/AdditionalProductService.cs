@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Task2Flowers.DataTransferObdjects;
 using Task2Flowers.Entities.Products;
 using Task2Flowers.Interfeses;
@@ -11,21 +12,34 @@ namespace Task2Flowers.Services
     {
         public AdditionalProductService(IStorage<AdditionalProduct> storage) : base(storage) { }
 
-        public void Add(AdditionalProductDTO additionalProductDTO)
+        public async Task AddAsync(AdditionalProductDTO additionalProductDTO)
         {
             base.Validation(additionalProductDTO);
 
-            var id = _storage.IdGenerator().GetNextValue();
+            var idGenerator = await _storage.IdGenerator();
+
+            var id = idGenerator.GetNextValue();
             var newAP = new AdditionalProduct(id, additionalProductDTO.Type, additionalProductDTO.Title,
                                                 additionalProductDTO.Color, additionalProductDTO.Desctiption);
-            this.Add(newAP);
+            await this.AddAsync(newAP);
         }
 
-        public IReadOnlyList<AdditionalProduct> GetSortByType()
+        public async Task<IReadOnlyList<AdditionalProduct>> GetSortByTypeAsync()
         {
-            var sortAdditionalProductsByType = _storage.Elements.OrderBy(aP => aP.Type.Id).ToList();
+            var elements = await _storage.GetAllAsynс();
+            var sortAdditionalProductsByType = elements.OrderBy(aP => aP.Type.Id).ToList();
 
             return sortAdditionalProductsByType.AsReadOnly();
+        }
+
+        Task IAdditionalProductService.AddAsync(AdditionalProductDTO aPDTO)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        Task<IReadOnlyList<AdditionalProduct>> IAdditionalProductService.GetSortByTypeAsync()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

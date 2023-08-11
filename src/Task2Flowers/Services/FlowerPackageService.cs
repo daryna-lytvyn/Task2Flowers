@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Task2Flowers.DataTransferObdjects;
 using Task2Flowers.Entities.Products;
 using Task2Flowers.Interfeses;
@@ -11,20 +12,23 @@ namespace Task2Flowers.Services
     {
         public FlowerPackageService(IStorage<FlowerPackage> storage) : base(storage) { }
 
-        public void Add(FlowerPackageDTO flowerPackageDTO)
+        public async Task AddAsync(FlowerPackageDTO flowerPackageDTO)
         {
             base.Validation(flowerPackageDTO);
 
-            var id = _storage.IdGenerator().GetNextValue();
+            var idGenerator = await _storage.IdGenerator();
+
+            var id = idGenerator.GetNextValue();
             var newAP = new FlowerPackage(id, flowerPackageDTO.Type, flowerPackageDTO.Width,
                                             flowerPackageDTO.Height, flowerPackageDTO.Color, flowerPackageDTO.Desctiption);
 
-            this.Add(newAP);
+            await this.AddAsync(newAP);
         }
 
-        public IReadOnlyList<FlowerPackage> GetSortByType()
+        public async Task<IReadOnlyList<FlowerPackage>> GetSortByTypeAsync()
         {
-            var sortFlowerPackagesByType = _storage.Elements.OrderBy(fP => fP.Type.Id).ToList();
+            var elements = await _storage.GetAllAsynс();
+            var sortFlowerPackagesByType = elements.OrderBy(fP => fP.Type.Id).ToList();
 
             return sortFlowerPackagesByType.AsReadOnly();
         }

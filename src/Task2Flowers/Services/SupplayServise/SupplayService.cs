@@ -1,4 +1,5 @@
-﻿using Task2Flowers.DataTransferObdjects.Supplay;
+﻿using System.Threading.Tasks;
+using Task2Flowers.DataTransferObdjects.Supplay;
 using Task2Flowers.Entities.Supplay;
 using Task2Flowers.Interfeses;
 using Task2Flowers.Interfeses.Services.ISupplayService;
@@ -9,14 +10,17 @@ namespace Task2Flowers.Services.SupplayServise
     {
         public SupplayService(IStorage<Supplay> storage) : base(storage) { }
 
-        public void Add(SupplayDTO supplayDTO)
+        public async Task AddAsync(SupplayDTO supplayDTO)
         {
             base.Validation(supplayDTO);
 
-            var id = _storage.IdGenerator().GetNextValue();
+            var idGenerator = await _storage.IdGenerator();
+
+            var id = idGenerator.GetNextValue();
             var newAP = new Supplay(id, supplayDTO.Bundles, supplayDTO.FinishDate);
-            this.Add(newAP);
+            await this.AddAsync(newAP);
         }
+
     }
 }
 

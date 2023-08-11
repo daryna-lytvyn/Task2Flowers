@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Task2Flowers.Interfeses;
 
 namespace Task2Flowers.Menus.Commands
@@ -12,7 +13,7 @@ namespace Task2Flowers.Menus.Commands
             CommandName = commandName;
         }
 
-        public virtual void Execute()
+        public virtual async Task Execute()
         {
 
         }

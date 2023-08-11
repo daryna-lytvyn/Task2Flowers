@@ -20,12 +20,13 @@ namespace Task2Flowers.Presenters
             _flowerBundleServise = flowerBundleServise ?? throw new ArgumentNullException(nameof(flowerBundleServise));
             _flowerServise = flowerServise ?? throw new ArgumentNullException(nameof(flowerServise));
         }
-        public void Input()
+        public async Task InputAsync()
         {
             Console.WriteLine("Введите id цветка :  ");
-            this.PrintFlowers();
-            var flowerId = IntPresenter.InputId(_flowerServise.GetCurrentIdGeneratorValue());
-            var chosenFlower = _flowerServise.Get(flowerId);
+            await this.PrintFlowersAsync();
+            var currentIdGeneratorValueAsync = await _flowerServise.GetCurrentIdGeneratorValueAsync();
+            var flowerId = IntPresenter.InputId(currentIdGeneratorValueAsync);
+            var chosenFlower = await _flowerServise.GetAsynс(flowerId);
 
             Console.WriteLine("Введите количество в пачке :  ");
             var count = IntPresenter.Input(0,100);
@@ -41,12 +42,13 @@ namespace Task2Flowers.Presenters
             };
 
 
-            _flowerBundleServise.Add(fBDTO);
+            await _flowerBundleServise.AddAsync(fBDTO);
         }
 
-        public void Print()
+        public async Task PrintAsync()
         {
-            foreach(FlowerBundle flowerBundle in _flowerBundleServise.GetAll())
+            var flowerBundles = await _flowerBundleServise.GetAllAsynс();
+            foreach (FlowerBundle flowerBundle in flowerBundles)
             {
                 Console.WriteLine($"Id: {flowerBundle.Id}, Цветок: ( Id: {flowerBundle.Flower.Id}, {flowerBundle.Flower.Kind.Title}, {flowerBundle.Flower.Variety}, {flowerBundle.Flower.Color.Title} ), Количество в пачке: {flowerBundle.CountOfFlower}, Высота: {flowerBundle.Height}");
             }
@@ -64,9 +66,10 @@ namespace Task2Flowers.Presenters
             Console.Write($"\t\tId: {flower.Id}, {flower.Kind.Title}, {flower.Variety}, {flower.Color.Title}");
         }
 
-        private void PrintFlowers()
+        private async Task PrintFlowersAsync()
         {
-            foreach (var flower in _flowerServise.GetSortByKind())
+            var flowers = await _flowerServise.GetSortByKindAsync();
+            foreach (var flower in flowers)
             {
                 Console.WriteLine($"\t\tId: {flower.Id}, {flower.Kind.Title}, {flower.Variety}, {flower.Color.Title}");
             }

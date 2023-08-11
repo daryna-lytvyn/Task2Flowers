@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using Task2Flowers.Exceptions;
 using Task2Flowers.Interfeses;
 using Task2Flowers.Interfeses.Services;
@@ -16,27 +17,30 @@ namespace Task2Flowers.Services
             _storage = storage ?? throw new ArgumentNullException(nameof(storage));
         }
 
-        public virtual void Add(T element)
+        public virtual async Task AddAsync(T element)
         {
             if (element is null)
             {
                 throw new ArgumentNullException(nameof(element));
             }
-            _storage.Add(element);
+            await _storage.AddAsynс(element);
         }
 
-        public virtual T Get(int id)
+        public async virtual Task<T> GetAsynс(int id)
         {
-            return _storage.Get(id);
+            var element = await _storage.GetAsynс(id);
+            return element;
         }
 
-        public virtual IReadOnlyCollection<T> GetAll()
+        public async virtual Task<IReadOnlyCollection<T>> GetAllAsynс()
         {
-            return _storage.GetAll();
+            var elements = await _storage.GetAllAsynс();
+            return elements;
         }
-        public virtual int GetCurrentIdGeneratorValue()
+        public async virtual Task<int> GetCurrentIdGeneratorValueAsync()
         {
-            return _storage.IdGenerator().GetCurrentValue();
+            var idGenerator = await _storage.IdGenerator();
+            return idGenerator.GetCurrentValue();
         }
 
         protected virtual void Validation<DTO>(DTO obj)

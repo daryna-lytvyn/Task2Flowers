@@ -17,21 +17,22 @@ namespace Task2Flowers.Presenters
             _flowerPackageTypeServise = flowerPackageTypeServise ?? throw new ArgumentNullException(nameof(flowerPackageTypeServise));
         }
 
-        public void Input()
+        public async Task InputAsync()
         {
             Console.WriteLine("Введите название вида упаковки :  ");
             var title = Console.ReadLine();
 
             var fPTDTO = new DataTransferObdjects.FlowerPackageTypeDTO { Title = title };
 
-            _flowerPackageTypeServise.Add(fPTDTO);
+            await _flowerPackageTypeServise.AddAsync(fPTDTO);
         }
 
-        public void Print()
+        public async Task PrintAsync()
         {
             Console.WriteLine("Виды упаковки: ");
 
-            foreach (var flowerPackageType in _flowerPackageTypeServise.GetAll())
+            var flowerPackageTypes = await _flowerPackageTypeServise.GetAllAsynс();
+            foreach (var flowerPackageType in flowerPackageTypes)
             {
                 Console.Write($"Id: {flowerPackageType.Id}, {flowerPackageType.Title}, ");
             }

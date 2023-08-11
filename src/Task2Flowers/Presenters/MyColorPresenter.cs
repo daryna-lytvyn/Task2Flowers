@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Task2Flowers.DataTransferObdjects;
 using Task2Flowers.Entities;
 using Task2Flowers.Interfeses;
@@ -14,7 +15,7 @@ namespace Task2Flowers.Presenters
         {
             this._myColorService = myColorService ?? throw new ArgumentNullException(nameof(myColorService));
         }
-        public void Input()
+        public async Task InputAsync()
         {
             Console.WriteLine("Введите название вида цветка :  ");
             var title = Console.ReadLine();
@@ -36,14 +37,15 @@ namespace Task2Flowers.Presenters
                 B = blue
             };
 
-            _myColorService.Add(mycolor);
+            await _myColorService.AddAsync(mycolor);
         }
 
-        public void Print()
+        public async Task PrintAsync()
         {
             Console.WriteLine("Виды цвета: ");
 
-            foreach (var color in this._myColorService.GetAll())
+            var colors = await _myColorService.GetAllAsynс();
+            foreach (var color in colors)
             {
                 Console.WriteLine($"Id:{color.Id}, {color.Title},({color.R},{color.G},{color.B}), ");
             }

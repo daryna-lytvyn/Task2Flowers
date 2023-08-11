@@ -16,9 +16,9 @@ namespace Task2Flowers.Menus.Commands
             _presenter = presenter;
         }
 
-        public override void Execute()
+        public override async Task Execute()
         {
-            _presenter.Input();
+            await _presenter.InputAsync();
         }
     }
 }

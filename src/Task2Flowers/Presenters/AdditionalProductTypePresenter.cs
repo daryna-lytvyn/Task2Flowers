@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Task2Flowers.DataTransferObdjects;
 using Task2Flowers.Entities.Types;
 using Task2Flowers.Interfeses;
@@ -15,20 +16,21 @@ namespace Task2Flowers.Presenters
             _additionalProductTypeServise = additionalProductTypeServise ?? throw new ArgumentNullException(nameof(additionalProductTypeServise));
         }
 
-        public void Input()
+        public async Task InputAsync()
         {
             Console.WriteLine("Введите название вида дополнительного товара :  ");
             var title = Console.ReadLine();
             var aPTDTO = new AdditionalProductTypeDTO { Title = title };
 
-            _additionalProductTypeServise.Add(aPTDTO);
+            await _additionalProductTypeServise.AddAsync(aPTDTO);
         }
 
-        public void Print()
+        public async Task PrintAsync()
         {
             Console.WriteLine("Виды дополнительного товара: ");
 
-            foreach (var additionalProduct in _additionalProductTypeServise.GetAll())
+            var additionalProducts = await _additionalProductTypeServise.GetAllAsynс();
+            foreach (var additionalProduct in additionalProducts)
             {
                 Console.Write($"Id: {additionalProduct.Id}, {additionalProduct.Title}, ");
             }

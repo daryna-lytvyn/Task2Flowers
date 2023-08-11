@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Task2Flowers.DataTransferObdjects;
 using Task2Flowers.Entities.Types;
 using Task2Flowers.Interfeses;
@@ -19,20 +20,24 @@ namespace Task2Flowers.Presenters
             _myColorService = myColorService ?? throw new ArgumentNullException(nameof(myColorService));
         }
 
-        public void Input()
+        public async Task InputAsync()
         {
             Console.WriteLine("Введите id вида цветка :  ");
-            this.PrintFlowerKinds();
-            var kingOfFlowerId = IntPresenter.InputId(_flowerKindServise.GetCurrentIdGeneratorValue());
-            var choseFlowerKind = _flowerKindServise.Get(kingOfFlowerId);
+            await this.PrintFlowerKindsAsync();
+
+            var currentIdGeneratorValueFlowerKind = await _flowerKindServise.GetCurrentIdGeneratorValueAsync();
+            var flowerKindId = IntPresenter.InputId(currentIdGeneratorValueFlowerKind);
+            var choseFlowerKind = await _flowerKindServise.GetAsynс(flowerKindId);
 
             Console.WriteLine("Введите сорт цветка :  ");
             var variety = Console.ReadLine();
 
             Console.WriteLine("Введите id цвета :  ");
-            this.PrintColors();
-            var colorId = IntPresenter.InputId(_myColorService.GetCurrentIdGeneratorValue());
-            var choseColor = _myColorService.Get(colorId);
+            await this.PrintColorsAsync();
+            
+            var currentIdGeneratorValueColor = await _myColorService.GetCurrentIdGeneratorValueAsync();
+            var colorId = IntPresenter.InputId(currentIdGeneratorValueColor);
+            var choseColor = await _myColorService.GetAsynс(colorId);
 
             var aPDTO = new FlowerDTO
             {
@@ -41,30 +46,33 @@ namespace Task2Flowers.Presenters
                 Color = choseColor
             };
 
-            _flowerServise.Add(aPDTO);
+            await _flowerServise.AddAsync(aPDTO);
         }
 
-        public void Print()
+        public async Task PrintAsync()
         {
             Console.WriteLine("Цветы: ");
 
-            foreach (var flower in _flowerServise.GetAll())
+            var flowers = await _flowerServise.GetAllAsynс(); 
+            foreach (var flower in flowers)
             {
                 Console.WriteLine($"\t\tId: {flower.Id}, {flower.Kind.Title}, {flower.Variety}, {flower.Color.Title}");
             }
         }
 
-        public void PrintSortByKind()
+        public async Task PrintSortByKindAsync()
         {
-            foreach (var flower in _flowerServise.GetSortByKind())
+            var flowers = await _flowerServise.GetAllAsynс();
+            foreach (var flower in flowers)
             {
                 Console.WriteLine($"\t\tId: {flower.Id}, {flower.Kind.Title}, {flower.Variety}, {flower.Color.Title}");
             }
         }
 
-        private void PrintFlowerKinds()
+        private async Task PrintFlowerKindsAsync()
         {
-            foreach (var kind in this._flowerKindServise.GetAll())
+            var flowerKinds = await _flowerKindServise.GetAllAsynс();
+            foreach (var kind in flowerKinds)
             {
                 Console.WriteLine($"Id: {kind.Id}, {kind.Title}, ");
             }
@@ -72,9 +80,10 @@ namespace Task2Flowers.Presenters
             Console.WriteLine();
         }
 
-        private void PrintColors()
+        private async Task PrintColorsAsync()
         {
-            foreach (var color in this._myColorService.GetAll())
+            var colors = await _myColorService.GetAllAsynс();
+            foreach (var color in colors)
             {
                 Console.WriteLine($"Id: {color.Id}, {color.Title}, ({color.R},{color.G},{color.B}), ");
             }

@@ -1,4 +1,6 @@
-﻿namespace Task2Flowers.Entities.Types
+﻿using System.Text.Json.Serialization;
+
+namespace Task2Flowers.Entities.Types
 {
 
     public class Flower: Entity
@@ -7,7 +9,7 @@
         public string Variety { get; }
         public MyColor Color { get; }
 
-
+        [JsonConstructor]
         public Flower(int id, FlowerKind kind, string variety, MyColor color)
         {
             this.Id = id;

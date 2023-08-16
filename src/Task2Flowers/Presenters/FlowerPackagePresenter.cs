@@ -55,7 +55,7 @@ namespace Task2Flowers.Presenters
                 Height = height,
                 Width = width,
                 Color = choseColor,
-                Desctiption = description
+                Description = description
             };
 
             await _flowerPackageServise.AddAsync(fPDTO);
@@ -68,7 +68,7 @@ namespace Task2Flowers.Presenters
             var flowerPackages = await _flowerPackageServise.GetAllAsynс();
             foreach (var flowerPackage in flowerPackages)
             {
-                Console.WriteLine($"\t\tId: {flowerPackage.Id}, {flowerPackage.Type.Title}, {flowerPackage.Height} на {flowerPackage.Width}, {flowerPackage.Color.Title}, {flowerPackage.Desctiption}");
+                Console.WriteLine($"\t\tId: {flowerPackage.Id}, {flowerPackage.Type.Title}, {flowerPackage.Height} на {flowerPackage.Width}, {flowerPackage.Color.Title}, {flowerPackage.Description}");
             }
         }
 
@@ -77,7 +77,7 @@ namespace Task2Flowers.Presenters
             var sortByType = await _flowerPackageServise.GetSortByTypeAsync();
             foreach (var flowerPackage in sortByType)
             {
-                Console.WriteLine($"\t\tId: {flowerPackage.Id}, {flowerPackage.Type.Title},  {flowerPackage.Height} на {flowerPackage.Width}, {flowerPackage.Color.Title}, {flowerPackage.Desctiption}");
+                Console.WriteLine($"\t\tId: {flowerPackage.Id}, {flowerPackage.Type.Title},  {flowerPackage.Height} на {flowerPackage.Width}, {flowerPackage.Color.Title}, {flowerPackage.Description}");
             }
         }
 

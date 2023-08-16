@@ -1,4 +1,6 @@
-﻿namespace Task2Flowers.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace Task2Flowers.Entities
 {
     public abstract class Entity
     {

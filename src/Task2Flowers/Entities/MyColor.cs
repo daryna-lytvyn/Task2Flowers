@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace Task2Flowers.Entities
 {
@@ -9,7 +10,7 @@ namespace Task2Flowers.Entities
         public Byte R { get; }
         public Byte G { get; }
         public Byte B { get; }
-        
+
         //public static readonly MyColor Red = new("Red", 255, 0, 0);
         //public static readonly MyColor Green = new("Green", 0, 255, 0);
         //public static readonly MyColor Blue = new("Blue", 0, 0, 255);
@@ -19,6 +20,7 @@ namespace Task2Flowers.Entities
         //public static readonly MyColor Cyan = new("Cyan", 0, 255, 255);
         //public static readonly MyColor Fuchsia = new("Fuchsia", 255, 0, 255);
 
+        [JsonConstructor]
         public MyColor(int id, String title, Byte r, Byte g, Byte b)
         {
             this.Id = id;
@@ -30,24 +32,26 @@ namespace Task2Flowers.Entities
 
         public bool Equals(MyColor? obj)
         {
-            if ((obj == null) || (this == null))
+            if (obj is null || this is null)
             {
                 return false;
             }
 
-            var titleEqual = this.Title == obj.Title;
-            var gEqual = this.G == obj.G;
-            var rEqual = this.R == obj.R;
-            var bEqual = this.B == obj.B;
-
-            return titleEqual && gEqual && rEqual && bEqual;
+            return this.Title == obj.Title
+                && this.G == obj.G
+                && this.R == obj.R
+                && this.B == obj.B;
         }
 
         public int GetHashCode()
         {
-            var rgdHashCode = HashCode.Combine(this.R, this.G, this.B);
+            var hashCode = new HashCode();
+            hashCode.Add(this.Title);
+            hashCode.Add(this.R);
+            hashCode.Add(this.G);
+            hashCode.Add(this.B);
 
-            return HashCode.Combine(rgdHashCode, this.Title);
+            return hashCode.ToHashCode();
         }
     }
 }

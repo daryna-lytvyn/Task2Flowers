@@ -4,8 +4,11 @@ using System.Collections.Generic;
 namespace Task2Flowers
 {
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
+    using System.Threading.Tasks;
     using Task2Flowers.Entities;
     using Task2Flowers.Entities.Products;
     using Task2Flowers.Entities.Supplay;
@@ -24,8 +27,78 @@ namespace Task2Flowers
 
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
+            var services = new ServiceCollection();
+
+            services.AddLogging(builder =>
+            {
+                builder.AddDebug();
+            });
+            
+            services.AddTransient<IntIdGenerator>();
+           
+            services.AddStorages();
+
+            services.AddServices();
+
+            services.AddPresenters();
+
+            var commands = new Dictionary<Type, (string, string)> 
+            {
+                {typeof(MyColor), ("Добавить цвет", "Просмотреть цвета")},
+                {typeof(FlowerKind), ("Добавить вид цветка", "Просмотреть виды цветов")},
+                {typeof(Flower), ("Добавить цветок", "Просмотреть цветы")},
+                {typeof(FlowerBundle), ("Добавить пачку цветов", "Просмотреть пачки с цветами")},
+                {typeof(FlowerPackageType), ("Добавить тип цветочной упаковки","Просмотреть типы цветочной упаковки")},
+                {typeof(FlowerPackage), ("Добавить цветочную упаковку ","Просмотреть цветочную упаковку")},
+                {typeof(AdditionalProductType), ("Добавить тип доп.товара","Просмотреть типы доп.товара")},
+                {typeof(AdditionalProduct), ("Добавить доп.товар","Просмотреть весь доп.товар")},
+                {typeof(Supplay), ("Добавить поставку","Просмотреть поставки")}
+            };
+
+            services.AddCommands(commands);
+
+            services.AddSingleton<MenuItems>(provider =>
+            {
+                var intIdGenerator = provider.GetRequiredService<IntIdGenerator>();
+                var commands = provider.GetServices<ICommand>();
+                var commandsDictionary = commands.ToDictionary(command => intIdGenerator.GetNextValue(), command => command);
+
+                return new MenuItems(commandsDictionary, intIdGenerator);
+            });
+
+            var provider = services.BuildServiceProvider();
+
+            var menu = provider.GetService<MenuItems>();
+
+            await menu.MainMenu();
+
+
+
+
+            //var serviseSupplay = new SupplayService(storageSupplays);
+            //services.AddSingleton<SupplayService>(serviseSupplay);
+
+            //services.AddSingleton<SupplayPresenter>(_ => new SupplayPresenter(serviseSupplay));
+
+
+
+
+            //var menu = new MenuItems();
+
+            //menu.MainMenu();
+
+            //Console.WriteLine("Что вы хотите сделать?\n\t\t - Добавить вид цветка (нажмите 1)." +
+            //       "\n\t\t - Добавить цветок (нажмите 2).\n\t\t - Добавить тип доп.товара (нажмите 3)." +
+            //       "\n\t\t - Добавить доп.товар (нажмите 4).\n\t\t - Добавить тип цветочной упаковки (нажмите 5)." +
+            //       "\n\t\t - Добавить цветочную упаковку (нажмите 6).\n\t\t - Добавить поставку (нажмите 7)." +
+            //       "\n\t\t - Просмотреть виды цветов (нажмите 8).\n\t\t - Просмотреть цветы (нажмите 9)." +
+            //       "\n\t\t- Просмотреть сгрупированные по виду цветы(нажмите 10)\n\t\t - Просмотреть тип доп.товара (нажмите 11)." +
+            //       "\n\t\t - Просмотреть доп.товар (нажмите 12).\n\t\t - Просмотреть тип цветочной упаковки (нажмите 13)." +
+            //       "\n\t\t - Просмотреть цветочную упаковку (нажмите 14).\n\t\t - Просмотреть поставки (нажмите 15)." +
+            //       "\n\t\t - Завершить работу(любое другое число)");
+
             /*var idKindsOfFlower = new IntIdGenerator();
             var kindsOfFlower = new List<FlowerKind>()
             {
@@ -144,210 +217,6 @@ namespace Task2Flowers
             };
 
             var storageSupplays = new Storage<Supplay>(supplays, idSupplays);*/
-
-            var services = new ServiceCollection();
-
-            services.AddTransient<IntIdGenerator>();
-
-            //services.AddSingleton(typeof(IStorage<>), typeof(Storage<>));
-
-            services.AddSingleton<IStorage<MyColor>>(provider => new JSONFileStorage<MyColor>("ColorStorage"));
-            services.AddSingleton<IStorage<FlowerKind>>(provider => new JSONFileStorage<FlowerKind>("FlowerKindStorage"));
-            services.AddSingleton<IStorage<Flower>>(provider => new JSONFileStorage<Flower>("FlowerStorage"));
-            services.AddSingleton<IStorage<FlowerBundle>>(provider => new JSONFileStorage<FlowerBundle>("FlowerBundleStorage"));
-            services.AddSingleton<IStorage<AdditionalProductType>>(provider => new JSONFileStorage<AdditionalProductType>("AdditionalProductTypeStorage"));
-            services.AddSingleton<IStorage<AdditionalProduct>>(provider => new JSONFileStorage<AdditionalProduct>("AdditionalProductStorage"));
-            services.AddSingleton<IStorage<FlowerPackageType>>(provider => new JSONFileStorage<FlowerPackageType>("FlowerPackageTypeStorage"));
-            services.AddSingleton<IStorage<FlowerPackage>>(provider => new JSONFileStorage<FlowerPackage>("FlowerPackageStorage"));
-            services.AddSingleton<IStorage<Supplay>>(provider => new JSONFileStorage<Supplay>("SupplayStorage"));
-            /*var types = Assembly.GetExecutingAssembly().GetTypes();
-            var entitySubclasses = types.Where(t => t.IsSubclassOf(typeof(Entity))).ToList();
-           
-            foreach (var type in entitySubclasses)
-            {
-                var iStorageType = typeof(IStorage<>).MakeGenericType(type);
-                var storageType = typeof(JSONFileStorage<>).MakeGenericType(type);
-
-                services.AddSingleton(iStorageType, provider =>
-                {
-                    var typeName = type.Name;
-                    var filename = string.Concat(typeName, "Storage");
-                    
-                    return Activator.CreateInstance(storageType, filename);
-                });
-            }*/
-
-
-            services.AddSingleton<IMyColorService, MyColorService>();
-            services.AddSingleton<IFlowerKindService, FlowerKindService>();
-            services.AddSingleton<IFlowerService, FlowerService>();
-            services.AddSingleton<IFlowerBundleService, FlowerBundleService>();
-            services.AddSingleton<IAdditionalProductTypeService, AdditionalProductTypeService>();
-            services.AddSingleton<IAdditionalProductService, AdditionalProductService>();
-            services.AddSingleton<IFlowerPackageTypeService, FlowerPackageTypeService>();
-            services.AddSingleton<IFlowerPackageService, FlowerPackageService>();
-            services.AddSingleton<ISupplayService, SupplayService>();
-
-            services.AddSingleton<IPresenter<MyColor>, MyColorPresenter>();
-            services.AddSingleton<IPresenter<AdditionalProductType>, AdditionalProductTypePresenter>();
-            services.AddSingleton<IPresenter<AdditionalProduct>, AdditionalProductPresenter>();
-            services.AddSingleton<IPresenter<FlowerPackageType>, FlowerPackageTypePresenter>();
-            services.AddSingleton<IPresenter<FlowerPackage>, FlowerPackagePresenter>();
-            services.AddSingleton<IPresenter<FlowerKind>, FlowerKindPresenter>();
-            services.AddSingleton<IPresenter<Flower>, FlowerPresenter>();
-            services.AddSingleton<IPresenter<FlowerBundle>, FlowerBundlePresenter>();
-            services.AddSingleton<IPresenter<Supplay>, SupplayPresenter>();
-
-            services.AddSingleton<ICommand>(provider =>
-            {
-                var storage = provider.GetRequiredService<IStorage<MyColor>>();
-                var servise = provider.GetRequiredService<IMyColorService>();
-                var presenter = provider.GetRequiredService<IPresenter<MyColor>>();
-                return new InputCommand<MyColor>("Добавить цвет", presenter);
-            });
-
-            services.AddSingleton<ICommand>(provider =>
-            {
-                var presenter = provider.GetRequiredService<IPresenter<MyColor>>();
-                return new PrintCommand<MyColor>("Просмотреть цвета", presenter);
-            });
-
-            services.AddSingleton<ICommand>(provider =>
-            {
-                var presenter = provider.GetRequiredService<IPresenter<FlowerKind>>();
-                return new InputCommand<FlowerKind>("Добавить вид цветка", presenter);
-            });
-
-            services.AddSingleton<ICommand>(provider =>
-            {
-                var presenter = provider.GetRequiredService<IPresenter<FlowerKind>>();
-                return new PrintCommand<FlowerKind>("Просмотреть виды цветов", presenter);
-            });
-
-            services.AddSingleton<ICommand>(provider =>
-            {
-                var presenter = provider.GetRequiredService<IPresenter<Flower>>();
-                return new InputCommand<Flower>("Добавить цветок", presenter);
-            });
-
-            services.AddSingleton<ICommand>(provider =>
-            {
-                var presenter = provider.GetRequiredService<IPresenter<Flower>>();
-                return new PrintCommand<Flower>("Просмотреть цветы", presenter);
-            });
-
-            services.AddSingleton<ICommand>(provider =>
-            {
-                var presenter = provider.GetRequiredService<IPresenter<FlowerBundle>>();
-                return new InputCommand<FlowerBundle>("Добавить пачку цветов", presenter);
-            });
-
-            services.AddSingleton<ICommand>(provider =>
-            {
-                var presenter = provider.GetRequiredService<IPresenter<FlowerBundle>>();
-                return new PrintCommand<FlowerBundle>("Просмотреть пачки с цветами", presenter);
-            });
-
-            services.AddSingleton<ICommand>(provider =>
-            {
-                var presenter = provider.GetRequiredService<IPresenter<FlowerPackageType>>();
-                return new InputCommand<FlowerPackageType>("Добавить тип цветочной упаковки ", presenter);
-            });
-
-            services.AddSingleton<ICommand>(provider =>
-            {
-                var presenter = provider.GetRequiredService<IPresenter<FlowerPackageType>>();
-                return new PrintCommand<FlowerPackageType>("Просмотреть типы цветочной упаковки", presenter);
-            });
-
-            services.AddSingleton<ICommand>(provider =>
-            {
-                var presenter = provider.GetRequiredService<IPresenter<FlowerPackage>>();
-                return new InputCommand<FlowerPackage>("Добавить цветочную упаковку ", presenter);
-            });
-
-            services.AddSingleton<ICommand>(provider =>
-            {
-                var presenter = provider.GetRequiredService<IPresenter<FlowerPackage>>();
-                return new PrintCommand<FlowerPackage>("Просмотреть цветочную упаковку", presenter);
-            });
-
-            services.AddSingleton<ICommand>(provider =>
-            {
-                var presenter = provider.GetRequiredService<IPresenter<AdditionalProductType>>();
-                return new InputCommand<AdditionalProductType>("Добавить тип доп.товара ", presenter);
-            });
-
-            services.AddSingleton<ICommand>(provider =>
-            {
-                var presenter = provider.GetRequiredService<IPresenter<AdditionalProductType>>();
-                return new PrintCommand<AdditionalProductType>("Просмотреть типы доп.товара", presenter);
-            });
-
-            services.AddSingleton<ICommand>(provider =>
-            {
-                var presenter = provider.GetRequiredService<IPresenter<AdditionalProduct>>();
-                return new InputCommand<AdditionalProduct>("Добавить доп.товар", presenter);
-            });
-
-            services.AddSingleton<ICommand>(provider =>
-            {
-                var presenter = provider.GetRequiredService<IPresenter<AdditionalProduct>>();
-                return new PrintCommand<AdditionalProduct>("Просмотреть весь доп.товар", presenter);
-            });
-
-            services.AddSingleton<ICommand>(provider =>
-            {
-                var presenter = provider.GetRequiredService<IPresenter<Supplay>>();
-                return new InputCommand<Supplay>("Добавить поставку", presenter);
-            });
-
-            services.AddSingleton<ICommand>(provider =>
-            {
-                var presenter = provider.GetRequiredService<IPresenter<Supplay>>();
-                return new PrintCommand<Supplay>("Просмотреть поставки", presenter);
-            });
-
-            services.AddSingleton<MenuItems>(provider =>
-            {
-                var intIdGenerator = provider.GetRequiredService<IntIdGenerator>();
-                var commands = provider.GetServices<ICommand>();
-                var commandsDictionary = commands.ToDictionary(command => intIdGenerator.GetNextValue(), command => command);
-
-                return new MenuItems(commandsDictionary, intIdGenerator);
-            });
-
-            var provider = services.BuildServiceProvider();
-
-            var menu = provider.GetService<MenuItems>();
-
-            menu.MainMenu();
-
-           
-            
-
-            //var serviseSupplay = new SupplayService(storageSupplays);
-            //services.AddSingleton<SupplayService>(serviseSupplay);
-
-            //services.AddSingleton<SupplayPresenter>(_ => new SupplayPresenter(serviseSupplay));
-
-
-
-
-            //var menu = new MenuItems();
-
-            //menu.MainMenu();
-
-            //Console.WriteLine("Что вы хотите сделать?\n\t\t - Добавить вид цветка (нажмите 1)." +
-            //       "\n\t\t - Добавить цветок (нажмите 2).\n\t\t - Добавить тип доп.товара (нажмите 3)." +
-            //       "\n\t\t - Добавить доп.товар (нажмите 4).\n\t\t - Добавить тип цветочной упаковки (нажмите 5)." +
-            //       "\n\t\t - Добавить цветочную упаковку (нажмите 6).\n\t\t - Добавить поставку (нажмите 7)." +
-            //       "\n\t\t - Просмотреть виды цветов (нажмите 8).\n\t\t - Просмотреть цветы (нажмите 9)." +
-            //       "\n\t\t- Просмотреть сгрупированные по виду цветы(нажмите 10)\n\t\t - Просмотреть тип доп.товара (нажмите 11)." +
-            //       "\n\t\t - Просмотреть доп.товар (нажмите 12).\n\t\t - Просмотреть тип цветочной упаковки (нажмите 13)." +
-            //       "\n\t\t - Просмотреть цветочную упаковку (нажмите 14).\n\t\t - Просмотреть поставки (нажмите 15)." +
-            //       "\n\t\t - Завершить работу(любое другое число)");
-
         }
     }
 }

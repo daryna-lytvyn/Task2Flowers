@@ -20,7 +20,7 @@ namespace Task2Flowers.Services
 
             var id = idGenerator.GetNextValue();
             var newAP = new FlowerPackage(id, flowerPackageDTO.Type, flowerPackageDTO.Width,
-                                            flowerPackageDTO.Height, flowerPackageDTO.Color, flowerPackageDTO.Desctiption);
+                                            flowerPackageDTO.Height, flowerPackageDTO.Color, flowerPackageDTO.Description);
 
             await this.AddAsync(newAP);
         }

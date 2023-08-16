@@ -1,4 +1,5 @@
-﻿using Task2Flowers.Entities.Types;
+﻿using System.Text.Json.Serialization;
+using Task2Flowers.Entities.Types;
 
 namespace Task2Flowers.Entities.Products
 {
@@ -8,6 +9,7 @@ namespace Task2Flowers.Entities.Products
         public int CountOfFlower { get; }
         public int Height { get; }
 
+        [JsonConstructor]
         public FlowerBundle(int id, Flower flower, int countOfFlower, int height) : base(id)
         {
             this.Flower = flower;

@@ -17,6 +17,6 @@ namespace Task2Flowers.DataTransferObdjects
         public MyColor Color { get; set; }
 
         [Required(ErrorMessage = "Desctiption not defined")]
-        public String Desctiption { get; set; }
+        public String Description { get; set; }
     }
 }

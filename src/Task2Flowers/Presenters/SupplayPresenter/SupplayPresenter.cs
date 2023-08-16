@@ -45,7 +45,7 @@ namespace Task2Flowers.Presenters.SupplayPresenter
 
             var newSDTO = new SupplayDTO
             {
-                Bundles = bundles.AsReadOnly(), 
+                Bundles = bundles, 
                 FinishDate = DateTime.Now
             };
 
@@ -81,7 +81,7 @@ namespace Task2Flowers.Presenters.SupplayPresenter
                             throw new NotSupportedException("Unsupported product type");
                     }
 
-                    Console.Write($", Общее количество: {bundle.Count}\n");
+                    Console.Write($" Общее количество: {bundle.Count}, \n");
                 }
                 Console.WriteLine();
             }
@@ -113,8 +113,8 @@ namespace Task2Flowers.Presenters.SupplayPresenter
             Product chosenProduct = value switch
             {
                 1 => await this.ChoseFlowerBundle(),
-                2 => await this.ChoseAdditionalProduct(),
-                3 => await this.ChoseFlowerPackage(),
+                2 => await this.ChoseFlowerPackage(),
+                3 => await this.ChoseAdditionalProduct(),
                 _ => null
             };
 
@@ -162,17 +162,17 @@ namespace Task2Flowers.Presenters.SupplayPresenter
 
         private void PrintFlowerBundle(FlowerBundle flowerBundle)
         {
-            Console.WriteLine($"Id: {flowerBundle.Id}, Цветок: ( Id: {flowerBundle.Flower.Id}, {flowerBundle.Flower.Kind.Title}, {flowerBundle.Flower.Variety}, {flowerBundle.Flower.Color.Title} ), Количество в пачке: {flowerBundle.CountOfFlower}, Высота: {flowerBundle.Height}");
+            Console.WriteLine($" Цветок: ( Id: {flowerBundle.Flower.Id}, {flowerBundle.Flower.Kind.Title}, {flowerBundle.Flower.Variety}, {flowerBundle.Flower.Color.Title} ), Количество в пачке: {flowerBundle.CountOfFlower}, Высота: {flowerBundle.Height}");
         }
 
         private void PrintFlowerPackege(FlowerPackage flowerPackage)
         {
-            Console.WriteLine($"\t\tId: {flowerPackage.Id}, {flowerPackage.Type}, {flowerPackage.Height} на {flowerPackage.Width}, {flowerPackage.Color.Title}, {flowerPackage.Desctiption}");
+            Console.WriteLine($" Цветочная упаковка: ( Id: {flowerPackage.Type.Id}, {flowerPackage.Type.Title}), {flowerPackage.Height} на {flowerPackage.Width}, {flowerPackage.Color.Title}, {flowerPackage.Description}");
         }
 
         private void PrintAdditionalProduct(AdditionalProduct additionalProduct)
         {
-            Console.WriteLine($"\t\tId: {additionalProduct.Id}, {additionalProduct.Type}, {additionalProduct.Title}, {additionalProduct.Color.Title}, {additionalProduct.Desctiption}");
+            Console.WriteLine($" Дополнительный продукт: ( Id: {additionalProduct.Type.Id}, {additionalProduct.Type.Title}), {additionalProduct.Title}, {additionalProduct.Color.Title}, {additionalProduct.Description}");
         }
 
         private async Task PrintFlowerBundles()

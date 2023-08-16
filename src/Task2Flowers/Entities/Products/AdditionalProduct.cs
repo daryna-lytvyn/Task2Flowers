@@ -1,4 +1,5 @@
-﻿using Task2Flowers.Entities.Types;
+﻿using System.Text.Json.Serialization;
+using Task2Flowers.Entities.Types;
 
 namespace Task2Flowers.Entities.Products
 {
@@ -7,14 +8,15 @@ namespace Task2Flowers.Entities.Products
         public AdditionalProductType Type { get; }
         public string Title { get; }
         public MyColor Color { get; }
-        public string Desctiption { get; }
+        public string Description { get; }
 
+        [JsonConstructor]
         public AdditionalProduct(int id, AdditionalProductType type, string title, MyColor color, string description) : base(id)
         {
             this.Title = title;
             this.Type = type;
             this.Color = color;
-            this.Desctiption = description;
+            this.Description = description;
         }
     }
 }

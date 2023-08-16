@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -12,33 +13,21 @@ using Task2Flowers.Interfeses;
 
 namespace Task2Flowers.Storages
 {
-
     public class JSONFileStorage<T> : IStorage<T>
         where T : Entity
     {
         private readonly String _filename;
+        private readonly ILogger _logger;
 
-        public JSONFileStorage(string filename)
+        public JSONFileStorage(string filename, ILogger<JSONFileStorage<T>> logger)
         {
             _filename = filename;
-        }
-
-        public async Task CopyFileAsync(string filename)
-        {
-            var elements = await this.ReadFileAsync();
-            using (var fs = new FileStream($"{filename}.json", FileMode.OpenOrCreate))
-            {
-                fs.Seek(0, SeekOrigin.Begin);
-
-                await JsonSerializer.SerializeAsync<ICollection<T>>(fs, elements);
-            }
+            _logger = logger;
         }
 
         public async Task<IReadOnlyCollection<T>> GetAllAsynс()
         {
-            var elements = await this.ReadFileAsync();
-
-            return elements != null ? elements.ToList() : new List<T>();
+            return await this.ReadFileAsync();
         }
 
         public async Task AddAsynс(T element)
@@ -46,7 +35,10 @@ namespace Task2Flowers.Storages
             var elements = await this.ReadFileAsync();
             elements.Add(element);
 
-            await this.WriteInFolowingFileAsync(elements);
+            _logger.LogInformation("An object {@Element} added to the collection [{CollectionType}]", element, typeof(T).Name);
+
+            await this.WriteFileAsync(elements);
+
         }
 
         public async Task<T> GetAsynс(int id)
@@ -56,38 +48,41 @@ namespace Task2Flowers.Storages
 
             return list.Find(element => element.Id == id);
         }
+
         public async Task<IntIdGenerator> IdGenerator()
         {
             var elements = await this.ReadFileAsync();
-            elements.ToList();
-            var initialValue = elements.Any() 
-                                ? elements.Select(e => e.Id).Max()+1
+            var elementsList = elements.ToList();
+
+            var initialValue = elementsList.Any()
+                                ? elementsList.Select(e => e.Id).Max() + 1
                                 : 0;
 
             return new IntIdGenerator(initialValue);
         }
 
-        private async Task<ICollection<T>> ReadFileAsync()
+        private async Task<HashSet<T>> ReadFileAsync()
         {
+            HashSet<T> collection = null;
+             
             try
             {
-                using (FileStream fs = new FileStream($"{_filename}.json", FileMode.OpenOrCreate))
-                {
-                    fs.Seek(0, SeekOrigin.Begin);
-                    var elements = await JsonSerializer.DeserializeAsync<ICollection<T>>(fs);
+                using var fs = new FileStream($"{_filename}.json", FileMode.OpenOrCreate);
 
-                    return elements;
-                }
+                fs.Seek(0, SeekOrigin.Begin);
+                collection = await JsonSerializer.DeserializeAsync<HashSet<T>>(fs);
             }
-            catch (Exception)
+            catch(Exception ex)
             {
-                return new List<T>();
+                _logger.LogWarning(ex, "An exception occured during reading the file {Filename}.", _filename);
             }
-        }
 
-        private async Task WriteInFolowingFileAsync(ICollection<T> elements)
+            return collection ?? new HashSet<T>();
+        }
+        
+        private async Task WriteFileAsync(ICollection<T> elements)
         {
-            using (FileStream fs = new FileStream($"{_filename}.json", FileMode.Truncate))
+            using(FileStream fs = new FileStream($"{_filename}.json", FileMode.Truncate))
             {
                 fs.Seek(0, SeekOrigin.Begin);
 

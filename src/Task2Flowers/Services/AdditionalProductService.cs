@@ -20,7 +20,7 @@ namespace Task2Flowers.Services
 
             var id = idGenerator.GetNextValue();
             var newAP = new AdditionalProduct(id, additionalProductDTO.Type, additionalProductDTO.Title,
-                                                additionalProductDTO.Color, additionalProductDTO.Desctiption);
+                                                additionalProductDTO.Color, additionalProductDTO.Description);
             await this.AddAsync(newAP);
         }
 
@@ -30,16 +30,6 @@ namespace Task2Flowers.Services
             var sortAdditionalProductsByType = elements.OrderBy(aP => aP.Type.Id).ToList();
 
             return sortAdditionalProductsByType.AsReadOnly();
-        }
-
-        Task IAdditionalProductService.AddAsync(AdditionalProductDTO aPDTO)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        Task<IReadOnlyList<AdditionalProduct>> IAdditionalProductService.GetSortByTypeAsync()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

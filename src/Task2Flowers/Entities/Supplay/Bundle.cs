@@ -1,4 +1,5 @@
-﻿using Task2Flowers.Entities.Products;
+﻿using System.Text.Json.Serialization;
+using Task2Flowers.Entities.Products;
 
 namespace Task2Flowers.Entities.Supplay
 {
@@ -8,7 +9,7 @@ namespace Task2Flowers.Entities.Supplay
 
         public int Count { get; }
 
-
+        [JsonConstructor]
         public Bundle(Product product, int count)
         {
             this.Product = product;

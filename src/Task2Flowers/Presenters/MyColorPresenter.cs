@@ -17,7 +17,7 @@ namespace Task2Flowers.Presenters
         }
         public async Task InputAsync()
         {
-            Console.WriteLine("Введите название вида цветка :  ");
+            Console.WriteLine("Введите название цвета :  ");
             var title = Console.ReadLine();
 
             Console.WriteLine("Введите значение Red :  ");

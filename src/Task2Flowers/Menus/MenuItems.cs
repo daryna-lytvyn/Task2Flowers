@@ -48,7 +48,7 @@ namespace Task2Flowers.Menus
             }
         }
 
-        public void MainMenu()
+        public async Task MainMenu()
         {
             var marker = true;
             do
@@ -63,7 +63,7 @@ namespace Task2Flowers.Menus
                 }
                 else
                 {
-                    command.Execute().Wait();
+                    await command.Execute();
                 }
 
             } while (marker);

@@ -45,7 +45,7 @@ namespace Task2Flowers.Presenters
                 Type = choseAdditionalProductType,
                 Title = title,
                 Color = choseColor,
-                Desctiption = description
+                Description = description
             };
 
             await _additionalProductServise.AddAsync(additionalProductDTO);
@@ -55,26 +55,26 @@ namespace Task2Flowers.Presenters
         {
             Console.WriteLine("Дополнительные товары: ");
 
-            var sortByType = await this._additionalProductServise.GetAllAsynс();
+            var sortByType = await _additionalProductServise.GetAllAsynс();
             foreach (var additionalProduct in sortByType)
             {
-                Console.WriteLine($"\t\tId: {additionalProduct.Id}, {additionalProduct.Type.Title}, {additionalProduct.Title}, {additionalProduct.Color.Title}, {additionalProduct.Desctiption}");
+                Console.WriteLine($"\t\tId: {additionalProduct.Id}, {additionalProduct.Type.Title}, {additionalProduct.Title}, {additionalProduct.Color.Title}, {additionalProduct.Description}");
             }
         }
 
         public async Task PrintSortByTypeAsync()
         {
-            var sortByType = await this._additionalProductServise.GetSortByTypeAsync();
+            var sortByType = await _additionalProductServise.GetSortByTypeAsync();
 
             foreach (var additionalProduct in sortByType)
             {
-                Console.WriteLine($"\t\tId: {additionalProduct.Id}, {additionalProduct.Type.Title}, {additionalProduct.Title}, {additionalProduct.Color.Title}, {additionalProduct.Desctiption}");
+                Console.WriteLine($"\t\tId: {additionalProduct.Id}, {additionalProduct.Type.Title}, {additionalProduct.Title}, {additionalProduct.Color.Title}, {additionalProduct.Description}");
             }
         }
 
         public void Print(AdditionalProduct additionalProduct)
         {
-            Console.Write($"Id: {additionalProduct.Id}, {additionalProduct.Type.Title}, {additionalProduct.Title}, {additionalProduct.Color.Title}, {additionalProduct.Desctiption}");
+            Console.Write($"Id: {additionalProduct.Id}, {additionalProduct.Type.Title}, {additionalProduct.Title}, {additionalProduct.Color.Title}, {additionalProduct.Description}");
         }
 
         private async Task PrintAdditionalProductTypesAsync()

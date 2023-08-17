@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Task2Flowers
+﻿namespace Task2Flowers.Generators
 {
     public class IntIdGenerator
     {
@@ -21,7 +15,11 @@ namespace Task2Flowers
         }
         public int GetNextValue()
         {
-            return value++;
+            return this.value++;
+        }
+        public int GetCurrentValue()
+        {
+            return this.value;
         }
     }
 }
